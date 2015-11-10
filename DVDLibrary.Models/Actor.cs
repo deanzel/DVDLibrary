@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace DVDLibrary.Models
 {
-   public class Actor
+    public class Actor
     {
-       public int ActorId { get; set; }
-       public string FirstName { get; set; }
-       public string LastName { get; set; }
-       
+        public int ActorId { get; set; }
+        public string ActorName { get; set; }
     }
 }
