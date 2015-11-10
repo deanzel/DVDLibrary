@@ -53,6 +53,16 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DVDLibrary.Data\DVDLibrary.Data.csproj">
+      <Project>{ee516e01-95ee-4757-a64a-485e60d418ec}</Project>
+      <Name>DVDLibrary.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DVDLibrary.Models\DVDLibrary.Models.csproj">
+      <Project>{b9011ba9-7e07-4b54-b9a4-396a769c3ff9}</Project>
+      <Name>DVDLibrary.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
