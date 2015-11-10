@@ -15,5 +15,6 @@ namespace DVDLibrary.Models
        public DateTime ReleaseDate { get; set; }
        public string Synopsis { get; set; }
        public int Duration { get; set; }
+       public string PosterUrl { get; set; }
     }
 }

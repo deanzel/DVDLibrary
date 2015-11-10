@@ -21,7 +21,8 @@ create table Movies (
 	Rating nvarchar(10),
 	ReleaseDate date not null,
 	DurationInMin int not null,
-	Synopsis nvarchar(500) not null
+	Synopsis nvarchar(500) not null,
+	PosterUrl nvarchar(200)
 )
 go
 
