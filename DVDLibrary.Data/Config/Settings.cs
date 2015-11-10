@@ -12,7 +12,7 @@ namespace DVDLibrary.Data.Config
             {
                 if (string.IsNullOrEmpty(_connectionString))
                 {
-                    _connectionString = ConfigurationManager.ConnectionStrings["Northwind"].ConnectionString;
+                    _connectionString = ConfigurationManager.ConnectionStrings["DVDLibrary"].ConnectionString;
                 }
 
                 return _connectionString;

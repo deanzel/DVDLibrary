@@ -40,7 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actor.cs" />
+    <Compile Include="Borrower.cs" />
+    <Compile Include="Director.cs" />
+    <Compile Include="DVD.cs" />
+    <Compile Include="Movie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Status.cs" />
+    <Compile Include="Studio.cs" />
+    <Compile Include="UserNote.cs" />
+    <Compile Include="UserRating.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
