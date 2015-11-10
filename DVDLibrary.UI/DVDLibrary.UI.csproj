@@ -144,10 +144,6 @@
       <Project>{08f55484-6cf4-4feb-a1ad-4c4e0258a0d7}</Project>
       <Name>DVDLibrary.BLL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DVDLibrary.Data\DVDLibrary.Data.csproj">
-      <Project>{ee516e01-95ee-4757-a64a-485e60d418ec}</Project>
-      <Name>DVDLibrary.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DVDLibrary.Models\DVDLibrary.Models.csproj">
       <Project>{b9011ba9-7e07-4b54-b9a4-396a769c3ff9}</Project>
       <Name>DVDLibrary.Models</Name>
