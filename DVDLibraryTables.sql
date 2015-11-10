@@ -7,16 +7,17 @@ go
 use DVDLibrary
 go
 
-create table Category (
+create table Categories (
 	CategoryID int identity(1,1) primary key,
 	Name nvarchar(50) not null
 )
 go
 
-create table Movie (
+create table Movies (
 	MovieID int identity(1,1) primary key,
-	CategoryID int foreign key references Category(CategoryID),
+	CategoryID int foreign key references Categories(CategoryID),
 	Title nvarchar(50) not null,
+	TMDBNum int, 
 	Rating nvarchar(10),
 	ReleaseDate date not null,
 	DurationInMin int not null,
@@ -24,7 +25,7 @@ create table Movie (
 )
 go
 
-create table Borrower (
+create table Borrowers (
 	BorrowerID int identity(1,1) primary key,
 	FirstName nvarchar(50) not null,
 	LastName nvarchar(50) not null,
@@ -37,62 +38,62 @@ create table Borrower (
 )
 go
 
-create table BorrowerStatus (
+create table BorrowerStatuses (
 	BorrowerStatusID int identity(1,1) primary key,
-	BorrowerID int foreign key references Borrower(BorrowerID) not null,
+	BorrowerID int foreign key references Borrowers(BorrowerID) not null,
 	CheckOutDate date not null,
 	CheckInDate date not null
 )
 go
 
-create table DVD (
+create table DVDs (
 	DVDID int identity(1,1) primary key,
-	MovieID int foreign key references Movie(MovieID) not null,
-	BorrowerStatusID int foreign key references [BorrowerStatus](BorrowerStatusID) not null,
+	MovieID int foreign key references Movies(MovieID) not null,
+	BorrowerStatusID int foreign key references [BorrowerStatuses](BorrowerStatusID) not null,
 	DVDType nvarchar(25) not null
 )
 go
 
-create table Director (
+create table Directors (
 	DirectorID int identity(1,1) primary key,
-	MovieID int foreign key references Movie(MovieID) not null,
+	MovieID int foreign key references Movies(MovieID) not null,
 	Name nvarchar(100) not null
 )
 go
 
-create table Actor (
+create table Actors (
 	ActorID int identity(1,1) primary key,
-	MovieID int foreign key references Movie(MovieID) not null,
+	MovieID int foreign key references Movies(MovieID) not null,
 	Name nvarchar(100) not null
 )
 go
 
-create table Studio (
+create table Studios (
 	StudioID int identity(1,1) primary key,
-	MovieID int foreign key references Movie(MovieID) not null,
+	MovieID int foreign key references Movies(MovieID) not null,
 	Name nvarchar(50) not null
 )
 go
 
-create table UserRating (
+create table UserRatings (
 	UserRatingID int identity(1,1) primary key,
-	BorrowerID int foreign key references Borrower(BorrowerID) not null,
-	MovieID int foreign key references Movie(MovieID) not null,
+	BorrowerID int foreign key references Borrowers(BorrowerID) not null,
+	MovieID int foreign key references Movies(MovieID) not null,
 	Rating int not null
 )
 go
 
-create table UserNote(
+create table UserNotes(
 	UserNote int identity(1,1) primary key,
-	BorrowerID int foreign key references Borrower(BorrowerID) not null,
-	MovieID int foreign key references Movie(MovieID) not null,
+	BorrowerID int foreign key references Borrowers(BorrowerID) not null,
+	MovieID int foreign key references Movies(MovieID) not null,
 	Note nvarchar(250) not null
 )
 go
 
-create table MovieAlias (
+create table MovieAliases (
 	MovieAliasID int identity(1,1) primary key,
-	MovieID int foreign key references Movie(MovieID) not null,
+	MovieID int foreign key references Movies(MovieID) not null,
 	MovieAlias nvarchar(100) not null
 )
 go
