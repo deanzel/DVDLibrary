@@ -11,5 +11,6 @@ namespace DVDLibrary.Models
     {
         public int ActorId { get; set; }
         public string ActorName { get; set; }
+        public int? ActorTMDBNum { get; set; }
     }
 }

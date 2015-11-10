@@ -11,5 +11,6 @@ namespace DVDLibrary.Models
     {
         public int StudioId { get; set; }
         public string StudioName { get; set; }
+        public int? StudioTMDBNum { get; set; }
     }
 }

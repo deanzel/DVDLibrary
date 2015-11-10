@@ -10,6 +10,6 @@ namespace DVDLibrary.Models
     {
         public int StatusId { get; set; }
         public DateTime DateBorrowed { get; set; }
-        public DateTime DateReturned { get; set; }
+        public DateTime? DateReturned { get; set; }
     }
 }

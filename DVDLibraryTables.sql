@@ -17,7 +17,7 @@ create table Movies (
 	MovieID int identity(1,1) primary key,
 	CategoryID int foreign key references Categories(CategoryID),
 	Title nvarchar(50) not null,
-	TMDBNum int, 
+	MovieTMDBNum int, 
 	Rating nvarchar(10),
 	ReleaseDate date not null,
 	DurationInMin int not null,
@@ -42,7 +42,7 @@ create table BorrowerStatuses (
 	BorrowerStatusID int identity(1,1) primary key,
 	BorrowerID int foreign key references Borrowers(BorrowerID) not null,
 	CheckOutDate date not null,
-	CheckInDate date not null
+	CheckInDate date
 )
 go
 
@@ -57,21 +57,25 @@ go
 create table Directors (
 	DirectorID int identity(1,1) primary key,
 	MovieID int foreign key references Movies(MovieID) not null,
-	Name nvarchar(100) not null
+	DirectorName nvarchar(100) not null,
+	DirectorTMDBNum int
 )
 go
 
 create table Actors (
 	ActorID int identity(1,1) primary key,
 	MovieID int foreign key references Movies(MovieID) not null,
-	Name nvarchar(100) not null
+	ActorName nvarchar(100) not null,
+	ActorTMDBID int
+
 )
 go
 
 create table Studios (
 	StudioID int identity(1,1) primary key,
 	MovieID int foreign key references Movies(MovieID) not null,
-	Name nvarchar(50) not null
+	StudioName nvarchar(50) not null,
+	StudioTMDBNum int
 )
 go
 
@@ -87,7 +91,7 @@ create table UserNotes(
 	UserNote int identity(1,1) primary key,
 	BorrowerID int foreign key references Borrowers(BorrowerID) not null,
 	MovieID int foreign key references Movies(MovieID) not null,
-	Note nvarchar(250) not null
+	Note nvarchar(500) not null
 )
 go
 
