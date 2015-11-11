@@ -9,6 +9,9 @@ namespace DVDLibrary.Models
     public class UserNote
     {
         public int UserNoteId { get; set; }
+        public int MovieId { get; set; }
+        public int BorrowerId { get; set; }
         public string Note { get; set; }
+
     }
 }

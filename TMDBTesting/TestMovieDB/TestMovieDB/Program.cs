@@ -47,7 +47,7 @@ namespace TestMovieDB
 
             Console.WriteLine("Movie Studio: {0} (ID {1})", movie.ProductionCompanies[0].Name, movie.ProductionCompanies[0].Id);
 
-            Console.WriteLine("Director: {0} (ID {1}", movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name, movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Id);
+            Console.WriteLine("Director: {0} (ID {1})", movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name, movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Id);
 
             Console.WriteLine("List of Genres:");
             foreach (var g in movie.Genres)

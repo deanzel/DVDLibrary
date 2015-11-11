@@ -7,16 +7,16 @@ go
 use DVDLibrary
 go
 
-create table Categories (
-	CategoryID int identity(1,1) primary key,
-	Name nvarchar(50) not null
+create table Genres (
+	GenreID int identity(1,1) primary key,
+	GenreName nvarchar(50) not null
 )
 go
 
 create table Movies (
 	MovieID int identity(1,1) primary key,
-	CategoryID int foreign key references Categories(CategoryID),
-	Title nvarchar(50) not null,
+	GenreID int foreign key references Genres(GenreID),
+	MovieTitle nvarchar(50) not null,
 	MovieTMDBNum int, 
 	Rating nvarchar(10),
 	ReleaseDate date not null,
