@@ -11,6 +11,7 @@ namespace DVDLibrary.Models
         public int UserRatingId { get; set; }
         public int MovieId { get; set; }
         public int BorrowerId { get; set; }
+        public string BorrowerName { get; set; }
         public int Rating { get; set; }
     }
 }
