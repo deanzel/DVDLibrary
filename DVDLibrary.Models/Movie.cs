@@ -15,11 +15,11 @@ namespace DVDLibrary.Models
         public DateTime ReleaseDate { get; set; }
         public string Synopsis { get; set; }
         public int Duration { get; set; }
-        public int DirectorId { get; set; }
-        public int StudioId { get; set; }
         public string PosterUrl { get; set; }
 
         public List<Genre> Genres { get; set; }
+        public Director Director { get; set; }
+        public Studio Studio { get; set; }
         public List<Actor> MovieActors { get; set; }
         public List<string> MovieAliases { get; set; }
 
@@ -29,6 +29,8 @@ namespace DVDLibrary.Models
         public Movie()
         {
             Genres = new List<Genre>();
+            Director = new Director();
+            Studio = new Studio();
             MovieActors = new List<Actor>();
             MovieAliases = new List<string>();
             UserRatings = new List<UserRating>();
