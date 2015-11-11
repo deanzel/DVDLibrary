@@ -28,65 +28,47 @@ namespace TestMovieDB
 
             //Console.WriteLine(result);
 
-            Movie movie = client.GetMovie(11, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images);
+            Movie movie = client.GetMovie(11, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases);
 
-            Console.WriteLine("Movie title: {0}", movie.Title);
 
+            Console.WriteLine("Movie Name: {0}", movie.Title);
+
+            Console.WriteLine("Movie TMDBNum: {0}", movie.Id);
+
+            Console.WriteLine("MPAA Rating: {0}", movie.Releases.Countries.FirstOrDefault(m => m.Iso_3166_1 == "US").Certification);
+
+            Console.WriteLine("Release Date: {0}", movie.ReleaseDate);
+
+            Console.WriteLine("Synopsis: {0}", movie.Overview);
+
+            Console.WriteLine("Duration: {0} mins", movie.Runtime);
+
+            Console.WriteLine("PosterUrl: {0}", "https://imagetmdb.org/t/p/original/" + movie.Images.Posters[0].FilePath);
+
+            Console.WriteLine("Movie Studio: {0} (ID {1})", movie.ProductionCompanies[0].Name, movie.ProductionCompanies[0].Id);
+
+            Console.WriteLine("Director: {0} (ID {1}", movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name, movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Id);
+       
             Console.WriteLine();
 
-            Console.WriteLine(movie.ReleaseDate);
+            Console.WriteLine("List of First 15 Actors!!");
 
-            Console.WriteLine(movie.ProductionCompanies);
-
-            Console.WriteLine(movie.Overview);
-
-            Console.WriteLine();
-
-           
-
-            Console.WriteLine();
-
-            var images = movie.Images.Posters;
-
-            Console.WriteLine();
-
-            Console.WriteLine("https://image.tmdb.org/t/p/original/" + images[0].FilePath);
-
-            foreach (var c in movie.ProductionCompanies)
+            for (int i = 0; i < 15; i++)
             {
-                Console.WriteLine("{0} - {1} ", c.Name, c.Id);
+                Console.WriteLine("{0} - plays {1} - (ID {2})", movie.Credits.Cast[i].Name, movie.Credits.Cast[i].Character, movie.Credits.Cast[i].Id);
             }
 
-            //foreach (var i in images)
-            //{
-            //    Console.WriteLine("https://image.tmdb.org/t/p/original/" + i.FilePath);
-            //}
+            Console.WriteLine();
 
-            var director = movie.Credits.Crew.Where(d => d.Job == "Director").Select(d => d);
-
-            foreach (var d in director)
+            Console.WriteLine("List of Alternate US Titles");
+            foreach (var t in movie.AlternativeTitles.Titles)
             {
-                Console.WriteLine("The {0} is {1}", d.Job, d.Name);
+                if (t.Iso_3166_1 == "US")
+                {
+                    Console.WriteLine("{0} - {1}", t.Title, t.Iso_3166_1);
+                }
             }
             
-
-
-            //foreach (var crew in movie.Credits.Crew)
-            //{
-            //    Console.WriteLine("{0} - {1} - {2}", crew.Job, crew.Name, crew.Id);
-            //}
-
-            //foreach (var crew in movie.Credits.Cast)
-            //{
-            //    Console.WriteLine("{0} - {1} - {2}", crew.Name, crew.Character, crew.Id);
-            //}
-
-            //Console.WriteLine(movie.Credits.Crew);
-
-            //foreach (var title in movie.AlternativeTitles.Titles)
-            //{
-            //    Console.WriteLine("Alternate title: {0}", title.Title);
-            //}
         }
 
         public static void Search(string movieName)
