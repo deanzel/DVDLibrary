@@ -1,0 +1,24 @@
+﻿@using DVDLibrary.Models
+@model List<Movie>
+@{
+    ViewBag.Title = "ViewAllDvds";
+}
+
+<h2>View All Dvds</h2>
+
+@foreach (Movie movie in Model)
+{
+    <ul class="list-group">
+        @*<li class="list-group-item">
+            @movie.MovieId
+        </li>*@
+        <li class="list-group-item">
+            @movie.MovieTitle
+        </li>
+        @*<li class="list-group-item">
+            @movie.MpaaRating
+        </li>*@
+    </ul>
+}
+
+
