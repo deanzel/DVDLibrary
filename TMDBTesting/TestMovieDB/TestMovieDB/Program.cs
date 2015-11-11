@@ -22,14 +22,14 @@ namespace TestMovieDB
 
         public static void Execute()
         {
+            Console.Write("Please enter the movie ID (TMDB) that you want to look up (11 is Star Wars): ");
+            string input = Console.ReadLine();
+
             TMDbClient client = new TMDbClient("1fee8f2397ff73412985de2bb825f020");
 
-            //var result = client.SearchMovie("Star Wars");
+            Movie movie = client.GetMovie(input, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases);
 
-            //Console.WriteLine(result);
-
-            Movie movie = client.GetMovie(11, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases);
-
+            Console.Clear();
 
             Console.WriteLine("Movie Name: {0}", movie.Title);
 
