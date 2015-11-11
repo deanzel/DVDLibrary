@@ -49,9 +49,26 @@ namespace DVDLibrary.Data
                 movieInfo.Genres.Add(g.Name);
             }
 
-            //movieInfo.Director.
+            movieInfo.Director.DirectorName = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name;
+            movieInfo.Director.DirectorTMDBNum = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Id;
+            movieInfo.Studio.StudioName = movie.ProductionCompanies[0].Name;
+            movieInfo.Studio.StudioTMDBNum = movie.ProductionCompanies[0].Id;
 
+            foreach (var t in movie.AlternativeTitles.Titles)
+            {
+                if (t.Iso_3166_1 == "US")
+                {
+                    movieInfo.MovieAliases.Add(t.Title);
+                }
+            }
 
+            for (int i = 0; i < 15; i++)
+            {
+                Actor newActor = new Actor();
+                newActor.ActorName = movie.Credits.Cast[i].Name;
+                newActor.ActorTMDBNum = movie.Credits.Cast[i].Id;
+                movieInfo.MovieActors.Add(newActor);
+            }
 
             return movieInfo;
         }
