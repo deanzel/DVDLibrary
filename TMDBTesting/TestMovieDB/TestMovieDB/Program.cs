@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,10 +16,23 @@ namespace TestMovieDB
     {
         private static void Main(string[] args)
         {
-            Execute();
-            //Search("Star Wars");
+            //Execute();
+            Search("Star Wars");
 
             Console.ReadLine();
+        }
+
+        public static void SQLconnection()
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DVDLibrary"].ToString()))
+            {
+
+
+
+
+            }
+            ;
+
         }
 
         public static void Execute()
@@ -30,6 +45,7 @@ namespace TestMovieDB
             Movie movie = client.GetMovie(input, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases);
 
             Console.Clear();
+
 
             Console.WriteLine("Movie Name: {0}", movie.Title);
 
