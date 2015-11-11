@@ -17,7 +17,7 @@ namespace DVDLibrary.Models
         public int Duration { get; set; }
         public string PosterUrl { get; set; }
 
-        public List<Genre> Genres { get; set; }
+        public List<string> Genres { get; set; }
         public Director Director { get; set; }
         public Studio Studio { get; set; }
         public List<Actor> MovieActors { get; set; }
@@ -28,7 +28,7 @@ namespace DVDLibrary.Models
 
         public Movie()
         {
-            Genres = new List<Genre>();
+            Genres = new List<string>();
             Director = new Director();
             Studio = new Studio();
             MovieActors = new List<Actor>();
