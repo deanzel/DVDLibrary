@@ -17,23 +17,11 @@ namespace TestMovieDB
         private static void Main(string[] args)
         {
             //Execute();
-            Search("Star Wars");
+            Search();
 
             Console.ReadLine();
         }
 
-        public static void SQLconnection()
-        {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DVDLibrary"].ToString()))
-            {
-
-
-
-
-            }
-            ;
-
-        }
 
         public static void Execute()
         {
@@ -93,11 +81,17 @@ namespace TestMovieDB
             
         }
 
-        public static void Search(string movieName)
+        public static void Search()
         {
+            Console.Write("Please enter the name of the movie that you want to add: ");
+            string input = Console.ReadLine();
+
             TMDbClient client = new TMDbClient("1fee8f2397ff73412985de2bb825f020");
 
-            SearchContainer<SearchMovie> results = client.SearchMovie(movieName);
+            SearchContainer<SearchMovie> results = client.SearchMovie("\"" + input + "\"");
+
+            Console.WriteLine(results.Page);
+            Console.WriteLine(results.TotalPages);
 
             Console.WriteLine("Got {0} of {1} results", results.Results.Count, results.TotalResults);
             foreach (SearchMovie result in results.Results)
@@ -108,6 +102,9 @@ namespace TestMovieDB
                 Console.WriteLine(result.Overview);
                 Console.WriteLine();
             }
+
+            Console.WriteLine(results.TotalPages);
+
         }
 
     }
