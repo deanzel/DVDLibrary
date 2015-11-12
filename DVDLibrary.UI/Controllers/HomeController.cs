@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DVDLibrary.BLL;
 using DVDLibrary.Models;
 
 namespace DVDLibrary.UI.Controllers
 {
     public class HomeController : Controller
     {
+        private DVDLibaryOperations _rops;
+        
         // GET: Home
         public ActionResult Index()
         {
