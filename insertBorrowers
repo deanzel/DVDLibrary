@@ -1,0 +1,2 @@
+insert into Borrowers (FirstName, LastName, Email, StreetAddress, City, [state], Zipcode, Phone)
+values (
