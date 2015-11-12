@@ -12,12 +12,67 @@ namespace DVDLibrary.Data
     public class DVDLibraryRepo
     {
         private List<DVD> ListOfDVDs;
+        private List<Models.Movie> ListOfMovies;
 
         public DVDLibraryRepo()
         {
             ListOfDVDs = new List<DVD>();
+            ListOfMovies = new List<Models.Movie>();
+
+            InitializeMockDataRepo();
         }
 
+        //Initialize a mock list of DVDs and movies
+        public void InitializeMockDataRepo()
+        {
+            for (int i = 11; i < 50; i++)
+            {
+                DVD newDVD = new DVD();
+                newDVD.DVDId = i - 10;
+                newDVD.DVDType = "Blu-Ray";
+
+                newDVD.Movie = ReturnMovieInfoFromTMDB(i);
+                newDVD.Movie.MovieId = i - 10;
+
+                UserNote newUserNote = new UserNote()
+                {
+                    UserNoteId = i - 10,
+                    BorrowerId = 1,
+                    BorrowerName = "Dean Choi",
+                    MovieId = i - 10,
+                    Note = "Greatest. Movie. EVAR!!!!!",
+                    Owner = true
+                };
+                newDVD.Movie.UserNotes.Add(newUserNote);
+
+                UserRating newUserRating = new UserRating()
+                {
+                    BorrowerId = 1,
+                    BorrowerName = "Dean Choi",
+                    MovieId = i - 10,
+                    Rating = 9,
+                    UserRatingId = i - 10,
+                    Owner = true
+                };
+                newDVD.Movie.UserRatings.Add(newUserRating);
+
+                ListOfDVDs.Add(newDVD);
+                ListOfMovies.Add(newDVD.Movie);
+            }
+        }
+
+        //Return DVDList
+        public List<DVD> RetrieveDVDsList()
+        {
+            return ListOfDVDs;
+        }
+
+        //Return MoviesList
+        public List<Models.Movie> RetrieveMoviesList()
+        {
+            return ListOfMovies;
+        }
+        
         //Build ListOfDVDs list from SQL Database method
 
 
@@ -25,7 +80,7 @@ namespace DVDLibrary.Data
         //Need to create a parameterized stored query
         public void AddNewDVDToDBViaTMDB(DVD newDVD)
         {
-
+            
         }
 
         //Retrieve TMDB info with a TMDBNum
@@ -62,11 +117,12 @@ namespace DVDLibrary.Data
                 }
             }
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Actor newActor = new Actor();
                 newActor.ActorName = movie.Credits.Cast[i].Name;
                 newActor.ActorTMDBNum = movie.Credits.Cast[i].Id;
+                newActor.CharacterName = movie.Credits.Cast[i].Character;
                 movieInfo.MovieActors.Add(newActor);
             }
 
