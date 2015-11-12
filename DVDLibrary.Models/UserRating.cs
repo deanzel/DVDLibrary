@@ -13,5 +13,6 @@ namespace DVDLibrary.Models
         public int BorrowerId { get; set; }
         public string BorrowerName { get; set; }
         public int Rating { get; set; }
+        public bool Owner { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DVDLibrary.Models;
 using TMDbLib.Client;
+using TMDbLib.Objects.Movies;
 using Movie = TMDbLib.Objects.Movies.Movie;
 
 namespace DVDLibrary.Data
@@ -12,12 +13,67 @@ namespace DVDLibrary.Data
     public class DVDLibraryRepo
     {
         private List<DVD> ListOfDVDs;
+        private List<Models.Movie> ListOfMovies;
 
         public DVDLibraryRepo()
         {
             ListOfDVDs = new List<DVD>();
+            ListOfMovies = new List<Models.Movie>();
+
+            InitializeMockDataRepo();
         }
 
+        //Initialize a mock list of DVDs and movies
+        public void InitializeMockDataRepo()
+        {
+            for (int i = 11; i < 20; i++)
+            {
+                DVD newDVD = new DVD();
+                newDVD.DVDId = i - 10;
+                newDVD.DVDType = "Blu-Ray";
+
+                newDVD.Movie = ReturnMovieInfoFromTMDB(i);
+                newDVD.Movie.MovieId = i - 10;
+
+                UserNote newUserNote = new UserNote()
+                {
+                    UserNoteId = i - 10,
+                    BorrowerId = 1,
+                    BorrowerName = "Dean Choi",
+                    MovieId = i - 10,
+                    Note = "Greatest. Movie. EVAR!!!!!",
+                    Owner = true
+                };
+                newDVD.Movie.UserNotes.Add(newUserNote);
+
+                UserRating newUserRating = new UserRating()
+                {
+                    BorrowerId = 1,
+                    BorrowerName = "Dean Choi",
+                    MovieId = i - 10,
+                    Rating = 9,
+                    UserRatingId = i - 10,
+                    Owner = true
+                };
+                newDVD.Movie.UserRatings.Add(newUserRating);
+
+                ListOfDVDs.Add(newDVD);
+                ListOfMovies.Add(newDVD.Movie);
+            }
+        }
+
+        //Return DVDList
+        public List<DVD> RetrieveDVDsList()
+        {
+            return ListOfDVDs;
+        }
+
+        //Return MoviesList
+        public List<Models.Movie> RetrieveMoviesList()
+        {
+            return ListOfMovies;
+        }
+        
         //Build ListOfDVDs list from SQL Database method
 
 
@@ -25,7 +81,7 @@ namespace DVDLibrary.Data
         //Need to create a parameterized stored query
         public void AddNewDVDToDBViaTMDB(DVD newDVD)
         {
-
+            
         }
 
         //Retrieve TMDB info with a TMDBNum
@@ -33,7 +89,7 @@ namespace DVDLibrary.Data
         {
             TMDbClient client = new TMDbClient("1fee8f2397ff73412985de2bb825f020");
 
-            Movie movie = client.GetMovie(tmdbNum);
+            Movie movie = client.GetMovie(tmdbNum, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases);
 
             Models.Movie movieInfo = new Models.Movie();
             movieInfo.MovieTitle = movie.Title;
@@ -42,7 +98,7 @@ namespace DVDLibrary.Data
             movieInfo.ReleaseDate = movie.ReleaseDate.Value;
             movieInfo.Synopsis = movie.Overview;
             movieInfo.Duration = movie.Runtime.Value;
-            movieInfo.PosterUrl = "https://imagetmdb.org/t/p/original/" + movie.Images.Posters[0].FilePath;
+            movieInfo.PosterUrl = "https://imagetmdb.org/t/p/original" + movie.Images.Posters[0].FilePath;
 
             foreach (var g in movie.Genres)
             {
@@ -62,11 +118,12 @@ namespace DVDLibrary.Data
                 }
             }
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Actor newActor = new Actor();
                 newActor.ActorName = movie.Credits.Cast[i].Name;
                 newActor.ActorTMDBNum = movie.Credits.Cast[i].Id;
+                newActor.CharacterName = movie.Credits.Cast[i].Character;
                 movieInfo.MovieActors.Add(newActor);
             }
 
