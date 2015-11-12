@@ -1,12 +1,45 @@
-﻿@using DVDLibrary.Models
+﻿@using System.Activities.DurableInstancing
+@using DVDLibrary.Models
 @model Movie
 @{
     ViewBag.Title = "SelectDvd";
 }
 
+<br/>
+<p>@Html.ActionLink("Back to DVD Collection", "ViewAllDvds", "Home")</p>
+
 <h2>@Model.MovieTitle</h2>
-
-<li>@Model.MpaaRating</li>
-<li>@Model.Synopsis</li>
-<img src="@Model.PosterUrl" />
-
+<img src="@Model.PosterUrl" align="right">
+<div class ="table-striped">
+    <li>@Model.MpaaRating</li>
+    @foreach (var genre in @Model.Genres)
+    {
+        <li>Genre: @genre</li>
+    }
+    <li>Duration: @Model.Duration</li>
+    <li>Release Date: @Model.ReleaseDate.ToString("MM-dd-yyyy")</li>
+    <li>Director Name: @Model.Director.DirectorName</li>
+    <li>Studio: @Model.Studio.StudioName</li>
+    @foreach (var actor in @Model.MovieActors)
+    {
+        <li>@actor.CharacterName: @actor.ActorName</li>
+    }
+    <li>User Rating:
+    
+    @if (@Model.UserRatings.Where(r => r.Owner == true).FirstOrDefault() != null)
+    {
+      <span>@Model.UserRatings.Where(r => r.Owner == true).FirstOrDefault().Rating / 10 </span>
+    }
+    else
+    {
+       <span>You have not rated this movie.</span>
+    }</li>
+    
+        <li>Average User Rating (@Model.UserRatings.Count users): @Model.UserRatings.Average(r => r.Rating)</li>
+    
+    <li>@Model.Synopsis</li>
+    @foreach (var note in @Model.UserNotes)
+    {
+        <li>User Notes: @note.Note ~@note.BorrowerName</li>
+    }
+    </div>

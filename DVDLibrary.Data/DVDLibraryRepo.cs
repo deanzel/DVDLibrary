@@ -46,6 +46,17 @@ namespace DVDLibrary.Data
                 };
                 newDVD.Movie.UserNotes.Add(newUserNote);
 
+                UserNote newUserNote2 = new UserNote()
+                {
+                    UserNoteId = (i - 10) * 100,
+                    BorrowerId = 2,
+                    BorrowerName = "Chary Gurney",
+                    MovieId = i - 10,
+                    Note = "FAIL!!!!!",
+                    Owner = false
+                };
+                newDVD.Movie.UserNotes.Add(newUserNote2);
+
                 UserRating newUserRating = new UserRating()
                 {
                     BorrowerId = 1,
@@ -56,6 +67,17 @@ namespace DVDLibrary.Data
                     Owner = true
                 };
                 newDVD.Movie.UserRatings.Add(newUserRating);
+
+                UserRating newUserRating2 = new UserRating()
+                {
+                    BorrowerId = 2,
+                    BorrowerName = "Charey Gurney",
+                    MovieId = i - 10,
+                    Rating = 2,
+                    UserRatingId = (i - 10) * 100,
+                    Owner = false
+                };
+                newDVD.Movie.UserRatings.Add(newUserRating2);
 
                 ListOfDVDs.Add(newDVD);
                 ListOfMovies.Add(newDVD.Movie);
@@ -98,7 +120,7 @@ namespace DVDLibrary.Data
             movieInfo.ReleaseDate = movie.ReleaseDate.Value;
             movieInfo.Synopsis = movie.Overview;
             movieInfo.Duration = movie.Runtime.Value;
-            movieInfo.PosterUrl = "http://image.tmdb.org/t/p/original" + movie.Images.Posters[0].FilePath;
+            movieInfo.PosterUrl = "http://image.tmdb.org/t/p/w185" + movie.Images.Posters[0].FilePath;
 
             foreach (var g in movie.Genres)
             {
@@ -118,14 +140,29 @@ namespace DVDLibrary.Data
                 }
             }
 
-            for (int i = 0; i < 3; i++)
+            if (movie.Credits.Cast.Count() < 6)
             {
-                Actor newActor = new Actor();
-                newActor.ActorName = movie.Credits.Cast[i].Name;
-                newActor.ActorTMDBNum = movie.Credits.Cast[i].Id;
-                newActor.CharacterName = movie.Credits.Cast[i].Character;
-                movieInfo.MovieActors.Add(newActor);
+                foreach (var a in movie.Credits.Cast)
+                {
+                    Actor newActor = new Actor();
+                    newActor.ActorName = a.Name;
+                    newActor.ActorTMDBNum = a.Id;
+                    newActor.CharacterName = a.Character;
+                    movieInfo.MovieActors.Add(newActor);
+                }
             }
+            else
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    Actor newActor = new Actor();
+                    newActor.ActorName = movie.Credits.Cast[i].Name;
+                    newActor.ActorTMDBNum = movie.Credits.Cast[i].Id;
+                    newActor.CharacterName = movie.Credits.Cast[i].Character;
+                    movieInfo.MovieActors.Add(newActor);
+                }
+            }
+
 
             return movieInfo;
         }

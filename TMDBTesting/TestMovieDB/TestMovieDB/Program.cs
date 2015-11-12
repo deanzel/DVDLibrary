@@ -16,8 +16,8 @@ namespace TestMovieDB
     {
         private static void Main(string[] args)
         {
-            Execute();
-            //Search("Star Wars");
+            //Execute();
+            Search("Star Wars");
 
             Console.ReadLine();
         }
