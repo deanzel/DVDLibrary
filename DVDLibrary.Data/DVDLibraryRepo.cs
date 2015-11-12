@@ -167,5 +167,13 @@ namespace DVDLibrary.Data
             return movieInfo;
         }
 
+
+        public void DeleteDvd(int id)
+        {
+            RetrieveMoviesList();
+            RetrieveDVDsList();
+
+            
+        }
     }
 }
