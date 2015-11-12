@@ -5,8 +5,23 @@
 }
 
 <h2>@Model.MovieTitle</h2>
-
-<li>@Model.MpaaRating</li>
-<li>@Model.Synopsis</li>
-<img src="@Model.PosterUrl" />
-
+<img src="@Model.PosterUrl" align="right">
+<div class ="table-striped">
+    <li>@Model.MpaaRating</li>
+    @foreach (var genre in @Model.Genres)
+    {
+        <li>Genre: @genre</li>
+    }
+    <li>Duration: @Model.Duration</li>
+    <li>Release Date: @Model.ReleaseDate.ToString("MM-dd-yyyy")</li>
+    <li>Director Name: @Model.Director.DirectorName</li>
+    <li>Studio: @Model.Studio.StudioName</li>
+    @foreach (var actor in @Model.MovieActors)
+    {
+        <li>@actor.CharacterName: @actor.ActorName</li>
+    }
+    <li>@Model.MovieActors</li>
+    <li>@Model.UserRatings</li>
+    <li>@Model.Synopsis</li>
+    <li>@Model.UserNotes</li>
+    </div>
