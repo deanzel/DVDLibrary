@@ -16,8 +16,8 @@ namespace TestMovieDB
     {
         private static void Main(string[] args)
         {
-            //Execute();
-            Search("Star Wars");
+            Execute();
+            //Search("Star Wars");
 
             Console.ReadLine();
         }
@@ -59,7 +59,7 @@ namespace TestMovieDB
 
             Console.WriteLine("Duration: {0} mins", movie.Runtime);
 
-            Console.WriteLine("PosterUrl: {0}", "https://imagetmdb.org/t/p/original/" + movie.Images.Posters[0].FilePath);
+            Console.WriteLine("PosterUrl: {0}", "https://image.tmdb.org/t/p/original" + movie.Images.Posters[0].FilePath);
 
             Console.WriteLine("Movie Studio: {0} (ID {1})", movie.ProductionCompanies[0].Name, movie.ProductionCompanies[0].Id);
 

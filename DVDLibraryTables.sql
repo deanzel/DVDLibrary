@@ -81,7 +81,8 @@ create table UserRatings (
 	UserRatingID int identity(1,1) primary key,
 	BorrowerID int foreign key references Borrowers(BorrowerID) not null,
 	MovieID int foreign key references Movies(MovieID) not null,
-	Rating int not null
+	Rating int not null,
+	OwnerRating bit not null
 )
 go
 
@@ -89,7 +90,8 @@ create table UserNotes(
 	UserNote int identity(1,1) primary key,
 	BorrowerID int foreign key references Borrowers(BorrowerID) not null,
 	MovieID int foreign key references Movies(MovieID) not null,
-	Note nvarchar(500) not null
+	Note nvarchar(500) not null,
+	OwnerNote bit not null
 )
 go
 
@@ -100,20 +102,24 @@ create table MovieAliases (
 )
 go
 
-create table ActorsXMovies (
+create table ActorsMovies (
 	ActorID int foreign key references Actors(ActorID) not null,
-	MovieID int foreign key references Movies(MovieID) not null
+	MovieID int foreign key references Movies(MovieID) not null,
+	CharacterName nvarchar(50),
+	Constraint PK_ActorsMovies PRIMARY KEY(ActorID, MovieID)
 )
 go
 
-create table GenresXMovies (
+create table GenresMovies (
 	GenreID int foreign key references Genres(GenreID) not null,
-	MovieID int foreign key references Movies(MovieID) not null
+	MovieID int foreign key references Movies(MovieID) not null,
+	Constraint PK_GenresMovies PRIMARY KEY(GenreID, MovieID)
 )
 go
 
-create table BorrowerStatusesXDVDs (
+create table BorrowerStatusesDVDs (
 	BorrowerStatusID int foreign key references BorrowerStatuses(BorrowerStatusID) not null,
-	DVDID int foreign key references DVDs(DVDID) not null
+	DVDID int foreign key references DVDs(DVDID) not null,
+	Constraint PK_BorrowerStatusesDVDs PRIMARY KEY(BorrowerStatusID, DVDID)
 )
 go
