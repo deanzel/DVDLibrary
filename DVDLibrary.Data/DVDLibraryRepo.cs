@@ -98,7 +98,7 @@ namespace DVDLibrary.Data
             movieInfo.ReleaseDate = movie.ReleaseDate.Value;
             movieInfo.Synopsis = movie.Overview;
             movieInfo.Duration = movie.Runtime.Value;
-            movieInfo.PosterUrl = "https://imagetmdb.org/t/p/original/" + movie.Images.Posters[0].FilePath;
+            movieInfo.PosterUrl = "http://image.tmdb.org/t/p/original" + movie.Images.Posters[0].FilePath;
 
             foreach (var g in movie.Genres)
             {
