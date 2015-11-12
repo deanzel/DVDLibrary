@@ -46,6 +46,17 @@ namespace DVDLibrary.Data
                 };
                 newDVD.Movie.UserNotes.Add(newUserNote);
 
+                UserNote newUserNote2 = new UserNote()
+                {
+                    UserNoteId = (i - 10) * 100,
+                    BorrowerId = 2,
+                    BorrowerName = "Chary Gurney",
+                    MovieId = i - 10,
+                    Note = "FAIL!!!!!",
+                    Owner = false
+                };
+                newDVD.Movie.UserNotes.Add(newUserNote2);
+
                 UserRating newUserRating = new UserRating()
                 {
                     BorrowerId = 1,
@@ -56,6 +67,17 @@ namespace DVDLibrary.Data
                     Owner = true
                 };
                 newDVD.Movie.UserRatings.Add(newUserRating);
+
+                UserRating newUserRating2 = new UserRating()
+                {
+                    BorrowerId = 2,
+                    BorrowerName = "Charey Gurney",
+                    MovieId = i - 10,
+                    Rating = 9,
+                    UserRatingId = (i - 10) * 100,
+                    Owner = false
+                };
+                newDVD.Movie.UserRatings.Add(newUserRating2);
 
                 ListOfDVDs.Add(newDVD);
                 ListOfMovies.Add(newDVD.Movie);
