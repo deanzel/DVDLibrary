@@ -73,7 +73,7 @@ namespace DVDLibrary.Data
                     BorrowerId = 2,
                     BorrowerName = "Charey Gurney",
                     MovieId = i - 10,
-                    Rating = 9,
+                    Rating = 2,
                     UserRatingId = (i - 10) * 100,
                     Owner = false
                 };
