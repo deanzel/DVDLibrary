@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DVDLibrary.Models;
 using TMDbLib.Client;
+using TMDbLib.Objects.Movies;
 using Movie = TMDbLib.Objects.Movies.Movie;
 
 namespace DVDLibrary.Data
@@ -25,7 +26,7 @@ namespace DVDLibrary.Data
         //Initialize a mock list of DVDs and movies
         public void InitializeMockDataRepo()
         {
-            for (int i = 11; i < 50; i++)
+            for (int i = 11; i < 20; i++)
             {
                 DVD newDVD = new DVD();
                 newDVD.DVDId = i - 10;
@@ -88,7 +89,7 @@ namespace DVDLibrary.Data
         {
             TMDbClient client = new TMDbClient("1fee8f2397ff73412985de2bb825f020");
 
-            Movie movie = client.GetMovie(tmdbNum);
+            Movie movie = client.GetMovie(tmdbNum, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases);
 
             Models.Movie movieInfo = new Models.Movie();
             movieInfo.MovieTitle = movie.Title;
@@ -117,7 +118,7 @@ namespace DVDLibrary.Data
                 }
             }
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Actor newActor = new Actor();
                 newActor.ActorName = movie.Credits.Cast[i].Name;
