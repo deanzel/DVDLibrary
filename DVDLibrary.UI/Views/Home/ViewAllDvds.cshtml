@@ -6,6 +6,10 @@
 
 <h2>View All Dvds</h2>
 
+@*<button class="btn-primary">Add DVD</button>*@
+
+@Html.ActionLink("Add A DVD","AddDvd", "Home")
+
 @foreach (Movie movie in Model)
 {
     <ul class="list-group">

@@ -88,5 +88,10 @@ namespace DVDLibrary.UI.Controllers
 
             return View(result);
         }
+
+        public ActionLink AddDvd()
+        {
+            
+        }
     }
 }
