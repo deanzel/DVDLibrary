@@ -1,4 +1,5 @@
-﻿@using DVDLibrary.Models
+﻿@using System.Activities.DurableInstancing
+@using DVDLibrary.Models
 @model Movie
 @{
     ViewBag.Title = "SelectDvd";
@@ -20,8 +21,23 @@
     {
         <li>@actor.CharacterName: @actor.ActorName</li>
     }
-    <li>@Model.MovieActors</li>
-    <li>@Model.UserRatings</li>
+    <li>User Rating:
+    
+    @if (@Model.UserRatings.Where(r => r.Owner == true).FirstOrDefault() != null)
+    {
+      <span>@Model.UserRatings.Where(r => r.Owner == true).FirstOrDefault().Rating / 10 </span>
+    }
+    else
+    {
+       <span>You have not rated this movie.</span>
+    }</li>
+    @foreach (var rating in @Model.UserRatings)
+    {
+        <li>Average User Rating: @rating.Rating</li>
+    }
     <li>@Model.Synopsis</li>
-    <li>@Model.UserNotes</li>
+    @foreach (var note in @Model.UserNotes)
+    {
+        <li>User Notes: @note.Note ~@note.BorrowerName</li>
+    }
     </div>

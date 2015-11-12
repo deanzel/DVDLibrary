@@ -118,14 +118,29 @@ namespace DVDLibrary.Data
                 }
             }
 
-            for (int i = 0; i < 3; i++)
+            if (movie.Credits.Cast.Count() < 6)
             {
-                Actor newActor = new Actor();
-                newActor.ActorName = movie.Credits.Cast[i].Name;
-                newActor.ActorTMDBNum = movie.Credits.Cast[i].Id;
-                newActor.CharacterName = movie.Credits.Cast[i].Character;
-                movieInfo.MovieActors.Add(newActor);
+                foreach (var a in movie.Credits.Cast)
+                {
+                    Actor newActor = new Actor();
+                    newActor.ActorName = a.Name;
+                    newActor.ActorTMDBNum = a.Id;
+                    newActor.CharacterName = a.Character;
+                    movieInfo.MovieActors.Add(newActor);
+                }
             }
+            else
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    Actor newActor = new Actor();
+                    newActor.ActorName = movie.Credits.Cast[i].Name;
+                    newActor.ActorTMDBNum = movie.Credits.Cast[i].Id;
+                    newActor.CharacterName = movie.Credits.Cast[i].Character;
+                    movieInfo.MovieActors.Add(newActor);
+                }
+            }
+
 
             return movieInfo;
         }
