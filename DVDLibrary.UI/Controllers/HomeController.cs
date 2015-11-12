@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows.Forms;
 using DVDLibrary.BLL;
 using DVDLibrary.Models;
 
@@ -105,5 +106,18 @@ namespace DVDLibrary.UI.Controllers
         //{
             
         //}
+
+        [HttpPost]
+        public ActionResult DeleteDVD(int id)
+        {
+            _oops = new DVDLibaryOperations();
+            
+            var message = _oops.returnDelete(id);
+
+            MessageBox.Show(message);
+
+
+            return RedirectToAction("ViewAllDvds");
+        }
     }
 }

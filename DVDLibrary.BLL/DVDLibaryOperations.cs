@@ -16,7 +16,7 @@ namespace DVDLibrary.BLL
 
         public DVDLibaryOperations()
         {
-            _repo = new DVDLibraryRepo();
+            _repo = new DVDLibraryRepo();    
         }
 
         public List<DVD> ReturnDVDsList()
@@ -28,5 +28,11 @@ namespace DVDLibrary.BLL
         {
             return _repo.RetrieveMoviesList();
         }
+
+        public string returnDelete(int id)
+        {
+            return _repo.DeleteDVD(id);
+        }
+
     }
 }

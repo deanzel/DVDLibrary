@@ -47,8 +47,9 @@
 </div>
 
 <div>
-    @Html.BeginForm("DeleteDVD", "Home", FormMethod.Post) {
-    @Html.Hidden("id", @Model.MovieId)
-    <button class="btn btn-danger">Delete</button>
+    @using (Html.BeginForm("DeleteDVD", "Home", FormMethod.Post))
+    {
+        @Html.Hidden("id", @Model.MovieId)
+        <button class="btn btn-danger">Delete</button>
     }
 </div>
