@@ -5,12 +5,12 @@
     ViewBag.Title = "SelectDvd";
 }
 
-<br/>
+<br />
 <p>@Html.ActionLink("Back to DVD Collection", "ViewAllDvds", "Home")</p>
 
 <h2>@Model.MovieTitle</h2>
 <img src="@Model.PosterUrl" align="right">
-<div class ="table-striped">
+<div class="table-striped">
     <li>@Model.MpaaRating</li>
     @foreach (var genre in @Model.Genres)
     {
@@ -24,22 +24,31 @@
     {
         <li>@actor.CharacterName: @actor.ActorName</li>
     }
-    <li>User Rating:
-    
-    @if (@Model.UserRatings.Where(r => r.Owner == true).FirstOrDefault() != null)
-    {
-      <span>@Model.UserRatings.Where(r => r.Owner == true).FirstOrDefault().Rating / 10 </span>
-    }
-    else
-    {
-       <span>You have not rated this movie.</span>
-    }</li>
-    
-        <li>Average User Rating (@Model.UserRatings.Count users): @Model.UserRatings.Average(r => r.Rating)</li>
-    
+    <li>
+        User Rating:
+
+        @if (@Model.UserRatings.Where(r => r.Owner == true).FirstOrDefault() != null)
+        {
+            <span>@Model.UserRatings.Where(r => r.Owner == true).FirstOrDefault().Rating / 10 </span>
+        }
+        else
+        {
+            <span>You have not rated this movie.</span>
+        }
+    </li>
+
+    <li>Average User Rating (@Model.UserRatings.Count users): @Model.UserRatings.Average(r => r.Rating)</li>
+
     <li>@Model.Synopsis</li>
     @foreach (var note in @Model.UserNotes)
     {
         <li>User Notes: @note.Note ~@note.BorrowerName</li>
     }
-    </div>
+</div>
+
+<div>
+    @Html.BeginForm("DeleteDVD", "Home", FormMethod.Post) {
+    @Html.Hidden("id", @Model.MovieId)
+    <button class="btn btn-danger">Delete</button>
+    }
+</div>
