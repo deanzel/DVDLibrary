@@ -57,5 +57,22 @@ namespace DVDLibrary.UI.Controllers
 
             return RedirectToAction("ViewAllDvds");
         }
+
+        public ActionResult SearchForMovie()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SearchForMoviePost()
+        {
+            Movie movie = new Movie();
+            movie.MovieId = int.Parse(Request.Form["movieID"]);
+
+            _oops = new DVDLibaryOperations();
+            movie = _oops.returnMovie(movie.MovieId);
+
+            return View("SearchForMoviePost", movie);
+        }
     }
 }

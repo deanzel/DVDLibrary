@@ -34,5 +34,10 @@ namespace DVDLibrary.BLL
             return _repo.DeleteDVD(id);
         }
 
+        public Models.Movie returnMovie(int id)
+        {
+            return _repo.ReturnMovieInfoFromTMDB(id);
+        }
+
     }
 }
