@@ -142,6 +142,7 @@
     <Content Include="Views\Home\SearchForMoviePost.cshtml" />
     <Content Include="Views\AddMovie\Index.cshtml" />
     <Content Include="Views\AddMovie\SearchTMDBForMovies.cshtml" />
+    <Content Include="Views\Home\AddBorrower.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

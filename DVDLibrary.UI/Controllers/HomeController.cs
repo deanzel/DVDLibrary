@@ -12,7 +12,7 @@ namespace DVDLibrary.UI.Controllers
     public class HomeController : Controller
     {
         private DVDLibaryOperations _oops;
-        
+
         // GET: Home
         public ActionResult Index()
         {
@@ -42,14 +42,14 @@ namespace DVDLibrary.UI.Controllers
 
         //public ActionLink AddDvd()
         //{
-            
+
         //}
 
         [HttpPost]
         public ActionResult DeleteDVD(int id)
         {
             _oops = new DVDLibaryOperations();
-            
+
             var message = _oops.returnDelete(id);
 
             MessageBox.Show(message);
@@ -74,5 +74,10 @@ namespace DVDLibrary.UI.Controllers
 
             return View("SearchForMoviePost", movie);
         }
-    }
+
+        public ActionResult AddBorrower()
+        {
+            return View();
+        }
+}
 }
