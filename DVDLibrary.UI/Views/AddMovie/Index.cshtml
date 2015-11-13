@@ -1,0 +1,27 @@
+﻿@using DVDLibrary.UI.Models.Extensions
+
+@{
+    ViewBag.Title = "Add a New Movie to Your Collection";
+}
+
+<h2>Add a New Movie to Your Collection</h2>
+
+<div id="searchtmdbname">
+    <p>Please enter the name of the movie that you want to add to your collection.</p>
+    @using (Html.BeginForm("SearchTMDBForMovies", "AddMovie", null, FormMethod.Post, new {id = "searchForm"}))
+    {
+        <div class="form-group">
+            <p>Movie Search (TMDB): @Html.PlaceHolderTextBox("movieSearchString", "Enter your movie here...", "form-control")</p>
+            <button type="Submit" class="btn btn-primary">Search</button>
+        </div>
+    }
+</div>
+
+
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/app/jquery-validate-default.js"></script>
+    <script src="~/Scripts/app/tmdbsearchValidation.js"></script>
+}

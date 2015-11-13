@@ -23,7 +23,7 @@ namespace DVDLibrary.UI.Controllers
         {
             _oops = new DVDLibaryOperations();
 
-            var movies = _oops.ReturnMoviesList();
+            var movies = _oops.ReturnMoviesList().OrderBy(m => m.MovieTitle).ToList();
 
 
             return View(movies);
@@ -35,7 +35,7 @@ namespace DVDLibrary.UI.Controllers
 
             var movies = _oops.ReturnMoviesList();
 
-            var result = movies.Where(m => m.MovieId == id).First();
+            var result = movies.Where(m => m.MovieId == id).FirstOrDefault();
 
             return View(result);
         }

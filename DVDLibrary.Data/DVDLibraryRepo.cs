@@ -118,36 +118,66 @@ namespace DVDLibrary.Data
             Models.Movie movieInfo = new Models.Movie();
             movieInfo.MovieTitle = movie.Title;
             movieInfo.MovieTMDBNum = movie.Id;
-            movieInfo.MpaaRating = movie.Releases.Countries.FirstOrDefault(m => m.Iso_3166_1 == "US").Certification;
-            movieInfo.ReleaseDate = movie.ReleaseDate.Value;
-            movieInfo.Synopsis = movie.Overview;
-            movieInfo.Duration = movie.Runtime.Value;
-            movieInfo.PosterUrl = "http://image.tmdb.org/t/p/w185" + movie.Images.Posters[0].FilePath;
+            if (movie.Releases.Countries.FirstOrDefault(m => m.Iso_3166_1 == "US").Certification != null)
+            {
+                movieInfo.MpaaRating = movie.Releases.Countries.FirstOrDefault(m => m.Iso_3166_1 == "US").Certification;
+            }
+            if (movie.ReleaseDate != null)
+            {
+                movieInfo.ReleaseDate = movie.ReleaseDate.Value;
+            }
+            if (movie.Overview != null)
+            {
+                movieInfo.Synopsis = movie.Overview;
+            }
+            if (movie.Runtime != null)
+            {
+                movieInfo.Duration = movie.Runtime.Value;
+            }
+            if (movie.PosterPath != null)
+            {
+                movieInfo.PosterUrl = "http://image.tmdb.org/t/p/w185" + movie.PosterPath;
+            }
+            else
+            {
+                movieInfo.PosterUrl =
+                    "http://assets.tmdb.org/assets/7f29bd8b3370c71dd379b0e8b570887c/images/no-poster-w185-v2.png";
+            }
             if (movie.Videos.Results.Where(v => v.Type == "Trailer").FirstOrDefault() != null)
             {
                 movieInfo.YouTubeTrailer = "http://www.youtube.com/embed/" +
                                            movie.Videos.Results.Where(v => v.Type == "Trailer").FirstOrDefault().Key;
             }
-
-            foreach (var g in movie.Genres)
+            if (movie.Genres.Count != 0)
             {
-                movieInfo.Genres.Add(g.Name);
+                foreach (var g in movie.Genres)
+                {
+                    movieInfo.Genres.Add(g.Name);
+                }
+            }
+            if (movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name != null)
+            {
+                movieInfo.Director.DirectorName = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name;
+                movieInfo.Director.DirectorTMDBNum = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Id;
+            }
+            if (movie.ProductionCompanies.Count == 0)
+            {
+                movieInfo.Studio.StudioName = movie.ProductionCompanies[0].Name;
+                movieInfo.Studio.StudioTMDBNum = movie.ProductionCompanies[0].Id;
             }
 
-            movieInfo.Director.DirectorName = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name;
-            movieInfo.Director.DirectorTMDBNum = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Id;
-            movieInfo.Studio.StudioName = movie.ProductionCompanies[0].Name;
-            movieInfo.Studio.StudioTMDBNum = movie.ProductionCompanies[0].Id;
-
-            foreach (var t in movie.AlternativeTitles.Titles)
+            if (movie.AlternativeTitles.Titles.Count != 0)
             {
-                if (t.Iso_3166_1 == "US")
+                foreach (var t in movie.AlternativeTitles.Titles)
                 {
-                    movieInfo.MovieAliases.Add(t.Title);
+                    if (t.Iso_3166_1 == "US")
+                    {
+                        movieInfo.MovieAliases.Add(t.Title);
+                    }
                 }
             }
 
-            if (movie.Credits.Cast.Count() < 6)
+            if (movie.Credits.Cast.Count < 6 && movie.Credits.Cast.Count > 0)
             {
                 foreach (var a in movie.Credits.Cast)
                 {
@@ -182,26 +212,47 @@ namespace DVDLibrary.Data
         }
 
         //Search TMDB for movies to add depending on Search String
-        public List<SearchTMDBResult> ReturnTMDBSearchResults(string movieName)
+        public List<SearchTMDBResult> RetrieveTMDBSearchResults(string movieName)
         {
             List<SearchTMDBResult> listOfSearchTMDBResults = new List<SearchTMDBResult>();
 
             TMDbClient client = new TMDbClient("1fee8f2397ff73412985de2bb825f020");
 
-            SearchContainer<SearchMovie> results = client.SearchMovie("\"" + movieName + "\"");
+            SearchContainer<SearchMovie> initResults = client.SearchMovie("\"" + movieName + "\"");
 
-            foreach (SearchMovie r in results.Results)
+            
+            if (initResults.TotalPages >= 1)
             {
-                SearchTMDBResult newResult = new SearchTMDBResult
+                for (int i = 1; i < initResults.TotalPages + 1; i++)
                 {
-                    MovieTitle = r.Title,
-                    TMDBNum = r.Id,
-                    ReleaseDate = r.ReleaseDate.Value,
-                    Synopsis = r.Overview,
-                    PosterUrl = "http://image.tmdb.org/t/p/w185" + r.PosterPath
-                };
+                    SearchContainer<SearchMovie> results = client.SearchMovie("\"" + movieName + "\"", i);
 
-                listOfSearchTMDBResults.Add(newResult);
+                    foreach (SearchMovie r in results.Results)
+                    {
+                        SearchTMDBResult newResult = new SearchTMDBResult();
+                        newResult.MovieTitle = r.Title;
+                        newResult.TMDBNum = r.Id;
+                        if (r.ReleaseDate != null)
+                        {
+                            newResult.ReleaseDate = r.ReleaseDate.Value;
+                        }
+                        if (r.Overview != null)
+                        {
+                            newResult.Synopsis = r.Overview;
+                        }
+                        if (r.PosterPath != null)
+                        {
+                            newResult.PosterUrl = "http://image.tmdb.org/t/p/w185" + r.PosterPath;
+                        }
+                        else
+                        {
+                            newResult.PosterUrl =
+                                "http://assets.tmdb.org/assets/7f29bd8b3370c71dd379b0e8b570887c/images/no-poster-w185-v2.png";
+                        }
+
+                        listOfSearchTMDBResults.Add(newResult);
+                    }
+                }
             }
 
             return listOfSearchTMDBResults;

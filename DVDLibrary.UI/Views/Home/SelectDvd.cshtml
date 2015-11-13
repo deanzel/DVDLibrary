@@ -2,7 +2,7 @@
 @using DVDLibrary.Models
 @model Movie
 @{
-    ViewBag.Title = "SelectDvd";
+    ViewBag.Title = @Model.MovieTitle;
 }
 
 <br />
@@ -18,7 +18,7 @@
         <li>Genre: @genre</li>
     }
     <li>Duration: @Model.Duration</li>
-    <li>Release Date: @Model.ReleaseDate.ToString("MM-dd-yyyy")</li>
+    <li>Release Date: @Model.ReleaseDate.ToString("d")</li>
     <li>Director Name: @Model.Director.DirectorName</li>
     <li>Studio: @Model.Studio.StudioName</li>
     @foreach (var actor in @Model.MovieActors)

@@ -39,5 +39,11 @@ namespace DVDLibrary.BLL
             return _repo.ReturnMovieInfoFromTMDB(id);
         }
 
+        //Getting TMDB Search results depending on Movie name string
+        public List<SearchTMDBResult> ReturnTMDBSearchResults(string movieName)
+        {
+            return _repo.RetrieveTMDBSearchResults(movieName);
+        }
+
     }
 }
