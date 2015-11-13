@@ -10,7 +10,7 @@ namespace DVDLibrary.Models
     {
         public int MovieId { get; set; }
         public string MovieTitle { get; set; }
-        public int? MovieTMDBNum { get; set; }
+        public int MovieTMDBNum { get; set; }
         public string MpaaRating { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string Synopsis { get; set; }
