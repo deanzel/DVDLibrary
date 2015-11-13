@@ -28,5 +28,13 @@ namespace DVDLibrary.UI.Controllers
 
             return View(searchTMDBResultsVM);
         }
+
+        public ActionResult AddMovieByTMDBId(int id)
+        {
+            var newDVDVM = new AddDVDVM();
+            newDVDVM.Movie = _oops.returnMovie(id);
+
+            return View(newDVDVM);
+        }
     }
 }

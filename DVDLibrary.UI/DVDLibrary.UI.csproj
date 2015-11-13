@@ -128,6 +128,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AddDVDVM.cs" />
     <Compile Include="Models\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Models\SearchTMDBResultsVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -146,6 +147,7 @@
     <Content Include="Views\AddMovie\Index.cshtml" />
     <Content Include="Views\AddMovie\SearchTMDBForMovies.cshtml" />
     <Content Include="Views\Home\AddBorrower.cshtml" />
+    <Content Include="Views\AddMovie\AddMovieByTMDBId.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
