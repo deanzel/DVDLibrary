@@ -105,12 +105,15 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\app\jquery-validate-default.js" />
+    <Content Include="Scripts\app\mySearch.js" />
     <Content Include="Scripts\app\tmdbsearchValidation.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.hideseek.js" />
+    <Content Include="Scripts\jquery.hideseek.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -142,6 +145,8 @@
     <Content Include="Views\Home\SearchForMoviePost.cshtml" />
     <Content Include="Views\AddMovie\Index.cshtml" />
     <Content Include="Views\AddMovie\SearchTMDBForMovies.cshtml" />
+    <Content Include="Views\Home\AddBorrower.cshtml" />
+    <Content Include="Views\Home\AddBorrowerPost.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
