@@ -91,9 +91,16 @@ namespace DVDLibrary.UI.Controllers
             borrower.Email = Request.Form["email"];
             borrower.Phone = Request.Form["phone"];
 
-
-
             return View("AddBorrowerPost", borrower);
         }
-}
+
+        [HttpPost]
+        public ActionResult BorrowDvdPost(ViewMovieVM newBorrowerSelection)
+        {
+            ViewMovieVM vm = new ViewMovieVM();
+
+            vm.borrower = newBorrowerSelection.borrower;
+            return View("BorrowDvdPost", vm);
+        }
+    }
 }

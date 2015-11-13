@@ -7,12 +7,6 @@
 <br />
 <p>@Html.ActionLink("Back to DVD Collection", "ViewAllDvds", "Home")</p>
 
-@using (Html.BeginForm("BorrowDvdPost", "Home", FormMethod.Post))
-{
-    @Html.Hidden("id", Model.Movie.MovieId)
-    <button type="submit" class="btn btn-primary">Borrow DVD</button>
-}
-
 
 <h2>@Model.Movie.MovieTitle</h2>
 <img src="@Model.Movie.PosterUrl" align="right">
@@ -52,7 +46,12 @@
             <li>User Notes: @note.Note ~@note.BorrowerName</li>
         }
     </ul>
-    <p>Borrowers: @Html.DropDownListFor(b => b.borrower, Model.borrowers)</p>
+    @using (Html.BeginForm("BorrowDvdPost", "Home", FormMethod.Post))
+    {
+        <p>Borrowers: @Html.DropDownListFor(b => b.borrower.FirstName, Model.borrowers)</p>
+        <button type="submit" class="btn btn-primary">Select Borrower</button>
+    }
+    
 </div>
 <br />
 <div id="trailer">
