@@ -16,24 +16,12 @@ namespace TestMovieDB
     {
         private static void Main(string[] args)
         {
-            //Execute();
-            Search("Star Wars");
+            Execute();
+            //Search();
 
             Console.ReadLine();
         }
 
-        public static void SQLconnection()
-        {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DVDLibrary"].ToString()))
-            {
-
-
-
-
-            }
-            ;
-
-        }
 
         public static void Execute()
         {
@@ -42,7 +30,7 @@ namespace TestMovieDB
 
             TMDbClient client = new TMDbClient("1fee8f2397ff73412985de2bb825f020");
 
-            Movie movie = client.GetMovie(input, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases);
+            Movie movie = client.GetMovie(input, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases | MovieMethods.Videos);
 
             Console.Clear();
 
@@ -59,7 +47,7 @@ namespace TestMovieDB
 
             Console.WriteLine("Duration: {0} mins", movie.Runtime);
 
-            Console.WriteLine("PosterUrl: {0}", "https://image.tmdb.org/t/p/original" + movie.Images.Posters[0].FilePath);
+            Console.WriteLine("PosterUrl: {0}", "https://image.tmdb.org/t/p/original" + movie.PosterPath);
 
             Console.WriteLine("Movie Studio: {0} (ID {1})", movie.ProductionCompanies[0].Name, movie.ProductionCompanies[0].Id);
 
@@ -69,6 +57,20 @@ namespace TestMovieDB
             foreach (var g in movie.Genres)
             {
                 Console.WriteLine("{0} - {1}", g.Name, g.Id);
+            }
+
+            Console.WriteLine("Youtube trailer");
+            Console.WriteLine(movie.Video);
+            foreach (var t in movie.Videos.Results)
+            {
+                Console.WriteLine("Site: {0}", t.Site);
+                Console.WriteLine("ID: {0}", t.Id);
+                Console.WriteLine("Iso_639_1: {0}", t.Iso_639_1);
+                Console.WriteLine("Key: {0}", t.Key);
+                Console.WriteLine("Name: {0}", t.Name);
+                Console.WriteLine("Size: {0}", t.Size);
+                Console.WriteLine("Type: {0}", t.Type);
+                Console.WriteLine();
             }
 
             Console.WriteLine();
@@ -93,11 +95,19 @@ namespace TestMovieDB
             
         }
 
-        public static void Search(string movieName)
+        public static void Search()
         {
+            Console.Write("Please enter the name of the movie that you want to add: ");
+            string input = Console.ReadLine();
+
             TMDbClient client = new TMDbClient("1fee8f2397ff73412985de2bb825f020");
 
-            SearchContainer<SearchMovie> results = client.SearchMovie(movieName);
+            SearchContainer<SearchMovie> results = client.SearchMovie("\"" + input + "\"");
+
+            Console.WriteLine("Page: {0}", results.Page);
+            Console.WriteLine("Total Pages: {0}", results.TotalPages);
+
+            Console.WriteLine();
 
             Console.WriteLine("Got {0} of {1} results", results.Results.Count, results.TotalResults);
             foreach (SearchMovie result in results.Results)
@@ -106,8 +116,13 @@ namespace TestMovieDB
                 Console.WriteLine(result.Id);
                 Console.WriteLine(result.ReleaseDate);
                 Console.WriteLine(result.Overview);
+                Console.WriteLine(result.PosterPath);
+                Console.WriteLine(result.GenreIds[0]);
                 Console.WriteLine();
             }
+
+            Console.WriteLine(results.TotalPages);
+
         }
 
     }

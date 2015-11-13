@@ -52,12 +52,13 @@ create table Movies (
 	DirectorID int foreign key references Directors(DirectorID),
 	StudioID int foreign key references Studios(StudioID),
 	MovieTitle nvarchar(50) not null,
-	MovieTMDBNum int, 
+	MovieTMDBNum int not null, 
 	Rating nvarchar(10),
 	ReleaseDate date not null,
 	DurationInMin int not null,
 	Synopsis nvarchar(500) not null,
-	PosterUrl nvarchar(200)
+	PosterUrl nvarchar(200),
+	YouTubeTrailer nvarchar(200)
 )
 go
 

@@ -1,0 +1,69 @@
+﻿@model DVDLibrary.UI.Models.SearchTMDBResultsVM
+
+@{
+    ViewBag.Title = "Add a New Movie - TMDB Search Results";
+}
+
+<h2>Add a New Movie - TMDB Search Results for @Model.SearchParameter</h2>
+
+<div id="searchtmdbname">
+    <p>Please enter the name of the movie that you want to add to your collection.</p>
+    @using (Html.BeginForm("SearchTMDBForMovies", "AddMovie", null, FormMethod.Post, new { id = "searchForm" }))
+    {
+        <div class="form-group">
+            <p>Movie Search (TMDB): @Html.TextBox("movieSearchString", @Model.SearchParameter)
+            <button type="Submit" class="btn btn-primary">Search</button></p>
+        </div>
+    }
+
+</div>
+
+@if (@Model.ListOfTMDBResults.Count == 0)
+{
+    <div>
+        <p>Your search returned no matches. Please try a different name or combination.</p>
+    </div>
+}
+else
+{
+    <div>
+        <p>You have @Model.ListOfTMDBResults.Count matches for "@Model.SearchParameter".</p>
+    </div>
+
+    <br/>
+
+    <div id="resultsTable">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <td>Poster</td>
+                <td>Info</td>
+                <td>Action</td>
+            </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model.ListOfTMDBResults)
+                {
+                    <tr>
+                        <td><img src="@r.PosterUrl"></td>
+                        <td>
+                            <h3><b>@r.MovieTitle</b></h3>
+                            <p>@r.ReleaseDate.ToString("d")</p>
+                            <br/>
+                            <p>@r.Synopsis</p>
+                        </td>
+                        <td>@Html.ActionLink("Add Movie", "AddSpecificMovieID", "AddMovie", new { @r.TMDBNum }, new { @class = "btn btn-primary" })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@section Scripts
+{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/app/jquery-validate-default.js"></script>
+    <script src="~/Scripts/app/tmdbsearchValidation.js"></script>
+}
