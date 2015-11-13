@@ -102,10 +102,12 @@ namespace DVDLibrary.Data
 
 
         //Add New DVD to SQL Database that is a new Movie
+        
+            
         //Need to create a parameterized stored query
         public void AddNewDVDToDBViaTMDB(DVD newDVD)
         {
-            
+            //PATTY YOU'RE PROGRAMMING THIS
         }
 
         //Retrieve TMDB info with a TMDBNum
