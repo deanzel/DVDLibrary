@@ -15,6 +15,7 @@ go
 
 create table Borrowers (
 	BorrowerID int identity(1,1) primary key,
+	IsOwner  bit not null,
 	FirstName nvarchar(50) not null,
 	LastName nvarchar(50) not null,
 	Email nvarchar(100) not null,
