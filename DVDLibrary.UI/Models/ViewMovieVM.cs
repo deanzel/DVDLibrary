@@ -36,7 +36,7 @@ namespace DVDLibrary.UI.Models
                 SelectListItem newItem = new SelectListItem();
 
                 newItem.Text = borrower.FirstName + " " + borrower.LastName;
-                newItem.Value = borrower.FirstName + borrower.LastName;
+                newItem.Value = borrower.FirstName + " " + borrower.LastName;
 
                 borrowers.Add(newItem);
             }
