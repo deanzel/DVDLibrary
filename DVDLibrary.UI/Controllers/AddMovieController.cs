@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DVDLibrary.BLL;
+using DVDLibrary.Models;
 using DVDLibrary.UI.Models;
 
 namespace DVDLibrary.UI.Controllers
@@ -27,6 +28,34 @@ namespace DVDLibrary.UI.Controllers
             searchTMDBResultsVM.ListOfTMDBResults = _oops.ReturnTMDBSearchResults(movieSearchString);
 
             return View(searchTMDBResultsVM);
+        }
+
+        public ActionResult AddMovieByTMDBId(int id)
+        {
+            var newDVDVM = new AddDVDVM();
+            newDVDVM.Movie = _oops.returnMovie(id);
+
+            return View(newDVDVM);
+        }
+
+        public ActionResult GivePattyData()
+        {
+            var newDVDVM = new AddDVDVM();
+            newDVDVM.Movie = _oops.returnMovie(11);
+            newDVDVM.Quantity = 1;
+            newDVDVM.DVDType = "Blu-ray";
+
+
+            for (int i = 0; i < newDVDVM.Quantity; i++)
+            {
+                var newDVD = new DVD();
+                newDVD.Movie = newDVDVM.Movie;
+                newDVD.DVDType = newDVDVM.DVDType;
+
+                _oops.AddMovieToDB(newDVD);
+            }
+
+            return View(newDVDVM);
         }
     }
 }

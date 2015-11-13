@@ -39,6 +39,13 @@ namespace DVDLibrary.BLL
             return _repo.ReturnMovieInfoFromTMDB(id);
         }
 
+        //Add movie to SQL Database (for Patty)
+        public void AddMovieToDB(DVD addDVDInfo)
+        {
+            _repo.AddNewDVDToDBViaTMDB(addDVDInfo);
+        }
+        
+        
         //Getting TMDB Search results depending on Movie name string
         public List<SearchTMDBResult> ReturnTMDBSearchResults(string movieName)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace DVDLibrary.Models
         public int MovieId { get; set; }
         public int BorrowerId { get; set; }
         public string BorrowerName { get; set; }
+        [Range(1, 11, ErrorMessage = "Please enter a rating between 1-10.")]
         public int Rating { get; set; }
         public bool Owner { get; set; }
     }
