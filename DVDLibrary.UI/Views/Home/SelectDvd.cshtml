@@ -11,7 +11,8 @@
 <h2>@Model.MovieTitle</h2>
 <img src="@Model.PosterUrl" align="right">
 <div class="table-striped">
-    <li>@Model.MpaaRating</li>
+    <ul>
+        <li>@Model.MpaaRating</li>
     @foreach (var genre in @Model.Genres)
     {
         <li>Genre: @genre</li>
@@ -44,6 +45,7 @@
     {
         <li>User Notes: @note.Note ~@note.BorrowerName</li>
     }
+        </ul>
 </div>
 <br/>
 <div id="trailer">
