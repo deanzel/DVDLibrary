@@ -11,12 +11,14 @@ namespace DVDLibrary.Models
         public int DVDId { get; set; }
         public string DVDType { get; set; }
         public Movie Movie { get; set; }
+        //public int MovieID { get; set; }
+        //public string MovieTitle { get; set; }
         public List<Status> Statuses { get; set; } 
 
         public DVD()
         {
-            Movie = new Movie();
             Statuses = new List<Status>();
+            Movie = new Movie();
         }
     }
 }
