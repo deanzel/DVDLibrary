@@ -112,6 +112,11 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -133,6 +138,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\ViewAllDvds.cshtml" />
     <Content Include="Views\Home\SelectDvd.cshtml" />
+    <Content Include="Views\Home\SearchForMovie.cshtml" />
+    <Content Include="Views\Home\SearchForMoviePost.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
