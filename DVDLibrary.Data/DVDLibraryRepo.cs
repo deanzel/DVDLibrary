@@ -111,7 +111,7 @@ namespace DVDLibrary.Data
         {
             TMDbClient client = new TMDbClient("1fee8f2397ff73412985de2bb825f020");
 
-            Movie movie = client.GetMovie(tmdbNum, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases);
+            Movie movie = client.GetMovie(tmdbNum, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases | MovieMethods.Videos);
 
             Models.Movie movieInfo = new Models.Movie();
             movieInfo.MovieTitle = movie.Title;
@@ -121,6 +121,11 @@ namespace DVDLibrary.Data
             movieInfo.Synopsis = movie.Overview;
             movieInfo.Duration = movie.Runtime.Value;
             movieInfo.PosterUrl = "http://image.tmdb.org/t/p/w185" + movie.Images.Posters[0].FilePath;
+            if (movie.Videos.Results.Where(v => v.Type == "Trailer").FirstOrDefault() != null)
+            {
+                movieInfo.YouTubeTrailer = "http://www.youtube.com/embed/" +
+                                           movie.Videos.Results.Where(v => v.Type == "Trailer").FirstOrDefault().Key;
+            }
 
             foreach (var g in movie.Genres)
             {
