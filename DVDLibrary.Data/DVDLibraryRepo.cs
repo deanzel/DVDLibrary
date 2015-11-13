@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DVDLibrary.Models;
 using TMDbLib.Client;
+using TMDbLib.Objects.General;
 using TMDbLib.Objects.Movies;
+using TMDbLib.Objects.Search;
 using Movie = TMDbLib.Objects.Movies.Movie;
 
 namespace DVDLibrary.Data
@@ -177,6 +179,32 @@ namespace DVDLibrary.Data
         {
             return "Your movie has been deleted from the DVD collection";
 
+        }
+
+        //Search TMDB for movies to add depending on Search String
+        public List<SearchTMDBResult> ReturnTMDBSearchResults(string movieName)
+        {
+            List<SearchTMDBResult> listOfSearchTMDBResults = new List<SearchTMDBResult>();
+
+            TMDbClient client = new TMDbClient("1fee8f2397ff73412985de2bb825f020");
+
+            SearchContainer<SearchMovie> results = client.SearchMovie("\"" + movieName + "\"");
+
+            foreach (SearchMovie r in results.Results)
+            {
+                SearchTMDBResult newResult = new SearchTMDBResult
+                {
+                    MovieTitle = r.Title,
+                    TMDBNum = r.Id,
+                    ReleaseDate = r.ReleaseDate.Value,
+                    Synopsis = r.Overview,
+                    PosterUrl = "http://image.tmdb.org/t/p/w185" + r.PosterPath
+                };
+
+                listOfSearchTMDBResults.Add(newResult);
+            }
+
+            return listOfSearchTMDBResults;
         }
     }
 }

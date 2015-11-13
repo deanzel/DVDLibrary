@@ -16,8 +16,8 @@ namespace TestMovieDB
     {
         private static void Main(string[] args)
         {
-            Execute();
-            //Search();
+            //Execute();
+            Search();
 
             Console.ReadLine();
         }
@@ -104,8 +104,10 @@ namespace TestMovieDB
 
             SearchContainer<SearchMovie> results = client.SearchMovie("\"" + input + "\"");
 
-            Console.WriteLine(results.Page);
-            Console.WriteLine(results.TotalPages);
+            Console.WriteLine("Page: {0}", results.Page);
+            Console.WriteLine("Total Pages: {0}", results.TotalPages);
+
+            Console.WriteLine();
 
             Console.WriteLine("Got {0} of {1} results", results.Results.Count, results.TotalResults);
             foreach (SearchMovie result in results.Results)
@@ -114,6 +116,8 @@ namespace TestMovieDB
                 Console.WriteLine(result.Id);
                 Console.WriteLine(result.ReleaseDate);
                 Console.WriteLine(result.Overview);
+                Console.WriteLine(result.PosterPath);
+                Console.WriteLine(result.GenreIds[0]);
                 Console.WriteLine();
             }
 
