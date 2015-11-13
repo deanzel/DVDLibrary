@@ -18,6 +18,7 @@ namespace DVDLibrary.UI.Models
         public string DVDType { get; set; }
 
         public List<SelectListItem> DVDTypesList { get; set; }
+        public List<SelectListItem> RatingsList { get; set; } 
 
         public AddDVDVM()
         {
@@ -63,6 +64,39 @@ namespace DVDLibrary.UI.Models
                 {
                     Text = "Other",
                     Value = "Other"
+                }
+            };
+            RatingsList = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Text = "G",
+                    Value = "G"
+                },
+                new SelectListItem()
+                {
+                    Text = "PG",
+                    Value = "PG"
+                },
+                new SelectListItem()
+                {
+                    Text = "PG-13",
+                    Value = "PG-13"
+                },
+                new SelectListItem()
+                {
+                    Text = "R",
+                    Value = "R"
+                },
+                new SelectListItem()
+                {
+                    Text = "NC-17",
+                    Value = "NC-17"
+                },
+                new SelectListItem()
+                {
+                    Text = "NR",
+                    Value = "NR"
                 }
             };
         }
