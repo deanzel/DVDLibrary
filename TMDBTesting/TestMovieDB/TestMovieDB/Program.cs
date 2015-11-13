@@ -16,8 +16,8 @@ namespace TestMovieDB
     {
         private static void Main(string[] args)
         {
-            //Execute();
-            Search();
+            Execute();
+            //Search();
 
             Console.ReadLine();
         }
@@ -30,7 +30,7 @@ namespace TestMovieDB
 
             TMDbClient client = new TMDbClient("1fee8f2397ff73412985de2bb825f020");
 
-            Movie movie = client.GetMovie(input, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases);
+            Movie movie = client.GetMovie(input, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases | MovieMethods.Videos);
 
             Console.Clear();
 
@@ -57,6 +57,20 @@ namespace TestMovieDB
             foreach (var g in movie.Genres)
             {
                 Console.WriteLine("{0} - {1}", g.Name, g.Id);
+            }
+
+            Console.WriteLine("Youtube trailer");
+            Console.WriteLine(movie.Video);
+            foreach (var t in movie.Videos.Results)
+            {
+                Console.WriteLine("Site: {0}", t.Site);
+                Console.WriteLine("ID: {0}", t.Id);
+                Console.WriteLine("Iso_639_1: {0}", t.Iso_639_1);
+                Console.WriteLine("Key: {0}", t.Key);
+                Console.WriteLine("Name: {0}", t.Name);
+                Console.WriteLine("Size: {0}", t.Size);
+                Console.WriteLine("Type: {0}", t.Type);
+                Console.WriteLine();
             }
 
             Console.WriteLine();

@@ -16,6 +16,7 @@ namespace DVDLibrary.Models
         public string Synopsis { get; set; }
         public int Duration { get; set; }
         public string PosterUrl { get; set; }
+        public string YouTubeTrailer { get; set; }
 
         public List<string> Genres { get; set; }
         public Director Director { get; set; }
