@@ -57,7 +57,8 @@ create table Movies (
 	ReleaseDate date not null,
 	DurationInMin int not null,
 	Synopsis nvarchar(500) not null,
-	PosterUrl nvarchar(200)
+	PosterUrl nvarchar(200),
+	YouTubeTrailer nvarchar(200)
 )
 go
 
