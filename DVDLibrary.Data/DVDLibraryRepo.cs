@@ -41,6 +41,12 @@ namespace DVDLibrary.Data
                 newDVD.Movie = ReturnMovieInfoFromTMDB(i);
                 newDVD.Movie.MovieId = i - 10;
 
+                //**need to show status info:
+                //Status status = new Status();
+                //{
+                //    StatusId = i - 10;
+                //}
+
                 UserNote newUserNote = new UserNote()
                 {
                     UserNoteId = i - 10,

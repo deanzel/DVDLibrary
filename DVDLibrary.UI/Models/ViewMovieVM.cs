@@ -12,12 +12,14 @@ namespace DVDLibrary.UI.Models
         public Movie Movie { get; set; }
         public Borrower borrower { get; set; }
         public List<SelectListItem> borrowers { get; set; }
+        public Status status { get; set; }
 
         public ViewMovieVM()
         {
             Movie = new Movie();
             borrowers = new List<SelectListItem>();
             CreateBorrowerList();
+            status = new Status();
         }
 
         public void CreateBorrowerList()
