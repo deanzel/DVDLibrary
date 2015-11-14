@@ -100,7 +100,13 @@ namespace DVDLibrary.UI.Controllers
             ViewMovieVM vm = new ViewMovieVM();
 
             vm.borrower = newBorrowerSelection.borrower;
+
+            if (ModelState.IsValid)
             return View("BorrowDvdPost", vm);
+            else
+            {
+                return View("AddBorrower");
+            }
         }
     }
 }
