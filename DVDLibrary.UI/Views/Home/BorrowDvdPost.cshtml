@@ -1,0 +1,12 @@
+﻿@model DVDLibrary.UI.Models.ViewMovieVM
+
+@{
+    ViewBag.Title = "BorrowDvdPost";
+}
+
+<h2>DVD Successfully Borrowed!</h2>
+<h3>Borrower Information</h3>
+<p>Name: @Model.borrower.FirstName</p>
+<p>Email: @Model.borrower.Email</p>
+<p>Phone: @Model.borrower.Phone</p>
+<p>@DateTime.Now.ToString("yy-MM-dd")</p>

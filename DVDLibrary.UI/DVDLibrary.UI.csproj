@@ -132,9 +132,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BorrowerToAddVM.cs" />
     <Compile Include="Models\AddDVDVM.cs" />
     <Compile Include="Models\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Models\SearchTMDBResultsVM.cs" />
+    <Compile Include="Models\ViewMovieVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -145,7 +147,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\ViewAllDvds.cshtml" />
-    <Content Include="Views\Home\SelectDvd.cshtml" />
     <Content Include="Views\Home\SearchForMovie.cshtml" />
     <Content Include="Views\Home\SearchForMoviePost.cshtml" />
     <Content Include="Views\AddMovie\Index.cshtml" />
@@ -153,7 +154,9 @@
     <Content Include="Views\Home\AddBorrower.cshtml" />
     <Content Include="Views\AddMovie\AddMovieByTMDBId.cshtml" />
     <Content Include="Views\Home\AddBorrowerPost.cshtml" />
+    <Content Include="Views\Home\SelectDvd.cshtml" />
     <Content Include="Views\AddMovie\GivePattyData.cshtml" />
+    <Content Include="Views\Home\BorrowDvdPost.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

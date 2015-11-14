@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Windows.Forms;
 using DVDLibrary.BLL;
 using DVDLibrary.Models;
+using DVDLibrary.UI.Models;
 
 namespace DVDLibrary.UI.Controllers
 {
@@ -35,9 +36,10 @@ namespace DVDLibrary.UI.Controllers
 
             var movies = _oops.ReturnMoviesList();
 
-            var result = movies.Where(m => m.MovieId == id).FirstOrDefault();
+            var viewMovieVM = new ViewMovieVM();
 
-            return View(result);
+            viewMovieVM.Movie = movies.Where(m => m.MovieId == id).FirstOrDefault();
+            return View(viewMovieVM);
         }
 
         //public ActionLink AddDvd()
@@ -89,9 +91,16 @@ namespace DVDLibrary.UI.Controllers
             borrower.Email = Request.Form["email"];
             borrower.Phone = Request.Form["phone"];
 
-
-
             return View("AddBorrowerPost", borrower);
         }
-}
+
+        [HttpPost]
+        public ActionResult BorrowDvdPost(ViewMovieVM newBorrowerSelection)
+        {
+            ViewMovieVM vm = new ViewMovieVM();
+
+            vm.borrower = newBorrowerSelection.borrower;
+            return View("BorrowDvdPost", vm);
+        }
+    }
 }

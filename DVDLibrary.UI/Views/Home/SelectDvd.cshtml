@@ -1,71 +1,70 @@
-﻿@using System.Activities.DurableInstancing
-@using DVDLibrary.Models
-@model Movie
+﻿@model DVDLibrary.UI.Models.ViewMovieVM
+
 @{
-    ViewBag.Title = @Model.MovieTitle;
+    ViewBag.Title = @Model.Movie.MovieTitle;
 }
 
 <br />
 <p>@Html.ActionLink("Back to DVD Collection", "ViewAllDvds", "Home")</p>
 
-@using (Html.BeginForm("BorrowDvdPost", "Home", FormMethod.Post))
-{
-    @Html.Hidden("id", Model.MovieId)
-    <button type="submit" class="btn btn-primary">Borrow DVD</button>
-}
 
-
-<h2>@Model.MovieTitle</h2>
-<img src="@Model.PosterUrl" align="right">
+<h2>@Model.Movie.MovieTitle</h2>
+<img src="@Model.Movie.PosterUrl" align="right">
 <div class="table-striped">
     <ul>
-        <li>@Model.MpaaRating</li>
-    @foreach (var genre in @Model.Genres)
-    {
-        <li>Genre: @genre</li>
-    }
-    <li>Duration: @Model.Duration</li>
-    <li>Release Date: @Model.ReleaseDate.ToString("d")</li>
-    <li>Director Name: @Model.Director.DirectorName</li>
-    <li>Studio: @Model.Studio.StudioName</li>
-    @foreach (var actor in @Model.MovieActors)
-    {
-        <li>@actor.CharacterName: @actor.ActorName</li>
-    }
-    <li>
-        User Rating:
-
-        @if (@Model.UserRatings.Where(r => r.Owner == true).FirstOrDefault() != null)
+        <li>@Model.Movie.MpaaRating</li>
+        @foreach (var genre in @Model.Movie.Genres)
         {
-            <span>@Model.UserRatings.Where(r => r.Owner == true).FirstOrDefault().Rating / 10 </span>
+            <li>Genre: @genre</li>
         }
-        else
+        <li>Duration: @Model.Movie.Duration</li>
+        <li>Release Date: @Model.Movie.ReleaseDate.ToString("d")</li>
+        <li>Director Name: @Model.Movie.Director.DirectorName</li>
+        <li>Studio: @Model.Movie.Studio.StudioName</li>
+        @foreach (var actor in @Model.Movie.MovieActors)
         {
-            <span>You have not rated this movie.</span>
+            <li>@actor.CharacterName: @actor.ActorName</li>
         }
-    </li>
+        <li>
+            User Rating:
 
-    <li>Average User Rating (@Model.UserRatings.Count users): @Model.UserRatings.Average(r => r.Rating)</li>
+            @if (@Model.Movie.UserRatings.Where(r => r.Owner == true).FirstOrDefault() != null)
+            {
+                <span>@Model.Movie.UserRatings.Where(r => r.Owner == true).FirstOrDefault().Rating / 10 </span>
+            }
+            else
+            {
+                <span>You have not rated this movie.</span>
+            }
+        </li>
 
-    <li>@Model.Synopsis</li>
-    @foreach (var note in @Model.UserNotes)
+        <li>Average User Rating (@Model.Movie.UserRatings.Count users): @Model.Movie.UserRatings.Average(r => r.Rating)</li>
+
+        <li>@Model.Movie.Synopsis</li>
+        @foreach (var note in @Model.Movie.UserNotes)
+        {
+            <li>User Notes: @note.Note ~@note.BorrowerName</li>
+        }
+    </ul>
+    @using (Html.BeginForm("BorrowDvdPost", "Home", FormMethod.Post))
     {
-        <li>User Notes: @note.Note ~@note.BorrowerName</li>
+        <p>Borrowers: @Html.DropDownListFor(b => b.borrower.FirstName, Model.borrowers)</p>
+        <button type="submit" class="btn btn-primary">Select Borrower</button>
     }
-        </ul>
+    
 </div>
-<br/>
+<br />
 <div id="trailer">
-    @if (@Model.YouTubeTrailer != null)
+    @if (@Model.Movie.YouTubeTrailer != null)
     {
-        <iframe width="420" height="315" src="@Model.YouTubeTrailer"></iframe>
+        <iframe width="420" height="315" src="@Model.Movie.YouTubeTrailer"></iframe>
     }
 </div>
-<br/>
+<br />
 <div>
     @using (Html.BeginForm("DeleteDVD", "Home", FormMethod.Post))
     {
-        @Html.Hidden("id", @Model.MovieId)
+        @Html.Hidden("id", @Model.Movie.MovieId)
         <button class="btn btn-danger">Delete</button>
     }
 </div>
