@@ -21,16 +21,16 @@
         <li>Release Date: @Model.Movie.ReleaseDate.ToString("d")</li>
         <li>Director Name: @Model.Movie.Director.DirectorName</li>
         <li>Studio: @Model.Movie.Studio.StudioName</li>
-        <p></p>
-        <li style="font-weight: bold">Actors:</li>
+        <li>Actors:</li>
         @foreach (var actor in @Model.Movie.MovieActors)
         {
             <span>@actor.CharacterName: @actor.ActorName</span><span>;</span>
         }
+        <p></p>
         <li style="font-weight: bold">Synopsis:</li>
         <span>@Model.Movie.Synopsis</span>
         <p></p>
-        <p style="font-weight: bold">Comments:</p>
+        <p style="font-weight: bold">Viewer Comments:</p>
         <li>
             User Rating:
 
@@ -54,8 +54,8 @@
     <p></p>
     @using (Html.BeginForm("BorrowDvdPost", "Home", FormMethod.Post))
     {
-        <p>Borrowers: @Html.DropDownListFor(b => b.borrower.FirstName, Model.borrowers)</p>
-        <button type="submit" class="btn btn-primary">Select Borrower</button>
+        <p>Select Borrower: @Html.DropDownListFor(b => b.borrower.FirstName, Model.borrowers)</p>
+        <button type="submit" class="btn btn-primary">Borrower Movie</button>
     }
     
 </div>
