@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
+using DVDLibrary.Data.Config;
 using DVDLibrary.Models;
 using TMDbLib.Client;
 using TMDbLib.Objects.General;
@@ -50,7 +54,7 @@ namespace DVDLibrary.Data
 
                 UserNote newUserNote2 = new UserNote()
                 {
-                    UserNoteId = (i - 10) * 100,
+                    UserNoteId = (i - 10)*100,
                     BorrowerId = 2,
                     BorrowerName = "Chary Gurney",
                     MovieId = i - 10,
@@ -76,7 +80,7 @@ namespace DVDLibrary.Data
                     BorrowerName = "Charey Gurney",
                     MovieId = i - 10,
                     Rating = 2,
-                    UserRatingId = (i - 10) * 100,
+                    UserRatingId = (i - 10)*100,
                     Owner = false
                 };
                 newDVD.Movie.UserRatings.Add(newUserRating2);
@@ -97,17 +101,115 @@ namespace DVDLibrary.Data
         {
             return ListOfMovies;
         }
-        
+
         //Build ListOfDVDs list from SQL Database method
 
 
         //Add New DVD to SQL Database that is a new Movie
-        
-            
+
+
         //Need to create a parameterized stored query
         public void AddNewDVDToDBViaTMDB(DVD newDVD)
         {
             //PATTY YOU'RE PROGRAMMING THIS
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = ("select count(studios.studioname) from studios " +
+                                   "where studioname = '" + newDVD.Movie.Studio.StudioName.ToString() + "'");
+                cmd.Connection = cn;
+                cn.Open();
+                int studioCount = (int) cmd.ExecuteScalar();
+
+                if (studioCount == 0)
+                {
+                    var p = new DynamicParameters();
+
+                    p.Add("StudioName", newDVD.Movie.Studio.StudioName);
+                    p.Add("StudioTMDBNum", newDVD.Movie.Studio.StudioTMDBNum);
+                    p.Add("StudioID", DbType.Int32, direction: ParameterDirection.Output);
+
+                    cn.Execute("AddNewStudioToStudios", p, commandType: CommandType.StoredProcedure);
+
+                    newDVD.Movie.Studio.StudioId = p.Get<int>("StudioID");
+                }
+                else
+                {
+                    cmd.CommandText = "select studioid from studios " +
+                                      "where studioname = '" + newDVD.Movie.Studio.StudioName.ToString() + "'";
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        newDVD.Movie.Studio.StudioId = (int) rdr["StudioID"];
+                    }
+                }
+
+                cn.Close();
+
+                cmd.CommandText = "select count(directors.directorname) from directors " +
+                                  "where directorname = '" + newDVD.Movie.Director.DirectorName.ToString() + "'";
+                cn.Open();
+                int directorCount = (int) cmd.ExecuteScalar();
+
+                if (directorCount == 0)
+                {
+                    var p = new DynamicParameters();
+
+                    p.Add("DirectorName", newDVD.Movie.Director.DirectorName);
+                    p.Add("DirectorTMDBNum", newDVD.Movie.Director.DirectorTMDBNum);
+                    p.Add("DirectorID", DbType.Int32, direction: ParameterDirection.Output);
+
+                    cn.Execute("AddNewDirectorToDirectors", p, commandType: CommandType.StoredProcedure);
+
+                    newDVD.Movie.Director.DirectorId = p.Get<int>("DirectorID");
+                }
+                else
+                {
+                    cmd.CommandText = "select directorid from directors " +
+                                      "where directorname = '" + newDVD.Movie.Director.DirectorName.ToString() + "'";
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            newDVD.Movie.Director.DirectorId = (int) rdr["DirectorID"];
+                        }
+                    }
+                }
+
+                cmd.CommandText = "select count(movies.movietitle) from movies " +
+                                  "where movietitle = '" + newDVD.Movie.MovieTitle.ToString() + "'";
+
+                int movieTitleCount = (int) cmd.ExecuteScalar();
+
+                if (movieTitleCount == 0)
+                {
+                    var p = new DynamicParameters();
+
+                    p.Add("DirectorID", newDVD.Movie.Director.DirectorId);
+                    p.Add("StudioID", newDVD.Movie.Studio.StudioId);
+                    p.Add("MovieTitle", newDVD.Movie.MovieTitle);
+                    p.Add("MovieTMDBNum", newDVD.Movie.MovieTMDBNum);
+                    p.Add("Rating", newDVD.Movie.MpaaRating);
+                    p.Add("ReleaseDate", newDVD.Movie.ReleaseDate);
+                    p.Add("DurationInMin", newDVD.Movie.Duration);
+                    p.Add("Synopsis", newDVD.Movie.Synopsis);
+                    p.Add("PosterUrl", newDVD.Movie.PosterUrl);
+                    p.Add("YouTubeTrailer", newDVD.Movie.YouTubeTrailer);
+                    p.Add("MovieID", DbType.Int32, direction: ParameterDirection.Output);
+
+                    cn.Execute("AddNewMovieToMovies", p, commandType: CommandType.StoredProcedure);
+
+                    newDVD.Movie.MovieId = p.Get<int>("MovieID");
+                }
+
+
+
+
+
+
+            }
         }
 
         //Retrieve TMDB info with a TMDBNum
@@ -115,7 +217,9 @@ namespace DVDLibrary.Data
         {
             TMDbClient client = new TMDbClient("1fee8f2397ff73412985de2bb825f020");
 
-            Movie movie = client.GetMovie(tmdbNum, MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases | MovieMethods.Videos);
+            Movie movie = client.GetMovie(tmdbNum,
+                MovieMethods.AlternativeTitles | MovieMethods.Credits | MovieMethods.Images | MovieMethods.Releases |
+                MovieMethods.Videos);
 
             Models.Movie movieInfo = new Models.Movie();
             movieInfo.MovieTitle = movie.Title;
@@ -162,7 +266,7 @@ namespace DVDLibrary.Data
                 movieInfo.Director.DirectorName = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name;
                 movieInfo.Director.DirectorTMDBNum = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Id;
             }
-            if (movie.ProductionCompanies.Count == 0)
+            if (movie.ProductionCompanies.Count != 0)
             {
                 movieInfo.Studio.StudioName = movie.ProductionCompanies[0].Name;
                 movieInfo.Studio.StudioTMDBNum = movie.ProductionCompanies[0].Id;
@@ -206,7 +310,7 @@ namespace DVDLibrary.Data
             return movieInfo;
         }
 
-      
+
         public string DeleteDVD(int id)
         {
             return "Your movie has been deleted from the DVD collection";
@@ -222,7 +326,7 @@ namespace DVDLibrary.Data
 
             SearchContainer<SearchMovie> initResults = client.SearchMovie("\"" + movieName + "\"");
 
-            
+
             if (initResults.TotalPages >= 1)
             {
                 for (int i = 1; i < initResults.TotalPages + 1; i++)
