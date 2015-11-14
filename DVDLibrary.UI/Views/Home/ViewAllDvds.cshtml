@@ -12,9 +12,9 @@
 @*@Html.ActionLink("Add A DVD","AddDvd", "Home")*@
 <div>
     <input id="search" name="search" type="text" placeholder="Search Movie Title Here" data-toggle="hideseek" data-list=".list">
-    <br/>
+    <p></p>
 </div>
-<div>
+<div class ="row">
 <ul class="list-group list">
     @foreach (Movie movie in Model)
     {
@@ -23,9 +23,11 @@
                     @movie.MovieId
                 </li>*@
             <a href="/Home/SelectDvd/@movie.MovieId">
+                <div class="col-md-3">
                 <li class="list-group-item">
                     @movie.MovieTitle
                 </li>
+                    </div>
             </a>
 
             @*<li class="list-group-item">

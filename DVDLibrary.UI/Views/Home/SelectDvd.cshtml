@@ -21,10 +21,16 @@
         <li>Release Date: @Model.Movie.ReleaseDate.ToString("d")</li>
         <li>Director Name: @Model.Movie.Director.DirectorName</li>
         <li>Studio: @Model.Movie.Studio.StudioName</li>
+        <p></p>
+        <li style="font-weight: bold">Actors:</li>
         @foreach (var actor in @Model.Movie.MovieActors)
         {
-            <li>@actor.CharacterName: @actor.ActorName</li>
+            <span>@actor.CharacterName: @actor.ActorName</span><span>;</span>
         }
+        <li style="font-weight: bold">Synopsis:</li>
+        <span>@Model.Movie.Synopsis</span>
+        <p></p>
+        <p style="font-weight: bold">Comments:</p>
         <li>
             User Rating:
 
@@ -40,12 +46,12 @@
 
         <li>Average User Rating (@Model.Movie.UserRatings.Count users): @Model.Movie.UserRatings.Average(r => r.Rating)</li>
 
-        <li>@Model.Movie.Synopsis</li>
         @foreach (var note in @Model.Movie.UserNotes)
         {
             <li>User Notes: @note.Note ~@note.BorrowerName</li>
         }
     </ul>
+    <p></p>
     @using (Html.BeginForm("BorrowDvdPost", "Home", FormMethod.Post))
     {
         <p>Borrowers: @Html.DropDownListFor(b => b.borrower.FirstName, Model.borrowers)</p>
