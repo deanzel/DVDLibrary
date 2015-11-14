@@ -5,15 +5,43 @@
 }
 
 <h2>Add Movie By TMDB Id</h2>
+
 <img src="@Model.Movie.PosterUrl" align="right">
-<div id="dvdinfo">
+
+<div>
+<div class="col-xs-9" id="dvdinfo">
     <table class="table table-hover">
         <thead>
-            <th></th>
+        <tr><th>DVD Information</th></tr>
         </thead>
         <tbody>
-        
+        <tr>
+            <td># of DVDs to Add</td>
+            <td>@Html.EditorFor(d => d.Quantity)</td>
+        </tr>
+        <tr>
+            <td>DVD Type</td>
+            <td>@Html.DropDownListFor(d => d.DVDType, Model.DVDTypesList)</td>
+        </tr>
         </tbody>
     </table>
+</div>
+    <div class="col-xs-3"></div>
+</div>
+<br/>
+<div>
+    <div class="col-xs-9" id="movieinfo">
+        <table class="table table-hover">
+            <thead>
+            <tr><th>Movie Information From TMDB</th></tr>
+            </thead>
+            <tbody>
+            <tr>
 
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="col-xs-3"></div>
 </div>
