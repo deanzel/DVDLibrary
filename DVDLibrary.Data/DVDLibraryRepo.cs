@@ -124,7 +124,7 @@ namespace DVDLibrary.Data
                 SqlCommand cmd = new SqlCommand();
 
                 cmd.CommandText = ("select count(studios.studioname) from studios " +
-                                   "where studioname = '" + newDVD.Movie.Studio.StudioName.ToString() + "'");
+                                   "where studioname = '" + newDVD.Movie.Studio.StudioName + "'");
                 cmd.Connection = cn;
                 cn.Open();
                 int studioCount = (int) cmd.ExecuteScalar();
@@ -144,7 +144,7 @@ namespace DVDLibrary.Data
                 else
                 {
                     cmd.CommandText = "select studioid from studios " +
-                                      "where studioname = '" + newDVD.Movie.Studio.StudioName.ToString() + "'";
+                                      "where studioname = '" + newDVD.Movie.Studio.StudioName + "'";
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
@@ -155,7 +155,7 @@ namespace DVDLibrary.Data
                 cn.Close();
 
                 cmd.CommandText = "select count(directors.directorname) from directors " +
-                                  "where directorname = '" + newDVD.Movie.Director.DirectorName.ToString() + "'";
+                                  "where directorname = '" + newDVD.Movie.Director.DirectorName + "'";
                 cn.Open();
                 int directorCount = (int) cmd.ExecuteScalar();
 
@@ -174,7 +174,7 @@ namespace DVDLibrary.Data
                 else
                 {
                     cmd.CommandText = "select directorid from directors " +
-                                      "where directorname = '" + newDVD.Movie.Director.DirectorName.ToString() + "'";
+                                      "where directorname = '" + newDVD.Movie.Director.DirectorName + "'";
                     using (SqlDataReader rdr = cmd.ExecuteReader())
                     {
                         while (rdr.Read())
@@ -185,7 +185,7 @@ namespace DVDLibrary.Data
                 }
 
                 cmd.CommandText = "select count(movies.movietitle) from movies " +
-                                  "where movietitle = '" + newDVD.Movie.MovieTitle.ToString() + "'";
+                                  "where movietitle = '" + newDVD.Movie.MovieTitle + "'";
 
                 int movieTitleCount = (int) cmd.ExecuteScalar();
 

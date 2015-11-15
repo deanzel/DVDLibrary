@@ -32,6 +32,7 @@
                     <tr>
                         <td class="col-xs-3">TMDB Number</td>
                         <td class="col-xs-6">@Html.DisplayFor(m => m.Movie.MovieTMDBNum, new {@class = "form-control"})</td>
+                        @Html.HiddenFor(m => m.Movie.MovieTMDBNum)
                     </tr>
                     <tr>
                         <td class="col-xs-3">MPAA Rating</td>
@@ -39,7 +40,7 @@
                     </tr>
                     <tr>
                         <td class="col-xs-3">Release Date</td>
-                        <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.ReleaseDate, new {@class = "form-control"})</td>
+                        <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.ReleaseDate, "{0:MM/dd/yyyy}", new {@class = "form-control"})</td>
                     </tr>
                     <tr>
                         <td class="col-xs-3">Duration (mins)</td>
@@ -95,13 +96,22 @@
                             <td class="col-xs-3">@a.CharacterName</td>
                         </tr>
                     }
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
-    @Html.HiddenFor(m => m.Movie.MovieAliases)
-    @Html.HiddenFor(m => m.Movie.MovieActors)
+    <div style="display: none">
+        @Html.EditorFor(m => m.Movie.MovieAliases)
+        @Html.EditorFor(m => m.Movie.Genres)
+        @for (int i = 0; i < Model.Movie.MovieActors.Count; i++)
+        {
+            @Html.HiddenFor(a => Model.Movie.MovieActors[i].ActorName)
+            @Html.HiddenFor(a => Model.Movie.MovieActors[i].CharacterName)
+            @Html.HiddenFor(a => Model.Movie.MovieActors[i].ActorTMDBNum)
+        }
+
+    </div>
 
     <button type="submit" class="btn btn-success">Submit</button>
     <button type="reset" class="btn btn-danger">Reset</button>
