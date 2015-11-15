@@ -66,7 +66,7 @@ go
 create table DVDs (
 	DVDID int identity(1,1) primary key,
 	MovieID int foreign key references Movies(MovieID) not null,
-	DVDType nvarchar(25) not null
+	DVDType nvarchar(50) not null
 )
 go
 

@@ -279,13 +279,13 @@ namespace DVDLibrary.Data
                 {
                     for (int i = 0; i < newDVD.Movie.Genres.Count; i++)
                     {
-                        cmd.CommandText = "select count(actors.actorname) from genres " +
-                                          "where genrename = '" + newDVD.Movie.Genres[i] + "'";
+                        cmd.CommandText = "select count(genres.genrename) from genres " +
+                                          "where genrename = '" + newDVD.Movie.Genres[i].GenreName + "'";
                         cn.Open();
 
-                        int genreNameCount = (int)cmd.ExecuteScalar();
+                        int genresCount = (int)cmd.ExecuteScalar();
 
-                        if (genreNameCount == 0)
+                        if (genresCount == 0)
                         {
                             var p = new DynamicParameters();
 
@@ -298,35 +298,68 @@ namespace DVDLibrary.Data
                         }
                         else
                         {
-                            cmd.CommandText = "select actorid from actors " +
-                                              "where actorname = '" + newDVD.Movie.MovieActors[i].ActorName + "'";
+                            cmd.CommandText = "select genreid from genres " +
+                                              "where genrename = '" + newDVD.Movie.Genres[i].GenreName + "'";
                             using (SqlDataReader rdr = cmd.ExecuteReader())
                             {
                                 while (rdr.Read())
                                 {
-                                    newDVD.Movie.MovieActors[i].ActorId = (int)rdr["ActorID"];
+                                    newDVD.Movie.Genres[i].GenreId = (int)rdr["GenreID"];
                                 }
                             }
                         }
                         cn.Close();
                     }
 
-                    foreach (var a in newDVD.Movie.MovieActors)
+                    foreach (var g in newDVD.Movie.Genres)
                     {
                         var p = new DynamicParameters();
-                        p.Add("ActorID", a.ActorId);
+                        p.Add("GenreID", g.GenreId);
                         p.Add("MovieID", newDVD.Movie.MovieId);
-                        p.Add("CharacterName", a.CharacterName);
 
                         cn.Open();
 
-                        cn.Execute("AddNewActorMovieToActorsMovies", p, commandType: CommandType.StoredProcedure);
+                        cn.Execute("AddNewGenreMovieToGenresMovies", p, commandType: CommandType.StoredProcedure);
 
                         cn.Close();
                     }
                 }
 
+                //Adding MovieAliases
+                if (newDVD.Movie.MovieAliases.Count != 0)
+                {
+                    for (int i = 0; i < newDVD.Movie.MovieAliases.Count; i++)
+                    {
+                        cn.Open();
 
+                        var p = new DynamicParameters();
+
+                        p.Add("MovieID", newDVD.Movie.MovieId);
+                        p.Add("MovieAlias", newDVD.Movie.MovieAliases[i].MovieAliasTitle);
+                        p.Add("MovieAliasID", DbType.Int32, direction: ParameterDirection.Output);
+
+                        cn.Execute("AddNewMovieAliasToMovieAliases", p, commandType: CommandType.StoredProcedure);
+
+                        newDVD.Movie.MovieAliases[i].MovieAliasId = p.Get<int>("MovieAliasID");
+
+                        cn.Close();
+                    }
+                }
+
+                //Add DVD to Database
+                cn.Open();
+
+                var pDVD = new DynamicParameters();
+
+                pDVD.Add("MovieID", newDVD.Movie.MovieId);
+                pDVD.Add("DVDType", newDVD.DVDType);
+                pDVD.Add("DVDID", DbType.Int32, direction: ParameterDirection.Output);
+
+                cn.Execute("AddNewDVDToDVDs", pDVD, commandType: CommandType.StoredProcedure);
+
+                newDVD.DVDId = pDVD.Get<int>("DVDID");
+
+                cn.Close();
 
 
             }
@@ -378,7 +411,9 @@ namespace DVDLibrary.Data
             {
                 foreach (var g in movie.Genres)
                 {
-                    movieInfo.Genres.Add(g.Name);
+                    var newGenre = new Models.Genre();
+                    newGenre.GenreName = g.Name;
+                    movieInfo.Genres.Add(newGenre);
                 }
             }
             if (movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name != null)
@@ -398,12 +433,14 @@ namespace DVDLibrary.Data
                 {
                     if (t.Iso_3166_1 == "US")
                     {
-                        movieInfo.MovieAliases.Add(t.Title);
+                        var newMovieAlias = new MovieAlias();
+                        newMovieAlias.MovieAliasTitle = t.Title;
+                        movieInfo.MovieAliases.Add(newMovieAlias);
                     }
                 }
             }
 
-            if (movie.Credits.Cast.Count < 6 && movie.Credits.Cast.Count > 0)
+            if (movie.Credits.Cast.Count < 10 && movie.Credits.Cast.Count > 0)
             {
                 foreach (var a in movie.Credits.Cast)
                 {
@@ -416,7 +453,7 @@ namespace DVDLibrary.Data
             }
             else
             {
-                for (int i = 0; i < 6; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     Actor newActor = new Actor();
                     newActor.ActorName = movie.Credits.Cast[i].Name;
