@@ -63,7 +63,7 @@
                         <td class="col-xs-6">
                             @for (int i = 0; i < Model.Movie.Genres.Count - 1; i++)
                             {
-                                @(Model.Movie.Genres[i] + ", ")
+                                @(Model.Movie.Genres[i].GenreName + ", ")
                             }
                             @Model.Movie.Genres[Model.Movie.Genres.Count - 1]
                         </td>
@@ -102,15 +102,20 @@
         </div>
     </div>
     <div style="display: none">
-        @Html.EditorFor(m => m.Movie.MovieAliases)
-        @Html.EditorFor(m => m.Movie.Genres)
+        @for (int i = 0; i < Model.Movie.MovieAliases.Count; i++)
+        {
+            @Html.HiddenFor(a => Model.Movie.MovieAliases[i].MovieAliasTitle)
+        }
+        @for (int i = 0; i < Model.Movie.Genres.Count; i++)
+        {
+            @Html.HiddenFor(a => Model.Movie.Genres[i].GenreName)
+        }
         @for (int i = 0; i < Model.Movie.MovieActors.Count; i++)
         {
             @Html.HiddenFor(a => Model.Movie.MovieActors[i].ActorName)
             @Html.HiddenFor(a => Model.Movie.MovieActors[i].CharacterName)
             @Html.HiddenFor(a => Model.Movie.MovieActors[i].ActorTMDBNum)
         }
-
     </div>
 
     <button type="submit" class="btn btn-success">Submit</button>

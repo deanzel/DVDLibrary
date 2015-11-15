@@ -15,7 +15,7 @@
         <li>@Model.Movie.MpaaRating</li>
         @foreach (var genre in @Model.Movie.Genres)
         {
-            <li>Genre: @genre</li>
+            <li>Genre: @genre.GenreName</li>
         }
         <li>Duration: @Model.Movie.Duration</li>
         <li>Release Date: @Model.Movie.ReleaseDate.ToString("d")</li>

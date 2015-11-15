@@ -114,10 +114,11 @@ namespace DVDLibrary.Data
         //Add New DVD to SQL Database that is a new Movie
 
 
+        //Method to check that Movie doesn't already exist
+
         //Need to create a parameterized stored query
         public void AddNewDVDToDBViaTMDB(DVD newDVD)
         {
-            //PATTY YOU'RE PROGRAMMING THIS
             using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
             {
 
@@ -129,6 +130,7 @@ namespace DVDLibrary.Data
                 cn.Open();
                 int studioCount = (int) cmd.ExecuteScalar();
 
+                //Adding Studio
                 if (studioCount == 0)
                 {
                     var p = new DynamicParameters();
@@ -154,6 +156,8 @@ namespace DVDLibrary.Data
 
                 cn.Close();
 
+
+                //Adding Director
                 cmd.CommandText = "select count(directors.directorname) from directors " +
                                   "where directorname = '" + newDVD.Movie.Director.DirectorName + "'";
                 cn.Open();
@@ -183,9 +187,14 @@ namespace DVDLibrary.Data
                         }
                     }
                 }
+                cn.Close();
 
+
+                //Adding MovieInfo
                 cmd.CommandText = "select count(movies.movietitle) from movies " +
                                   "where movietitle = '" + newDVD.Movie.MovieTitle + "'";
+
+                cn.Open();
 
                 int movieTitleCount = (int) cmd.ExecuteScalar();
 
@@ -210,7 +219,112 @@ namespace DVDLibrary.Data
                     newDVD.Movie.MovieId = p.Get<int>("MovieID");
                 }
 
+                cn.Close();
 
+                //Adding Actors
+                if (newDVD.Movie.MovieActors.Count != 0)
+                {
+                    for (int i = 0; i < newDVD.Movie.MovieActors.Count; i++)
+                    {
+                        cmd.CommandText = "select count(actors.actorname) from actors " +
+                                          "where actorname = '" + newDVD.Movie.MovieActors[i].ActorName + "'";
+                        cn.Open();
+
+                        int actorNameCount = (int) cmd.ExecuteScalar();
+
+                        if (actorNameCount == 0)
+                        {
+                            var p = new DynamicParameters();
+
+                            p.Add("ActorName", newDVD.Movie.MovieActors[i].ActorName);
+                            p.Add("ActorTMDBNum", newDVD.Movie.MovieActors[i].ActorTMDBNum);
+                            p.Add("ActorID", DbType.Int32, direction: ParameterDirection.Output);
+
+                            cn.Execute("AddNewActorToActors", p, commandType: CommandType.StoredProcedure);
+
+                            newDVD.Movie.MovieActors[i].ActorId = p.Get<int>("ActorID");
+                        }
+                        else
+                        {
+                            cmd.CommandText = "select actorid from actors " +
+                                              "where actorname = '" + newDVD.Movie.MovieActors[i].ActorName + "'";
+                            using (SqlDataReader rdr = cmd.ExecuteReader())
+                            {
+                                while (rdr.Read())
+                                {
+                                    newDVD.Movie.MovieActors[i].ActorId = (int)rdr["ActorID"];
+                                }
+                            }
+                        }
+                        cn.Close();
+                    }
+
+                    foreach (var a in newDVD.Movie.MovieActors)
+                    {
+                        var p = new DynamicParameters();
+                        p.Add("ActorID", a.ActorId);
+                        p.Add("MovieID", newDVD.Movie.MovieId);
+                        p.Add("CharacterName", a.CharacterName);
+
+                        cn.Open();
+
+                        cn.Execute("AddNewActorMovieToActorsMovies", p, commandType: CommandType.StoredProcedure);
+
+                        cn.Close();
+                    }
+                }
+
+                //Adding Genres
+                if (newDVD.Movie.Genres.Count != 0)
+                {
+                    for (int i = 0; i < newDVD.Movie.Genres.Count; i++)
+                    {
+                        cmd.CommandText = "select count(actors.actorname) from genres " +
+                                          "where genrename = '" + newDVD.Movie.Genres[i] + "'";
+                        cn.Open();
+
+                        int genreNameCount = (int)cmd.ExecuteScalar();
+
+                        if (genreNameCount == 0)
+                        {
+                            var p = new DynamicParameters();
+
+                            p.Add("GenreName", newDVD.Movie.Genres[i].GenreName);
+                            p.Add("GenreID", DbType.Int32, direction: ParameterDirection.Output);
+
+                            cn.Execute("AddNewGenreToGenres", p, commandType: CommandType.StoredProcedure);
+
+                            newDVD.Movie.Genres[i].GenreId = p.Get<int>("GenreID");
+                        }
+                        else
+                        {
+                            cmd.CommandText = "select actorid from actors " +
+                                              "where actorname = '" + newDVD.Movie.MovieActors[i].ActorName + "'";
+                            using (SqlDataReader rdr = cmd.ExecuteReader())
+                            {
+                                while (rdr.Read())
+                                {
+                                    newDVD.Movie.MovieActors[i].ActorId = (int)rdr["ActorID"];
+                                }
+                            }
+                        }
+                        cn.Close();
+                    }
+
+                    foreach (var a in newDVD.Movie.MovieActors)
+                    {
+                        var p = new DynamicParameters();
+                        p.Add("ActorID", a.ActorId);
+                        p.Add("MovieID", newDVD.Movie.MovieId);
+                        p.Add("CharacterName", a.CharacterName);
+
+                        cn.Open();
+
+                        cn.Execute("AddNewActorMovieToActorsMovies", p, commandType: CommandType.StoredProcedure);
+
+                        cn.Close();
+                    }
+                }
 
 
 

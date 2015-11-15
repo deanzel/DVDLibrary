@@ -23,22 +23,22 @@ namespace DVDLibrary.Models
         [DataType(DataType.Url)]
         public string YouTubeTrailer { get; set; }
 
-        public List<string> Genres { get; set; }
+        public List<Genre> Genres { get; set; }
         public Director Director { get; set; }
         public Studio Studio { get; set; }
         public List<Actor> MovieActors { get; set; }
-        public List<string> MovieAliases { get; set; }
+        public List<MovieAlias> MovieAliases { get; set; }
 
         public List<UserRating> UserRatings { get; set; }
         public List<UserNote> UserNotes { get; set; }
 
         public Movie()
         {
-            Genres = new List<string>();
+            Genres = new List<Genre>();
             Director = new Director();
             Studio = new Studio();
             MovieActors = new List<Actor>();
-            MovieAliases = new List<string>();
+            MovieAliases = new List<MovieAlias>();
             UserRatings = new List<UserRating>();
             UserNotes = new List<UserNote>();
         }

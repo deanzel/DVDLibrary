@@ -51,6 +51,7 @@
     <Compile Include="DVD.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Movie.cs" />
+    <Compile Include="MovieAlias.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchTMDBResult.cs" />
     <Compile Include="Status.cs" />
