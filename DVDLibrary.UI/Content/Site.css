@@ -27,3 +27,9 @@ textarea {
 .input-validation-error {
     border: 1px solid red;
 }
+
+#container {
+     background-image: url('/content/images/moviereel.png');
+    background-repeat: no-repeat;
+    position: relative;
+}
