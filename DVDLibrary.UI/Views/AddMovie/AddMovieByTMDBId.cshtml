@@ -6,92 +6,107 @@
 
 <h2>Add Movie By TMDB Id</h2>
 
-@*<img src="@Model.Movie.PosterUrl" align="right">*@
-
 @using (Html.BeginForm("SendNewMovieInfoToDB", "AddMovie", null, FormMethod.Post, new { id = "newdvdinfo" }))
 {
-    <div class="container-fluid">
+    <div class="container-fluid form-group">
         <div class="row">
             <div class="col-xs-9" id="dvdinfo">
-                <table class="table table-hover">
+                <table class="table table-striped col-xs-9">
                     <thead>
                     <tr><th>DVD Information</th></tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td># of DVDs to Add</td>
-                        <td>@Html.EditorFor(d => d.Quantity)</td>
+                        <td class="col-xs-3"># of DVDs to Add</td>
+                        <td class="col-xs-6">@Html.TextBoxFor(d => d.Quantity, new {@class = "form-control"})</td>
                     </tr>
                     <tr>
-                        <td>DVD Type</td>
-                        <td>@Html.DropDownListFor(d => d.DVDType, Model.DVDTypesList)</td>
+                        <td class="col-xs-3">DVD Type</td>
+                        <td class="col-xs-6">@Html.DropDownListFor(d => d.DVDType, Model.DVDTypesList, new {@class = "form-control"})</td>
                     </tr>
                     <tr><th>Movie Information From TMDB</th></tr>
                     <tr>
-                        <td>Movie Title</td>
-                        <td>@Html.EditorFor(m => m.Movie.MovieTitle)</td>
+                        <td class="col-xs-3">Movie Title</td>
+                        <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.MovieTitle, new {@class = "form-control"})</td>
                     </tr>
                     <tr>
-                        <td>TMDB Number</td>
-                        <td>@Html.DisplayFor(m => m.Movie.MovieTMDBNum)</td>
+                        <td class="col-xs-3">TMDB Number</td>
+                        <td class="col-xs-6">@Html.DisplayFor(m => m.Movie.MovieTMDBNum, new {@class = "form-control"})</td>
                     </tr>
                     <tr>
-                        <td>MPAA Rating</td>
-                        <td>@Html.DropDownListFor(m => m.Movie.MpaaRating, Model.RatingsList)</td>
+                        <td class="col-xs-3">MPAA Rating</td>
+                        <td class="col-xs-6">@Html.DropDownListFor(m => m.Movie.MpaaRating, Model.RatingsList, new {@class = "form-control"})</td>
                     </tr>
                     <tr>
-                        <td>Release Date</td>
-                        <td>@Html.EditorFor(m => m.Movie.ReleaseDate)</td>
+                        <td class="col-xs-3">Release Date</td>
+                        <td class="col-xs-6">@Html.EditorFor(m => m.Movie.ReleaseDate, new {@class = "form-control"})</td>
                     </tr>
                     <tr>
-                        <td>Duration (mins)</td>
-                        <td>@Html.EditorFor(m => m.Movie.Duration)</td>
+                        <td class="col-xs-3">Duration (mins)</td>
+                        <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.Duration, new {@class = "form-control"})</td>
                     </tr>
                     <tr>
-                        <td>Synopsis</td>
-                        <td>@Html.TextAreaFor(m => m.Movie.Synopsis)</td>
-                        @*<td>@Html.EditorFor(m => m.Movie.Synopsis)</td>*@
+                        <td class="col-xs-3">Synopsis</td>
+                        <td class="col-xs-6">@Html.TextAreaFor(m => m.Movie.Synopsis, 10, 60, new {@class = "form-control"})</td>
                     </tr>
                     <tr>
-                        <td>Poster URL</td>
-                        <td>@Html.EditorFor(m => m.Movie.PosterUrl)</td>
+                        <td class="col-xs-3">Poster URL</td>
+                        <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.PosterUrl, new {@class = "form-control"})</td>
                     </tr>
                     <tr>
-                        <td>Trailer (YouTube)</td>
-                        <td>@Html.EditorFor(m => m.Movie.YouTubeTrailer)</td>
+                        <td class="col-xs-3">Trailer (YouTube)</td>
+                        <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.YouTubeTrailer, new {@class = "form-control"})</td>
                     </tr>
                     <tr>
                         <td>Genres</td>
-                        @foreach (var g in Model.Movie.Genres)
-                        {
-                            <td>@g</td>
-                        }
+                        <td>
+                            @for (int i = 0; i < Model.Movie.Genres.Count - 1; i++)
+                            {
+                                @(Model.Movie.Genres[i] + ", ")
+                            }
+                            @Model.Movie.Genres[Model.Movie.Genres.Count - 1]
+                        </td>
                     </tr>
                     <tr>
-                        <td>Director</td>
-                        <td>@Html.EditorFor(m => m.Movie.Director.DirectorName)</td>
+                        <td class="col-xs-3">Director</td>
+                        <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.Director.DirectorName, new {@class = "form-control"})</td>
                         @Html.HiddenFor(m => m.Movie.Director.DirectorTMDBNum)
                     </tr>
                     <tr>
-                        <td>Studio</td>
-                        <td>@Html.EditorFor(m => m.Movie.Studio.StudioName)</td>
+                        <td class="col-xs-3">Studio</td>
+                        <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.Studio.StudioName, new {@class = "form-control"})</td>
                         @Html.HiddenFor(m => m.Movie.Studio.StudioTMDBNum)
                     </tr>
-                    <tr><th>List of Actors</th></tr>
+                    @*<tr><th>List of Actors</th></tr>
                         @foreach (var a in Model.Movie.MovieActors)
                         {
                             <tr>
-                                <td>Actor #@(Model.Movie.MovieActors.IndexOf(a) + 1)</td>
-                                <td>@a.ActorName</td>
-                                <td>@a.CharacterName</td>
+                                <td class="col-xs-3">Actor #@(Model.Movie.MovieActors.IndexOf(a) + 1)</td>
+                                <td class="col-xs-3">@a.ActorName</td>
+                                <td class="col-xs-3">@a.CharacterName</td>
 
                             </tr>
-                        }
+                        }*@
                     </tbody>
                 </table>
             </div>
             <div class="col-xs-3">
                 <img src="@Model.Movie.PosterUrl">
+            </div>
+            <div class="col-xs-9">
+                <table class="table table-striped col-xs-9">
+                    <thead><tr><th>List of Actors</th><th>Actor Name</th><th>Character Name</th></tr></thead>
+                    <tbody>
+                    @foreach (var a in Model.Movie.MovieActors)
+                    {
+                        <tr>
+                            <td class="col-xs-3">Actor #@(Model.Movie.MovieActors.IndexOf(a) + 1)</td>
+                            <td class="col-xs-3">@a.ActorName</td>
+                            <td class="col-xs-3">@a.CharacterName</td>
+                        </tr>
+                    }
+                        </tbody>
+                </table>
             </div>
         </div>
     </div>

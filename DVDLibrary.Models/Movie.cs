@@ -15,6 +15,7 @@ namespace DVDLibrary.Models
         public string MpaaRating { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime ReleaseDate { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Synopsis { get; set; }
         public int Duration { get; set; }
         [DataType(DataType.ImageUrl)]
