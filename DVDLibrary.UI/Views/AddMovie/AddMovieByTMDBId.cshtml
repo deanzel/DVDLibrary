@@ -39,7 +39,7 @@
                     </tr>
                     <tr>
                         <td class="col-xs-3">Release Date</td>
-                        <td class="col-xs-6">@Html.EditorFor(m => m.Movie.ReleaseDate, new {@class = "form-control"})</td>
+                        <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.ReleaseDate, new {@class = "form-control"})</td>
                     </tr>
                     <tr>
                         <td class="col-xs-3">Duration (mins)</td>
@@ -58,8 +58,8 @@
                         <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.YouTubeTrailer, new {@class = "form-control"})</td>
                     </tr>
                     <tr>
-                        <td>Genres</td>
-                        <td>
+                        <td class="col=xs-3">Genres</td>
+                        <td class="col-xs-6">
                             @for (int i = 0; i < Model.Movie.Genres.Count - 1; i++)
                             {
                                 @(Model.Movie.Genres[i] + ", ")
@@ -77,16 +77,6 @@
                         <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.Studio.StudioName, new {@class = "form-control"})</td>
                         @Html.HiddenFor(m => m.Movie.Studio.StudioTMDBNum)
                     </tr>
-                    @*<tr><th>List of Actors</th></tr>
-                        @foreach (var a in Model.Movie.MovieActors)
-                        {
-                            <tr>
-                                <td class="col-xs-3">Actor #@(Model.Movie.MovieActors.IndexOf(a) + 1)</td>
-                                <td class="col-xs-3">@a.ActorName</td>
-                                <td class="col-xs-3">@a.CharacterName</td>
-
-                            </tr>
-                        }*@
                     </tbody>
                 </table>
             </div>
