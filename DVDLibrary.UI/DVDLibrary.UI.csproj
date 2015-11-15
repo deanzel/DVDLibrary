@@ -157,6 +157,7 @@
     <Content Include="Views\Home\SelectDvd.cshtml" />
     <Content Include="Views\AddMovie\GivePattyData.cshtml" />
     <Content Include="Views\Home\BorrowDvdPost.cshtml" />
+    <Content Include="Views\AddMovie\SuccessfullyAddedNewMovie.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

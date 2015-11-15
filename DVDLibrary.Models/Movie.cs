@@ -13,7 +13,7 @@ namespace DVDLibrary.Models
         public string MovieTitle { get; set; }
         public int MovieTMDBNum { get; set; }
         public string MpaaRating { get; set; }
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime ReleaseDate { get; set; }
         public string Synopsis { get; set; }
         public int Duration { get; set; }

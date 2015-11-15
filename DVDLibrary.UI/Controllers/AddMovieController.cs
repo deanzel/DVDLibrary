@@ -38,6 +38,21 @@ namespace DVDLibrary.UI.Controllers
             return View(newDVDVM);
         }
 
+        [HttpPost]
+        public ActionResult SendNewMovieInfoToDB(AddDVDVM newDVDs)
+        {
+            for (int i = 0; i < newDVDs.Quantity; i++)
+            {
+                var newDVD = new DVD();
+                newDVD.Movie = newDVDs.Movie;
+                newDVD.DVDType = newDVDs.DVDType;
+
+                _oops.AddMovieToDB(newDVD);
+            }
+
+            return View("SuccessfullyAddedNewMovie", newDVDs.Movie);
+        }
+
         public ActionResult GivePattyData()
         {
             var newDVDVM = new AddDVDVM();

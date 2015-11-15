@@ -236,7 +236,7 @@ namespace DVDLibrary.Data
             }
             if (movie.ReleaseDate != null)
             {
-                movieInfo.ReleaseDate = movie.ReleaseDate.Value;
+                movieInfo.ReleaseDate = movie.ReleaseDate.Value.Date;
             }
             if (movie.Overview != null)
             {

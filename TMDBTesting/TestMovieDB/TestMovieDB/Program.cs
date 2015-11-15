@@ -41,7 +41,7 @@ namespace TestMovieDB
 
             Console.WriteLine("MPAA Rating: {0}", movie.Releases.Countries.FirstOrDefault(m => m.Iso_3166_1 == "US").Certification);
 
-            Console.WriteLine("Release Date: {0}", movie.ReleaseDate);
+            Console.WriteLine("Release Date: {0}", movie.ReleaseDate.Value.ToString("yyyy-MM-dd"));
 
             Console.WriteLine("Synopsis: {0}", movie.Overview);
 
