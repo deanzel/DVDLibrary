@@ -23,3 +23,7 @@ textarea {
     line-height: 20px;
     padding: 7.5px 20px 10px 7.5px;
 }
+
+.input-validation-error {
+    border: 1px solid red;
+}
