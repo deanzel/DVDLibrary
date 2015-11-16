@@ -29,6 +29,12 @@ namespace DVDLibrary.BLL
             return _repo.RetrieveMoviesList();
         }
 
+        //Real one from SQL DB
+        public List<Models.Movie> ReturnMoviesListFromDB()
+        {
+            return _repo.RetrieveMoviesListFromDB();
+        } 
+
         public string returnDelete(int id)
         {
             return _repo.DeleteDVD(id);

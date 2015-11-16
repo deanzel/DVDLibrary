@@ -1,38 +1,28 @@
 ﻿@using System.Web.Script.Services
-@using DVDLibrary.Models
-@model List<Movie>
+@model List<DVDLibrary.Models.Movie>
 @{
-    ViewBag.Title = "ViewAllDvds";
+    ViewBag.Title = "View All DVDs";
 }
 
-<h2>View All Dvds</h2>
+<h2>View All DVDss</h2>
 
 @*<button class="btn-primary">Add DVD</button>*@
 
 @*@Html.ActionLink("Add A DVD","AddDvd", "Home")*@
 <div>
-    <input id="search" name="search" type="text" placeholder="Search Movie Title Here" data-toggle="hideseek" data-list=".list">
+    <input id="search" name="search" type="text" placeholder="Filter Movie Title Here" data-toggle="hideseek" data-list=".list">
     <p></p>
 </div>
 <div class ="row">
 <ul class="list-group list">
-    @foreach (Movie movie in Model)
+    @foreach (var movie in Model)
     {
-        
-            @*<li class="list-group-item">
-                    @movie.MovieId
-                </li>*@
-            <a href="/Home/SelectDvd/@movie.MovieId">
-                <div class="col-md-3">
-                <li class="list-group-item">
-                    @movie.MovieTitle
-                </li>
-                    </div>
-            </a>
 
-            @*<li class="list-group-item">
-                    @movie.MpaaRating
-                </li>*@
+        <div class="col-md-3">
+            <li class="list-group-item"><a href="/Home/SelectDvd/@movie.MovieId">
+                    @movie.MovieTitle</a>
+            </li>
+        </div>
         
     }
     </ul>

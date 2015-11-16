@@ -24,8 +24,8 @@ namespace DVDLibrary.UI.Controllers
         {
             _oops = new DVDLibaryOperations();
 
-            var movies = _oops.ReturnMoviesList().OrderBy(m => m.MovieTitle).ToList();
-
+            //var movies = _oops.ReturnMoviesList().OrderBy(m => m.MovieTitle).ToList();
+            var movies = _oops.ReturnMoviesListFromDB().OrderBy(m => m.MovieTitle).ToList();
 
             return View(movies);
         }

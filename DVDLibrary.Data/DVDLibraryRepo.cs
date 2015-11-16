@@ -96,26 +96,47 @@ namespace DVDLibrary.Data
             }
         }
 
-        //Return DVDList
+        //Return DVDList (mock)
         public List<DVD> RetrieveDVDsList()
         {
             return ListOfDVDs;
         }
 
-        //Return MoviesList
+        //Return MoviesList (mock)
         public List<Models.Movie> RetrieveMoviesList()
         {
             return ListOfMovies;
         }
 
-        //Build ListOfDVDs list from SQL Database method
+        //Build ListOfMovies list from SQL Database method (just with basic info)
+        public List<Models.Movie> RetrieveMoviesListFromDB()
+        {
+            List<Models.Movie> moviesListFromDB = new List<Models.Movie>();
+
+            using (var cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var cmd = new SqlCommand();
+                cmd.CommandText = ("SELECT [MovieID], [MovieTitle], [ReleaseDate], [Synopsis], [PosterUrl], [Rating] From Movies");
+                cmd.Connection = cn;
+                cn.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        Models.Movie movieToAdd = PopulateMovieFromDataReaderShort(dr);
+                        moviesListFromDB.Add(movieToAdd);
+                    }
+                }
+            }
+            return moviesListFromDB;
+        } 
 
 
-        //Add New DVD to SQL Database that is a new Movie
+        //Retrieve all the info including dvds available for a movie by MovieID
 
 
-
-        //Adding a New DVD To the SQL Database
+        //Adding a New DVD To the SQL Database (Checks if it already exists as well)
         public DVD AddNewDVDToDBViaTMDB(DVD newDVD)
         {
             using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
@@ -547,5 +568,29 @@ namespace DVDLibrary.Data
 
             return listOfSearchTMDBResults;
         }
+
+
+        //populate movieListFromDataReader
+        private Models.Movie PopulateMovieFromDataReaderShort(SqlDataReader dr)
+        {
+            Models.Movie movie = new Models.Movie();
+
+            movie.MovieId = int.Parse(dr["MovieID"].ToString());
+            movie.MovieTitle = dr["MovieTitle"].ToString();
+            movie.ReleaseDate = DateTime.Parse(dr["ReleaseDate"].ToString());
+            if (dr["Synopsis"] != DBNull.Value)
+            {
+                movie.Synopsis = dr["Synopsis"].ToString();
+            }
+            if (dr["PosterUrl"] != DBNull.Value)
+            {
+                movie.PosterUrl = dr["PosterUrl"].ToString();
+            }
+            movie.MpaaRating = dr["Rating"].ToString();
+
+            return movie;
+        }
+
+        //Full movie info populate method
     }
 }
