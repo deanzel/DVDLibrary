@@ -134,13 +134,353 @@ namespace DVDLibrary.Data
 
 
         //Retrieve Full Movie Info and DVDs based on MovieID from the SQL DB
-        public List<DVD> RetrieveFullDVDInfoFromDB(int movieID)
+        public List<DVD> RetrieveFullDVDInfoFromDB(int movieId)
         {
             List<DVD> listOfDVDInfo = new List<DVD>();
 
             using (var cn = new SqlConnection(Settings.ConnectionString))
             {
                 var cmd = new SqlCommand();
+
+                Models.Movie movieInfo = new Models.Movie();
+
+                //Get Movie Info including Director & Studio By MovieId
+
+                cmd.CommandText = "GetMovieInfoByMovieId";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        movieInfo.MovieId = int.Parse(dr["MovieID"].ToString());
+                        movieInfo.MovieTitle = dr["MovieTitle"].ToString();
+                        movieInfo.MovieTMDBNum = int.Parse(dr["MovieTMDBNum"].ToString());
+                        movieInfo.ReleaseDate = DateTime.Parse(dr["ReleaseDate"].ToString());
+                        movieInfo.MpaaRating = dr["Rating"].ToString();
+                        if (dr["Synopsis"] != DBNull.Value)
+                        {
+                            movieInfo.Synopsis = dr["Synopsis"].ToString();
+                        }
+                        if (dr["PosterUrl"] != DBNull.Value)
+                        {
+                            movieInfo.PosterUrl = dr["PosterUrl"].ToString();
+                        }
+                        if (dr["YouTubeTrailer"] != DBNull.Value)
+                        {
+                            movieInfo.YouTubeTrailer = dr["YouTubeTrailer"].ToString();
+                        }
+                        movieInfo.Director.DirectorId = int.Parse(dr["DirectorID"].ToString());
+                        movieInfo.Director.DirectorName = dr["DirectorName"].ToString();
+                        if (dr["DirectorTMDBNum"] != DBNull.Value)
+                        {
+                            movieInfo.Director.DirectorTMDBNum = int.Parse(dr["DirectorTMDBNum"].ToString());
+                        }
+                        movieInfo.Studio.StudioId = int.Parse(dr["StudioID"].ToString());
+                        movieInfo.Studio.StudioName = dr["StudioName"].ToString();
+                        if (dr["StudioTMDBNum"] != DBNull.Value)
+                        {
+                            movieInfo.Studio.StudioTMDBNum = int.Parse(dr["StudioTMDBNum"].ToString());
+                        }
+
+                    }
+                }
+                cn.Close();
+
+
+                //Get Actors List for Movie by MovieID
+                cmd.CommandText = "GetActorsListByMovieId";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+                //Perhaps need an option if Actor List is null
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        if (dr["ActorID"] != DBNull.Value)
+                        {
+                            Actor newActor = new Actor();
+                            newActor.ActorId = int.Parse(dr["ActorID"].ToString());
+
+                            if (dr["ActorName"] != DBNull.Value)
+                            {
+                                newActor.ActorName = dr["ActorName"].ToString();
+                            }
+                            if (dr["ActorTMDBNum"] != DBNull.Value)
+                            {
+                                newActor.ActorTMDBNum = int.Parse(dr["ActorTMDBNum"].ToString());
+                            }
+                            if (dr["CharacterName"] != DBNull.Value)
+                            {
+                                newActor.CharacterName = dr["CharacterName"].ToString();
+                            }
+                            movieInfo.MovieActors.Add(newActor);
+                        }
+                    }
+                }
+                cn.Close();
+
+
+                //Get Genres List for Movie by MovieID
+                cmd.CommandText = "GetGenresListByMovieId";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+
+                        if (dr["GenreID"] != DBNull.Value)
+                        {
+                            Models.Genre newGenre = new Models.Genre();
+                            newGenre.GenreId = int.Parse(dr["GenreID"].ToString());
+
+                            if (dr["GenreName"] != DBNull.Value)
+                            {
+                                newGenre.GenreName = dr["GenreName"].ToString();
+                            }
+                            movieInfo.Genres.Add(newGenre);
+                        }
+                    }
+                }
+                cn.Close();
+
+
+                //Get Movie Aliases List for Movie by MovieID
+                cmd.CommandText = "GetMovieAliasesByMovieId";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+
+                        if (dr["MovieAliasID"] != DBNull.Value)
+                        {
+                            MovieAlias newMovieAlias = new MovieAlias();
+                            newMovieAlias.MovieAliasId = int.Parse(dr["MovieAliasID"].ToString());
+
+                            if (dr["MovieAlias"] != DBNull.Value)
+                            {
+                                newMovieAlias.MovieAliasTitle = dr["MovieAlias"].ToString();
+                            }
+                            movieInfo.MovieAliases.Add(newMovieAlias);
+                        }
+                    }
+                }
+                cn.Close();
+
+                //Get User Ratings for Movie by MovieID
+                cmd.CommandText = "GetUserRatingsByMovieID";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+
+                        if (dr["UserRatingID"] != DBNull.Value)
+                        {
+                            UserRating newUserRating = new UserRating();
+                            newUserRating.UserRatingId = int.Parse(dr["UserRatingID"].ToString());
+
+                            if (dr["MovieID"] != DBNull.Value)
+                            {
+                                newUserRating.MovieId = int.Parse(dr["MovieID"].ToString());
+                            }
+                            if (dr["BorrowerID"] != DBNull.Value)
+                            {
+                                newUserRating.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                            }
+                            if (dr["Rating"] != DBNull.Value)
+                            {
+                                newUserRating.Rating = int.Parse(dr["Rating"].ToString());
+                            }
+                            if (dr["OwnerRating"] != DBNull.Value)
+                            {
+                                newUserRating.Owner = bool.Parse(dr["OwnerRating"].ToString());
+                            }
+                            if (dr["FirstName"] != DBNull.Value)
+                            {
+                                newUserRating.BorrowerName = (dr["FirstName"].ToString() + " " +
+                                                              dr["LastName"].ToString());
+                            }
+                            movieInfo.UserRatings.Add(newUserRating);
+                        }
+                    }
+                }
+                cn.Close();
+
+
+                //Get User Notes for Movie by MovieID
+                cmd.CommandText = "GetUserNotesByMovieID";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+
+                        if (dr["UserNoteID"] != DBNull.Value)
+                        {
+                            UserNote newUserNote = new UserNote();
+                            newUserNote.UserNoteId = int.Parse(dr["UserNoteID"].ToString());
+
+                            if (dr["MovieID"] != DBNull.Value)
+                            {
+                                newUserNote.MovieId = int.Parse(dr["MovieID"].ToString());
+                            }
+                            if (dr["BorrowerID"] != DBNull.Value)
+                            {
+                                newUserNote.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                            }
+                            if (dr["Note"] != DBNull.Value)
+                            {
+                                newUserNote.Note = dr["Note"].ToString();
+                            }
+                            if (dr["OwnerNote"] != DBNull.Value)
+                            {
+                                newUserNote.Owner = bool.Parse(dr["OwnerNote"].ToString());
+                            }
+                            if (dr["FirstName"] != DBNull.Value)
+                            {
+                                newUserNote.BorrowerName = (dr["FirstName"].ToString() + " " + dr["LastName"].ToString());
+                            }
+                            movieInfo.UserNotes.Add(newUserNote);
+                        }
+                    }
+                }
+                cn.Close();
+
+
+                //Get DVDID and DVDType Info by MovieID
+                cmd.CommandText = "GetDVDInfoByMovieID";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        if (dr["DVDID"] != DBNull.Value)
+                        {
+                            DVD newDVD = new DVD();
+                            newDVD.DVDId = int.Parse(dr["DVDID"].ToString());
+                            if (dr["DVDType"] != DBNull.Value)
+                            {
+                                newDVD.DVDType = dr["DVDType"].ToString();
+                            }
+                            newDVD.Movie = movieInfo;
+
+                            listOfDVDInfo.Add(newDVD);
+                        }
+                    }
+                }
+                cn.Close();
+
+
+                //Get Borrower Statuses for a DVD by DVDID
+                foreach (var d in listOfDVDInfo)
+                {
+                    cmd.CommandText = "GetBorrowerStatusesByDVDID";
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Connection = cn;
+                    cmd.Parameters.AddWithValue("@DVDID", d.DVDId);
+
+                    cn.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            if (dr["BorrowerStatusID"] != DBNull.Value)
+                            {
+                                Status newStatus = new Status();
+                                newStatus.StatusId = int.Parse(dr["BorrowerStatusID"].ToString());
+                                if (dr["BorrowerID"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                                }
+                                if (dr["DVDID"] != DBNull.Value)
+                                {
+                                    newStatus.DVDId = int.Parse(dr["DVDID"].ToString());
+                                }
+                                if (dr["CheckOutDate"] != DBNull.Value)
+                                {
+                                    newStatus.DateBorrowed = DateTime.Parse(dr["CheckOutDate"].ToString());
+                                }
+                                if (dr["CheckInDate"] != DBNull.Value)
+                                {
+                                    newStatus.DateReturned = DateTime.Parse(dr["CheckInDate"].ToString());
+                                }
+                                if (dr["IsOwner"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.IsOwner = bool.Parse(dr["IsOwner"].ToString());
+                                }
+                                if (dr["FirstName"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.FirstName = dr["FirstName"].ToString();
+                                }
+                                if (dr["LastName"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.LastName = dr["LastName"].ToString();
+                                }
+                                if (dr["Email"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Email = dr["Email"].ToString();
+                                }
+                                if (dr["StreetAddress"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Address = dr["StreetAddress"].ToString();
+                                }
+                                if (dr["City"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.City = dr["City"].ToString();
+                                }
+                                if (dr["State"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.State = dr["State"].ToString();
+                                }
+                                if (dr["Zipcode"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Zipcode = dr["Zipcode"].ToString();
+                                }
+                                if (dr["Phone"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Phone = dr["Phone"].ToString();
+                                }
+                                d.Statuses.Add(newStatus);
+                            }
+                        }
+                    }
+                    cn.Close();
+                }
 
             }
 

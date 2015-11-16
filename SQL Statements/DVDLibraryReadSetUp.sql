@@ -6,15 +6,6 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
---GET ALL TITLES
-
---create procedure [dbo].[GetAllTitles]
---	as
---begin
---	select m.MovieTitle
---	from Movies m
---end
-
 --GET MOVIE INFO including Director & Studio BY MOVIEID
 
 go
@@ -77,12 +68,12 @@ end
 --Get UserRatings for Movie by MovieID
 
 go
-Create Procedure [dbo].[GetUserRatingByMovieID](
+Create Procedure [dbo].[GetUserRatingsByMovieID](
 	@MovieID int
 	)
 	as
 begin
-	SELECT ur.UserRatingID, ur.MovieID, ur.BorrowerID, ur.Rating as Rating, ur.OwnerRating, 
+	SELECT ur.UserRatingID, ur.MovieID, ur.BorrowerID, ur.Rating, ur.OwnerRating, 
 	b.FirstName, b.LastName
 	FROM UserRatings ur
 		LEFT JOIN Borrowers b on ur.BorrowerID = b.BorrowerID
@@ -126,7 +117,7 @@ Create Procedure [dbo].[GetBorrowerStatusesByDVDID](
 	)
 	as
 begin
-	SELECT bs.BorrowerStatusID, bs.BorrowerID, bs.DVDID, bs.CheckOutDate, bs. CheckInDate, b.IsOwner, b.FirstName,
+	SELECT bs.BorrowerStatusID, bs.BorrowerID, bs.DVDID, bs.CheckOutDate, bs.CheckInDate, b.IsOwner, b.FirstName,
 	b.LastName, b.Email, b.StreetAddress, b.City, b.[State], b.Zipcode, b.Phone
 	FROM BorrowerStatuses bs
 		LEFT JOIN Borrowers b on bs.BorrowerID = b.BorrowerID
