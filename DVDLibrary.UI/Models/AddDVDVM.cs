@@ -53,7 +53,7 @@ namespace DVDLibrary.UI.Models
                 new SelectListItem()
                 {
                     Text = "HD-DVD",
-                    Value = "HD=DVD"
+                    Value = "HD-DVD"
                 },
                 new SelectListItem()
                 {

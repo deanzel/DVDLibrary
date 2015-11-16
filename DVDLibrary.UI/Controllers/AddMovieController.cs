@@ -32,6 +32,9 @@ namespace DVDLibrary.UI.Controllers
 
         public ActionResult AddMovieByTMDBId(int id)
         {
+            //Need to add a little SQL database check for if movie is already in the database and send
+            //to a different view that only adds more copies of it and not edit metadata
+
             var newDVDVM = new AddDVDVM();
             newDVDVM.Movie = _oops.returnMovie(id);
 
@@ -41,16 +44,25 @@ namespace DVDLibrary.UI.Controllers
         [HttpPost]
         public ActionResult SendNewMovieInfoToDB(AddDVDVM newDVDs)
         {
-            for (int i = 0; i < newDVDs.Quantity; i++)
+            if (ModelState.IsValid)
             {
-                var newDVD = new DVD();
-                newDVD.Movie = newDVDs.Movie;
-                newDVD.DVDType = newDVDs.DVDType;
+                List<DVD> listOfDVDsAdded = new List<DVD>();
 
-                _oops.AddMovieToDB(newDVD);
+                for (int i = 0; i < newDVDs.Quantity; i++)
+                {
+                    var newDVD = new DVD();
+                    newDVD.Movie = newDVDs.Movie;
+                    newDVD.DVDType = newDVDs.DVDType;
+
+                    listOfDVDsAdded.Add(_oops.AddMovieToDB(newDVD));
+                }
+
+                return View("SuccessfullyAddedNewMovie", listOfDVDsAdded);
             }
-
-            return View("SuccessfullyAddedNewMovie", newDVDs.Movie);
+            else
+            {
+                return View("AddMovieByTMDBId", newDVDs);
+            }
         }
 
         public ActionResult GivePattyData()

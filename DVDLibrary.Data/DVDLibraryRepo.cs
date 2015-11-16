@@ -116,7 +116,7 @@ namespace DVDLibrary.Data
 
 
         //Adding a New DVD To the SQL Database
-        public void AddNewDVDToDBViaTMDB(DVD newDVD)
+        public DVD AddNewDVDToDBViaTMDB(DVD newDVD)
         {
             using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
             {
@@ -387,9 +387,9 @@ namespace DVDLibrary.Data
                 newDVD.DVDId = pDVD.Get<int>("DVDID");
 
                 cn.Close();
-
-
             }
+
+            return newDVD;
         }
 
         //Retrieve TMDB info with a TMDBNum

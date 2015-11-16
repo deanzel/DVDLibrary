@@ -10,13 +10,19 @@ namespace DVDLibrary.Models
     public class Movie
     {
         public int MovieId { get; set; }
+        [Required]
         public string MovieTitle { get; set; }
+        [Required]
         public int MovieTMDBNum { get; set; }
+        [Required]
         public string MpaaRating { get; set; }
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
+        [Required]
         public DateTime ReleaseDate { get; set; }
         [DataType(DataType.MultilineText)]
+        [Required]
         public string Synopsis { get; set; }
+        [Required]
         public int Duration { get; set; }
         [DataType(DataType.ImageUrl)]
         public string PosterUrl { get; set; }

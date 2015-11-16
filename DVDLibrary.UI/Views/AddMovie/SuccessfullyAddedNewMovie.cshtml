@@ -1,10 +1,117 @@
-﻿@model DVDLibrary.Models.Movie
+﻿@model List<DVDLibrary.Models.DVD>
 
 @{
-    ViewBag.Title = "SuccessfullyAddedNewMovie";
+    ViewBag.Title = "Successfully Added New Movies";
 }
 
-<h2>Successfully Added New Movie</h2>
+<h2>Successfully Added @Model[0].Movie.MovieTitle to Your Collection</h2>
 
-<p>You have added @Model.MovieTitle to your collection with the new MovieID of @Model.MovieId!!</p>
-
+<div>
+    <p>You have successfully added @Model.Count copies of @Model[0].Movie.MovieTitle to your collection. Here is the info below:</p>
+</div>
+<br/>
+<div class="container-fluid form-group">
+    <div class="row">
+        <div class="col-xs-9" id="dvdinfo">
+            <table class="table table-striped col-xs-9">
+                <thead>
+                <tr><th>DVD Information</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="col-xs-3"># of DVDs to Added</td>
+                    <td class="col-xs-6">@Model.Count</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">DVD Type</td>
+                    <td class="col-xs-6">@Model[0].DVDType</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">DVD IDs Generated</td>
+                    <td class="col-xs-6">
+                        @for (int i = 0; i < Model.Count - 1; i++)
+                        {
+                            @(Model[i].DVDId + ", ")
+                        }
+                        @Model[Model.Count - 1].DVDId
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Movie Title</td>
+                    <td class="col-xs-6">@Model[0].Movie.MovieTitle</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Movie ID</td>
+                    <td class="col-xs-6">@Model[0].Movie.MovieId</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">TMDB Number</td>
+                    <td class="col-xs-6">@Model[0].Movie.MovieTMDBNum
+                </tr>
+                <tr>
+                    <td class="col-xs-3">MPAA Rating</td>
+                    <td class="col-xs-6">@Model[0].Movie.MpaaRating</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Release Date</td>
+                    <td class="col-xs-6">@Model[0].Movie.ReleaseDate</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Duration</td>
+                    <td class="col-xs-6">@Model[0].Movie.Duration mins</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Synopsis</td>
+                    <td class="col-xs-6">@Model[0].Movie.Synopsis</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Poster URL</td>
+                    <td class="col-xs-6">@Model[0].Movie.PosterUrl</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Trailer (YouTube)</td>
+                    <td class="col-xs-6">@Model[0].Movie.YouTubeTrailer</td>
+                </tr>
+                <tr>
+                    <td class="col=xs-3">Genres</td>
+                    <td class="col-xs-6">
+                        @for (int i = 0; i < Model[0].Movie.Genres.Count - 1; i++)
+                        {
+                            @(Model[0].Movie.Genres[i].GenreName + ", ")
+                        }
+                        @Model[0].Movie.Genres[Model[0].Movie.Genres.Count - 1].GenreName
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Director</td>
+                    <td class="col-xs-6">@Model[0].Movie.Director.DirectorName</td>
+                </tr>
+                <tr>
+                    <td class="col-xs-3">Studio</td>
+                    <td class="col-xs-6">@Model[0].Movie.Studio.StudioName</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-3">
+            <img src="@Model[0].Movie.PosterUrl">
+        </div>
+        <div class="col-xs-9">
+            <table class="table table-striped col-xs-9">
+                <thead><tr><th>List of Actors</th><th>Actor Name</th><th>Character Name</th></tr></thead>
+                <tbody>
+                @foreach (var a in Model[0].Movie.MovieActors)
+                {
+                    <tr>
+                        <td class="col-xs-3">Actor #@(Model[0].Movie.MovieActors.IndexOf(a) + 1)</td>
+                        <td class="col-xs-3">@a.ActorName</td>
+                        <td class="col-xs-3">@a.CharacterName</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    
+@Html.ActionLink("Return to Add DVD Index", "Index", "AddMovie", null, new { @class = "btn btn-primary" })

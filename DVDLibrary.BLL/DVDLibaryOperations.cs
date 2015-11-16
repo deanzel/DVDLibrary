@@ -40,9 +40,9 @@ namespace DVDLibrary.BLL
         }
 
         //Add movie to SQL Database (for Patty)
-        public void AddMovieToDB(DVD addDVDInfo)
+        public DVD AddMovieToDB(DVD addDVDInfo)
         {
-            _repo.AddNewDVDToDBViaTMDB(addDVDInfo);
+            return _repo.AddNewDVDToDBViaTMDB(addDVDInfo);
         }
         
         
