@@ -33,7 +33,13 @@ namespace DVDLibrary.BLL
         public List<Models.Movie> ReturnMoviesListFromDB()
         {
             return _repo.RetrieveMoviesListFromDB();
-        } 
+        }
+
+        //Real one from SQL DB
+        public List<DVD> ReturnDvdsFromDbForMovieId(int movieId)
+        {
+            return _repo.RetrieveFullDVDInfoFromDB(movieId);
+        }
 
         public string returnDelete(int id)
         {

@@ -134,6 +134,7 @@
     <Compile Include="Models\AddDVDVM.cs" />
     <Compile Include="Models\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Models\SearchTMDBResultsVM.cs" />
+    <Compile Include="Models\ViewMovieDVDsVM.cs" />
     <Compile Include="Models\ViewMovieVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     <Content Include="Views\AddMovie\GivePattyData.cshtml" />
     <Content Include="Views\Home\BorrowDvdPost.cshtml" />
     <Content Include="Views\AddMovie\SuccessfullyAddedNewMovie.cshtml" />
+    <Content Include="Views\Home\SelectMovie.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

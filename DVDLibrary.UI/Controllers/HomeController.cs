@@ -12,7 +12,7 @@ namespace DVDLibrary.UI.Controllers
 {
     public class HomeController : Controller
     {
-        private DVDLibaryOperations _oops;
+        private DVDLibaryOperations _oops = new DVDLibaryOperations();
 
         // GET: Home
         public ActionResult Index()
@@ -22,7 +22,7 @@ namespace DVDLibrary.UI.Controllers
 
         public ActionResult ViewAllDvds()
         {
-            _oops = new DVDLibaryOperations();
+            //_oops = new DVDLibaryOperations();
 
             //var movies = _oops.ReturnMoviesList().OrderBy(m => m.MovieTitle).ToList();
             var movies = _oops.ReturnMoviesListFromDB().OrderBy(m => m.MovieTitle).ToList();
@@ -30,9 +30,10 @@ namespace DVDLibrary.UI.Controllers
             return View(movies);
         }
 
+        //For Mock
         public ActionResult SelectDvd(int id)
         {
-            _oops = new DVDLibaryOperations();
+            //_oops = new DVDLibaryOperations();
 
             var movies = _oops.ReturnMoviesList();
 
@@ -42,15 +43,22 @@ namespace DVDLibrary.UI.Controllers
             return View(viewMovieVM);
         }
 
-        //public ActionLink AddDvd()
-        //{
+        //For Real SQL DB
+        public ActionResult SelectMovie(int id)
+        {
+            var dvdsList = _oops.ReturnDvdsFromDbForMovieId(id);
 
-        //}
+            var viewMovieDVDsVM = new ViewMovieDVDsVM();
+            viewMovieDVDsVM.DVDs = dvdsList;
+
+            return View(viewMovieDVDsVM);
+        }
+
 
         [HttpPost]
         public ActionResult DeleteDVD(int id)
         {
-            _oops = new DVDLibaryOperations();
+            //_oops = new DVDLibaryOperations();
 
             var message = _oops.returnDelete(id);
 
@@ -71,7 +79,7 @@ namespace DVDLibrary.UI.Controllers
             Movie movie = new Movie();
             movie.MovieId = int.Parse(Request.Form["movieID"]);
 
-            _oops = new DVDLibaryOperations();
+            //_oops = new DVDLibaryOperations();
             movie = _oops.returnMovie(movie.MovieId);
 
             return View("SearchForMoviePost", movie);
