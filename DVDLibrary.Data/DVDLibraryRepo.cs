@@ -133,7 +133,19 @@ namespace DVDLibrary.Data
         } 
 
 
-        //Retrieve all the info including dvds available for a movie by MovieID
+        //Retrieve Full Movie Info and DVDs based on MovieID from the SQL DB
+        public List<DVD> RetrieveFullDVDInfoFromDB(int movieID)
+        {
+            List<DVD> listOfDVDInfo = new List<DVD>();
+
+            using (var cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var cmd = new SqlCommand();
+
+            }
+
+            return listOfDVDInfo;
+        } 
 
 
         //Adding a New DVD To the SQL Database (Checks if it already exists as well)

@@ -89,7 +89,7 @@ create table UserRatings (
 go
 
 create table UserNotes(
-	UserNote int identity(1,1) primary key,
+	UserNoteID int identity(1,1) primary key,
 	BorrowerID int foreign key references Borrowers(BorrowerID) not null,
 	MovieID int foreign key references Movies(MovieID) not null,
 	Note nvarchar(500) not null,
@@ -119,9 +119,9 @@ create table GenresMovies (
 )
 go
 
-create table BorrowerStatusesDVDs (
-	BorrowerStatusID int foreign key references BorrowerStatuses(BorrowerStatusID) not null,
-	DVDID int foreign key references DVDs(DVDID) not null,
-	Constraint PK_BorrowerStatusesDVDs PRIMARY KEY(BorrowerStatusID, DVDID)
-)
-go
+--create table BorrowerStatusesDVDs (
+--	BorrowerStatusID int foreign key references BorrowerStatuses(BorrowerStatusID) not null,
+--	DVDID int foreign key references DVDs(DVDID) not null,
+--	Constraint PK_BorrowerStatusesDVDs PRIMARY KEY(BorrowerStatusID, DVDID)
+--)
+--go
