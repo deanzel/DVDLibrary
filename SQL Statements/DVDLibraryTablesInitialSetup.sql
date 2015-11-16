@@ -118,10 +118,3 @@ create table GenresMovies (
 	Constraint PK_GenresMovies PRIMARY KEY(GenreID, MovieID)
 )
 go
-
---create table BorrowerStatusesDVDs (
---	BorrowerStatusID int foreign key references BorrowerStatuses(BorrowerStatusID) not null,
---	DVDID int foreign key references DVDs(DVDID) not null,
---	Constraint PK_BorrowerStatusesDVDs PRIMARY KEY(BorrowerStatusID, DVDID)
---)
---go

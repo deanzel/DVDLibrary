@@ -497,7 +497,9 @@ namespace DVDLibrary.Data
                 SqlCommand cmd = new SqlCommand();
                 
                 cmd.CommandText = "select count(movies.movietmdbnum) from movies " +
-                                  "where movietmdbnum = '" + newDVD.Movie.MovieTMDBNum + "'";
+                                  "where movietmdbnum = @MovieTMDBNum";
+                cmd.Parameters.AddWithValue("MovieTMDBNum", newDVD.Movie.MovieTMDBNum);
+
                 cmd.Connection = cn;
                 cn.Open();
                 int movieTMDBNumCount = int.Parse(cmd.ExecuteScalar().ToString());
@@ -508,7 +510,9 @@ namespace DVDLibrary.Data
                 {
 
                     cmd.CommandText = ("select count(studios.studioname) from studios " +
-                                       "where studioname = '" + newDVD.Movie.Studio.StudioName + "'");
+                                       "where studioname = @StudioName");
+                    cmd.Parameters.AddWithValue("StudioName", newDVD.Movie.Studio.StudioName);
+
                     cn.Open();
                     int studioCount = (int) cmd.ExecuteScalar();
 
@@ -528,7 +532,8 @@ namespace DVDLibrary.Data
                     else
                     {
                         cmd.CommandText = "select studioid from studios " +
-                                          "where studioname = '" + newDVD.Movie.Studio.StudioName + "'";
+                                          "where studioname = @StudioName";
+                        cmd.Parameters.AddWithValue("StudioName", newDVD.Movie.Studio.StudioName);
                         SqlDataReader rdr = cmd.ExecuteReader();
                         while (rdr.Read())
                         {
@@ -541,7 +546,9 @@ namespace DVDLibrary.Data
 
                     //Adding Director
                     cmd.CommandText = "select count(directors.directorname) from directors " +
-                                      "where directorname = '" + newDVD.Movie.Director.DirectorName + "'";
+                                      "where directorname = @DirectorName";
+                    cmd.Parameters.AddWithValue("DirectorName", newDVD.Movie.Director.DirectorName);
+
                     cn.Open();
                     int directorCount = (int) cmd.ExecuteScalar();
 
@@ -560,7 +567,9 @@ namespace DVDLibrary.Data
                     else
                     {
                         cmd.CommandText = "select directorid from directors " +
-                                          "where directorname = '" + newDVD.Movie.Director.DirectorName + "'";
+                                          "where directorname = @DirectorName";
+                        cmd.Parameters.AddWithValue("DirectorName", newDVD.Movie.Director.DirectorName);
+
                         using (SqlDataReader rdr = cmd.ExecuteReader())
                         {
                             while (rdr.Read())
@@ -574,7 +583,8 @@ namespace DVDLibrary.Data
 
                     //Adding MovieInfo
                     cmd.CommandText = "select count(movies.movietitle) from movies " +
-                                      "where movietitle = '" + newDVD.Movie.MovieTitle + "'";
+                                      "where movietitle = @MovieTitle";
+                    cmd.Parameters.AddWithValue("MovieTitle", newDVD.Movie.MovieTitle);
 
                     cn.Open();
 
@@ -609,7 +619,9 @@ namespace DVDLibrary.Data
                         for (int i = 0; i < newDVD.Movie.MovieActors.Count; i++)
                         {
                             cmd.CommandText = "select count(actors.actorname) from actors " +
-                                              "where actorname = '" + newDVD.Movie.MovieActors[i].ActorName + "'";
+                                              "where actorname = @ActorName";
+                            cmd.Parameters.AddWithValue("ActorName", newDVD.Movie.MovieActors[i].ActorName);
+
                             cn.Open();
 
                             int actorNameCount = (int) cmd.ExecuteScalar();
@@ -629,7 +641,8 @@ namespace DVDLibrary.Data
                             else
                             {
                                 cmd.CommandText = "select actorid from actors " +
-                                                  "where actorname = '" + newDVD.Movie.MovieActors[i].ActorName + "'";
+                                                  "where actorname = @ActorName";
+                                cmd.Parameters.AddWithValue("ActorName", newDVD.Movie.MovieActors[i].ActorName);
                                 using (SqlDataReader rdr = cmd.ExecuteReader())
                                 {
                                     while (rdr.Read())
@@ -662,7 +675,8 @@ namespace DVDLibrary.Data
                         for (int i = 0; i < newDVD.Movie.Genres.Count; i++)
                         {
                             cmd.CommandText = "select count(genres.genrename) from genres " +
-                                              "where genrename = '" + newDVD.Movie.Genres[i].GenreName + "'";
+                                              "where genrename = @GenreName";
+                            cmd.Parameters.AddWithValue("GenreName", newDVD.Movie.Genres[i].GenreName);
                             cn.Open();
 
                             int genresCount = (int) cmd.ExecuteScalar();
@@ -681,7 +695,8 @@ namespace DVDLibrary.Data
                             else
                             {
                                 cmd.CommandText = "select genreid from genres " +
-                                                  "where genrename = '" + newDVD.Movie.Genres[i].GenreName + "'";
+                                                  "where genrename = @GenreName";
+                                cmd.Parameters.AddWithValue("GenreName", newDVD.Movie.Genres[i].GenreName);
                                 using (SqlDataReader rdr = cmd.ExecuteReader())
                                 {
                                     while (rdr.Read())
@@ -731,7 +746,8 @@ namespace DVDLibrary.Data
                 else
                 {
                     cmd.CommandText = "select movieid from movies " +
-                                  "where movietmdbnum = '" + newDVD.Movie.MovieTMDBNum + "'";
+                        "where movietmdbnum = @MovieTMDBNum";
+                    cmd.Parameters.AddWithValue("MovieTMDBNum", newDVD.Movie.MovieTMDBNum);
                     cmd.Connection = cn;
                     cn.Open();
 
@@ -942,7 +958,5 @@ namespace DVDLibrary.Data
 
             return movie;
         }
-
-        //Full movie info populate method
     }
 }
