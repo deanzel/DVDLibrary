@@ -45,7 +45,7 @@ else
                 @foreach (var r in Model.ListOfTMDBResults)
                 {
                     <tr>
-                        <td><img class="img-responsive" src="@r.PosterUrl"></td>
+                        <td><img src="@r.PosterUrl"></td>
                         <td>
                             <h3><b>@r.MovieTitle</b></h3>
                             <p>@r.ReleaseDate.ToString("d")</p>

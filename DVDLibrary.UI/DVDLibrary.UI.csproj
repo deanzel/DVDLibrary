@@ -150,9 +150,7 @@
     <Content Include="Views\Home\SearchForMoviePost.cshtml" />
     <Content Include="Views\AddMovie\Index.cshtml" />
     <Content Include="Views\AddMovie\SearchTMDBForMovies.cshtml" />
-    <Content Include="Views\Home\AddBorrower.cshtml" />
     <Content Include="Views\AddMovie\AddMovieByTMDBId.cshtml" />
-    <Content Include="Views\Home\AddBorrowerPost.cshtml" />
     <Content Include="Views\Home\SelectDvd.cshtml" />
     <Content Include="Views\AddMovie\GivePattyData.cshtml" />
     <Content Include="Views\Home\BorrowDvdPost.cshtml" />

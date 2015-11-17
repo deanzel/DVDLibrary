@@ -110,23 +110,6 @@ namespace DVDLibrary.UI.Controllers
             }
         }
 
-        public ActionResult AddBorrower()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult AddBorrowerPost()
-        {
-            Borrower borrower = new Borrower();
-            borrower.FirstName = Request.Form["firstName"];
-            borrower.LastName = Request.Form["lastName"];
-            borrower.Email = Request.Form["email"];
-            borrower.Phone = Request.Form["phone"];
-
-            return View("AddBorrowerPost", borrower);
-        }
-
         [HttpPost]
         public ActionResult BorrowDvdPost(ViewMovieVM newBorrowerSelection)
         {
