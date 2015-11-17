@@ -3,16 +3,20 @@
 @{
     ViewBag.Title = "Git Happens' DVD Library Index";
 }
-
-@if (Model.Owner != null)
-{
-    <h2>Welcome to @Model.Owner's DVD Library Collection!!</h2>
-}
-else {<h2>Welcome to Git Happens' DVD Library Collection!!</h2>
-}
-<div class="row">
-    <p>This is your one stop to fully integrating and optimizing your DVD/BD collection.</p>
+<div class="jumbotron">
+    @if (Model.Owner != null)
+    {
+        <h2 class="text-center">Welcome to <em>@Model.Owner's</em> DVD Library Collection!!</h2>
+    }
+    else
+    {<h2 class="text-center">Welcome to Git Happens' DVD Library Collection!!</h2>
+    }
 </div>
+
+<div class="row">
+     <h4>This is your one stop to fully organizing, integrating and optimizing your DVD/BD collection.</h4>
+</div>
+    
 <div class="row">
 <p>Just take a look at a few of our statistics...</p>
 <ul>

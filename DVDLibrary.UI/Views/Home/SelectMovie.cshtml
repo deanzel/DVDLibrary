@@ -8,7 +8,7 @@
 <p>@Html.ActionLink("Back to DVD Collection", "ViewAllDvds", "Home")</p>
 
 <h2>@Model.DVDs[0].Movie.MovieTitle</h2>
-<img src="@Model.DVDs[0].Movie.PosterUrl" align="right">
+<img class="img-responsive" src="@Model.DVDs[0].Movie.PosterUrl" align="right">
 <div class="table-striped">
     <ul>
         <li>@Model.DVDs[0].Movie.MpaaRating</li>
@@ -80,13 +80,14 @@
         }
     </ul>
 </div>
-<br />
+<br/>
 <div id="trailer">
     @if (@Model.DVDs[0].Movie.YouTubeTrailer != null)
     {
         <iframe width="420" height="315" src="@Model.DVDs[0].Movie.YouTubeTrailer"></iframe>
     }
 </div>
+
 <br />
 <div>
     @using (Html.BeginForm("DeleteDVD", "Home", FormMethod.Post))

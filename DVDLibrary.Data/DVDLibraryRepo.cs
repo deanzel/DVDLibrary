@@ -26,7 +26,6 @@ namespace DVDLibrary.Data
             ListOfDVDs = new List<DVD>();
             ListOfMovies = new List<Models.Movie>();
 
-            //InitializeMockDataRepo();
         }
 
         //Initialize a mock list of DVDs and movies
