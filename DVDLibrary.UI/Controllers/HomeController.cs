@@ -17,7 +17,9 @@ namespace DVDLibrary.UI.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+            var stats = _oops.ReturnCollectionStats();
+
+            return View(stats);
         }
 
         public ActionResult ViewAllDvds()

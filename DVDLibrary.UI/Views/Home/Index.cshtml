@@ -1,16 +1,32 @@
-﻿
+﻿@model DVDLibrary.Models.CollectionStats
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Git Happens' DVD Library Index";
 }
 
-<div id="container">
-    <h2>Welcome to our DVD Collection!</h2>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-
+@if (Model.Owner != null)
+{
+    <h2>Welcome to @Model.Owner's DVD Library Collection!!</h2>
+}
+else {<h2>Welcome to Git Happens' DVD Library Collection!!</h2>
+}
+<div class="row">
+    <p>This is your one stop to fully integrating and optimizing your DVD/BD collection.</p>
+</div>
+<div class="row">
+<p>Just take a look at a few of our statistics...</p>
+<ul>
+    <li><b>Owner:</b> @Model.Owner</li>
+    <li><b># of Movies:</b> @Model.MoviesCount</li>
+    <li><b># of DVDs:</b> @Model.DVDsCount</li>
+    <li><b># of Users:</b> @Model.BorrowersCount</li>
+    <li><b># of Rentals:</b> @Model.BorrowerStatusesCount</li>
+    <li><b># of User Ratings:</b>@Model.UserRatingsCount</li>
+    <li><b># of User Notes:</b> @Model.UserNotesCount</li>
+    <li><b># of Directors:</b> @Model.DirectorsCount</li>
+    <li><b># of Studios:</b> @Model.SutdiosCount</li>
+    <li><b># of Genres:</b> @Model.GenresCount</li>
+    <li><b># of Actors:</b> @Model.ActorsCount</li>
+    <li><b># of Characters:</b> @Model.ActorsRolesCount</li>
+</ul>
 </div>

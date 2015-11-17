@@ -961,8 +961,113 @@ namespace DVDLibrary.Data
                     return response;
                 }
             }
-        } 
+        }
+        
+        
+        //Collection Statistics for Index Page
+        public CollectionStats RetrieveCollectionStats()
+        {
+            var stats = new CollectionStats();
 
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                //Owner Name
+                cmd.CommandText = "select FirstName, LastName from Borrowers " +
+                                  "where IsOwner = 1";
+                cmd.Connection = cn;
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                       stats.Owner = dr["FirstName"].ToString() + " " + dr["LastName"].ToString();
+                    }
+                }
+                cn.Close();
+
+                //Movies Count
+                cmd.CommandText = "select count(Movies.MovieID) from Movies";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.MoviesCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //DVDs Count
+                cmd.CommandText = "select count(DVDs.DVDID) from DVDs";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.DVDsCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Borrowers Count
+                cmd.CommandText = "select count(Borrowers.BorrowerID) from Borrowers";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.BorrowersCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Borrower Status Count
+                cmd.CommandText = "select count(BorrowerStatuses.BorrowerStatusID) from BorrowerStatuses";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.BorrowerStatusesCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //User Ratings Count
+                cmd.CommandText = "select count(UserRatings.UserRatingID) from UserRatings";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.UserRatingsCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //User Notes Count
+                cmd.CommandText = "select count(UserNotes.UserNoteID) from UserNotes";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.UserNotesCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Directors Count
+                cmd.CommandText = "select count(Directors.DirectorID) from Directors";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.DirectorsCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Studios Count
+                cmd.CommandText = "select count(Studios.StudioID) from Studios";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.SutdiosCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Genres Count
+                cmd.CommandText = "select count(Genres.GenreID) from Genres";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.GenresCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Actors Count
+                cmd.CommandText = "select count(Actors.ActorID) from Actors";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.ActorsCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Actors Roles Count
+                cmd.CommandText = "select count(ActorsMovies.MovieID) from ActorsMovies";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.ActorsRolesCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+            }
+
+
+            return stats;
+        }
         //Search TMDB for movies to add depending on Search String
         public List<SearchTMDBResult> RetrieveTMDBSearchResults(string movieName)
         {

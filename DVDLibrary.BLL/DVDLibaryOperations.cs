@@ -78,5 +78,11 @@ namespace DVDLibrary.BLL
             return _repo.RetrieveTMDBSearchResults(movieName);
         }
 
+
+        //Get Collection Stats from DB
+        public CollectionStats ReturnCollectionStats()
+        {
+            return _repo.RetrieveCollectionStats();
+        }
     }
 }

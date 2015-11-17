@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Borrower.cs" />
+    <Compile Include="CollectionStats.cs" />
     <Compile Include="Director.cs" />
     <Compile Include="DVD.cs" />
     <Compile Include="Genre.cs" />
