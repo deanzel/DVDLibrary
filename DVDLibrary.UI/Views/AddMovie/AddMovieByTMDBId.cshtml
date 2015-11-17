@@ -42,6 +42,7 @@
                         </tr>
                         <tr>
                             <td class="col-xs-3">Release Date</td>
+                            @*<td class="col-xs-6">@Html.EditorFor(m => m.Movie.ReleaseDate)</td>*@
                             <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.ReleaseDate, "{0:MM/dd/yyyy}", new {@class = "form-control"})</td>
                         </tr>
                         <tr>

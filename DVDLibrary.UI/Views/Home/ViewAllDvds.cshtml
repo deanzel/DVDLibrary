@@ -10,25 +10,24 @@
 
 @*@Html.ActionLink("Add A DVD","AddDvd", "Home")*@
 <div>
-    <input id="search" name="search" type="text" placeholder="Filter Movie Title Here" data-toggle="hideseek" data-list=".list">
+    <input id="search" name="search" type="text" placeholder="Filter Movie Title Here" data-list=".list">
     <p></p>
 </div>
 <div class ="row">
 <ul class="list-group list">
     @foreach (var movie in Model)
     {
-
         <div class="col-md-3">
             <li class="list-group-item"><a href="/Home/SelectMovie/@movie.MovieId">
                     @movie.MovieTitle
                 </a>
             </li>
         </div>
-        
     }
     </ul>
 </div>
 
 @section Scripts{
+    <script src="~/Scripts/jquery.hideseek.js"></script>
     <script src="~/Scripts/app/mySearch.js"></script>
 }

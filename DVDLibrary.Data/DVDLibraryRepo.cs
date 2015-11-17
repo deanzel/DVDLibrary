@@ -162,6 +162,7 @@ namespace DVDLibrary.Data
                         movieInfo.MovieTMDBNum = int.Parse(dr["MovieTMDBNum"].ToString());
                         movieInfo.ReleaseDate = DateTime.Parse(dr["ReleaseDate"].ToString());
                         movieInfo.MpaaRating = dr["Rating"].ToString();
+                        movieInfo.Duration = int.Parse(dr["DurationInMin"].ToString());
                         if (dr["Synopsis"] != DBNull.Value)
                         {
                             movieInfo.Synopsis = dr["Synopsis"].ToString();
@@ -675,11 +676,7 @@ namespace DVDLibrary.Data
                             p.Add("MovieID", newDVD.Movie.MovieId);
                             p.Add("CharacterName", a.CharacterName);
 
-                            cn.Open();
-
                             cn.Execute("AddNewActorMovieToActorsMovies", p, commandType: CommandType.StoredProcedure);
-
-                            cn.Close();
                         }
                     }
 
@@ -730,11 +727,7 @@ namespace DVDLibrary.Data
                             p.Add("GenreID", g.GenreId);
                             p.Add("MovieID", newDVD.Movie.MovieId);
 
-                            cn.Open();
-
                             cn.Execute("AddNewGenreMovieToGenresMovies", p, commandType: CommandType.StoredProcedure);
-
-                            cn.Close();
                         }
                     }
 
@@ -743,8 +736,6 @@ namespace DVDLibrary.Data
                     {
                         for (int i = 0; i < newDVD.Movie.MovieAliases.Count; i++)
                         {
-                            cn.Open();
-
                             var p = new DynamicParameters();
 
                             p.Add("MovieID", newDVD.Movie.MovieId);
@@ -754,8 +745,6 @@ namespace DVDLibrary.Data
                             cn.Execute("AddNewMovieAliasToMovieAliases", p, commandType: CommandType.StoredProcedure);
 
                             newDVD.Movie.MovieAliases[i].MovieAliasId = p.Get<int>("MovieAliasID");
-
-                            cn.Close();
                         }
                     }
                 }
@@ -780,7 +769,6 @@ namespace DVDLibrary.Data
 
 
                 //Add DVD to Database
-                cn.Open();
 
                 var pDVD = new DynamicParameters();
 
@@ -791,8 +779,6 @@ namespace DVDLibrary.Data
                 cn.Execute("AddNewDVDToDVDs", pDVD, commandType: CommandType.StoredProcedure);
 
                 newDVD.DVDId = pDVD.Get<int>("DVDID");
-
-                cn.Close();
             }
 
             return newDVD;
