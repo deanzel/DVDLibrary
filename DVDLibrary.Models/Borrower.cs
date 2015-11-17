@@ -18,7 +18,7 @@ namespace DVDLibrary.Models
         public bool IsOwner { get; set; }
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage = "Please enter your email")]
-        //[RegularExpression(@"^\S+@\S+$", ErrorMessage = "the email format isn't valid")]
+        [RegularExpression(@"^\S+@\S+$", ErrorMessage = "the email format isn't valid")]
         public string Email { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
