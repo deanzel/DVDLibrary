@@ -52,7 +52,7 @@ else
                             <br/>
                             <p>@r.Synopsis</p>
                         </td>
-                        <td>@Html.ActionLink("Add Movie", "AddMovieByTMDBId", "AddMovie", new { id = @r.TMDBNum }, new { @class = "btn btn-primary" })</td>
+                        <td style="vertical-align:middle">@Html.ActionLink("Add Movie", "AddMovieByTMDBId", "AddMovie", new { id = @r.TMDBNum }, new { @class = "btn btn-primary" })</td>
                     </tr>
                 }
             </tbody>

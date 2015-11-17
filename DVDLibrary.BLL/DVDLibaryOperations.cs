@@ -41,6 +41,12 @@ namespace DVDLibrary.BLL
             return _repo.RetrieveFullDVDInfoFromDB(movieId);
         }
 
+        //Add a New Borrower To DB
+        public Borrower AddNewBorrower(Borrower newBorrower)
+        {
+            return _repo.AddNewBorrowerToDB(newBorrower);
+        }
+
         public string returnDelete(int id)
         {
             return _repo.DeleteDVD(id);

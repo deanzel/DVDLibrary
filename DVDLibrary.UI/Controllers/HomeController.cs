@@ -22,9 +22,6 @@ namespace DVDLibrary.UI.Controllers
 
         public ActionResult ViewAllDvds()
         {
-            //_oops = new DVDLibaryOperations();
-
-            //var movies = _oops.ReturnMoviesList().OrderBy(m => m.MovieTitle).ToList();
             var movies = _oops.ReturnMoviesListFromDB().OrderBy(m => m.MovieTitle).ToList();
 
             return View(movies);
@@ -33,8 +30,6 @@ namespace DVDLibrary.UI.Controllers
         //For Mock
         public ActionResult SelectDvd(int id)
         {
-            //_oops = new DVDLibaryOperations();
-
             var movies = _oops.ReturnMoviesList();
 
             var viewMovieVM = new ViewMovieVM();
@@ -58,8 +53,6 @@ namespace DVDLibrary.UI.Controllers
         [HttpPost]
         public ActionResult DeleteDVD(int id)
         {
-            //_oops = new DVDLibaryOperations();
-
             var message = _oops.returnDelete(id);
 
             MessageBox.Show(message);
@@ -79,10 +72,32 @@ namespace DVDLibrary.UI.Controllers
             Movie movie = new Movie();
             movie.MovieId = int.Parse(Request.Form["movieID"]);
 
-            //_oops = new DVDLibaryOperations();
             movie = _oops.returnMovie(movie.MovieId);
 
             return View("SearchForMoviePost", movie);
+        }
+
+        //Real to DB
+        public ActionResult AddNewBorrower()
+        {
+            var addBorrowerVM = new AddBorrowerVM();
+
+            return View(addBorrowerVM);
+        }
+
+        [HttpPost]
+        public ActionResult AddNewBorrower(AddBorrowerVM newBorrower)
+        {
+            if (ModelState.IsValid)
+            {
+                var addedBorrower = _oops.AddNewBorrower(newBorrower.Borrower);
+
+                return View("SuccessfullyAddedNewBorrower", addedBorrower);
+            }
+            else
+            {
+                return View("AddNewBorrower", newBorrower);
+            }
         }
 
         public ActionResult AddBorrower()

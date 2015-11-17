@@ -130,6 +130,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AddBorrowerVM.cs" />
     <Compile Include="Models\BorrowerToAddVM.cs" />
     <Compile Include="Models\AddDVDVM.cs" />
     <Compile Include="Models\Extensions\HtmlHelperExtensions.cs" />
@@ -158,6 +159,8 @@
     <Content Include="Views\Home\BorrowDvdPost.cshtml" />
     <Content Include="Views\AddMovie\SuccessfullyAddedNewMovie.cshtml" />
     <Content Include="Views\Home\SelectMovie.cshtml" />
+    <Content Include="Views\Home\AddNewBorrower.cshtml" />
+    <Content Include="Views\Home\SuccessfullyAddedNewBorrower.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

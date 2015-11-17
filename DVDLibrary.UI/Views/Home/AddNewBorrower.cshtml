@@ -1,0 +1,66 @@
+﻿@model DVDLibrary.UI.Models.AddBorrowerVM
+
+@{
+    ViewBag.Title = "Add a New Borrower";
+}
+
+<h2>Add a New Borrower</h2>
+
+@using (Html.BeginForm("AddNewBorrower", "Home", FormMethod.Post))
+{
+    @Html.ValidationSummary(false)
+    <div class="container-fluid form-group">
+    <div class="row">
+        <table class="table table-hover col-xs-12">
+            <thead>
+            <tr><th>New Borrower Information</th></tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="col-xs-4">First Name</td>
+                <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.FirstName, new {@class = "form-control"})</td>
+            </tr>
+            <tr>
+                <td class="col-xs-4">Last Name</td>
+                <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.LastName, new {@class = "form-control"})</td>
+            </tr>
+            <tr>
+                <td class="col-xs-4">Are You the Owner of Collection?</td>
+                <td class="col-xs-8">@Html.CheckBoxFor(m => m.Borrower.IsOwner, new {@class = "form-control"})</td>
+            </tr>
+            <tr>
+                <td class="col-xs-4">Email</td>
+                <td class="col-xs-8">@Html.EditorFor(m => m.Borrower.Email, new { htmlAttributes = new { @class = "form-control"}})</td>
+            </tr>
+            <tr>
+                <td class="col-xs-4">Phone Number</td>
+                <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.Phone, new {@class = "form-control"})</td>
+            </tr>
+            <tr>
+                <td class="col-xs-4">Address</td>
+                <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.Address, new {@class = "form-control"})</td>
+            </tr>
+            <tr>
+                <td class="col-xs-4">City</td>
+                <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.City, new {@class = "form-control"})</td>
+            </tr>
+            <tr>
+                <td class="col-xs-4">State</td>
+                <td class="col-xs-8">@Html.DropDownListFor(m => m.Borrower.State, Model.ListOfStates, new {@class = "form-control"})</td>
+            </tr>
+            <tr>
+                <td class="col-xs-4">Zipcode</td>
+                <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.Zipcode, new {@class = "form-control"})</td>
+            </tr>
+            </tbody>
+
+        </table>
+        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="reset" class="btn btn-danger">Reset</button>
+        </div>
+    </div>
+}
+
+        <div class="row">
+            @Html.ActionLink("Return to Home Page", "Index", "Home", null, new { @class = "btn btn-primary" })
+        </div>

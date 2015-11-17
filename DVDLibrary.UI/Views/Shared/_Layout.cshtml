@@ -17,7 +17,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    @*<span class="icon-bar"></span>*@
                 </button>
                 <a class="navbar-brand" href="/Home/Index" id="bootstrap-override">
                     <img alt="SG Corp" src="/Content/Images/SWG-small.png" />
@@ -27,9 +27,20 @@
                 <ul class="nav navbar-nav">
                     <li><a href="/Home/Index"><b>SGDVD</b><span class="sr-only">(current)</span></a></li>
                     <li><a href="/Home/ViewAllDvds">My DVD Collection</a></li>
-                    <li><a href="/Home/SearchForMovie">Search</a></li>
-                    <li><a href="/AddMovie/Index">Add DVD</a></li>
-                    <li><a href="/Home/AddBorrower">Add Borrower</a></li>
+                    <li><a href="/AddMovie/Index">Add New DVD</a></li>
+                    <li><a href="/Home/AddNewBorrower">Add New Borrower</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="/Home/SearchForMovie" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Search <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Home/SearchForMovie">Search Index</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Search by Title</a></li>
+                            <li><a href="#">Search by Genre</a></li>
+                            <li><a href="#">Search by Rating</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -199,7 +199,7 @@ namespace DVDLibrary.Data
                 cmd.Connection = cn;
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@MovieID", movieId);
-                //Perhaps need an option if Actor List is null *****GetActorsListByMovieID has too many arguments specified
+                
                 cn.Open();
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
@@ -906,6 +906,31 @@ namespace DVDLibrary.Data
             return "Your movie has been deleted from the DVD collection";
 
         }
+
+        //Add a New Borrower to DB
+        public Borrower AddNewBorrowerToDB(Borrower newBorrower)
+        {
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var p = new DynamicParameters();
+                p.Add("IsOwner", newBorrower.IsOwner);
+                p.Add("FirstName", newBorrower.FirstName);
+                p.Add("LastName", newBorrower.LastName);
+                p.Add("Email", newBorrower.Email);
+                p.Add("StreetAddress", newBorrower.Address);
+                p.Add("City", newBorrower.City);
+                p.Add("State", newBorrower.State);
+                p.Add("Zipcode", newBorrower.Zipcode);
+                p.Add("Phone", newBorrower.Phone);
+                p.Add("BorrowerID", DbType.Int32, direction: ParameterDirection.Output);
+
+                cn.Execute("AddNewBorrowerToBorrowers", p, commandType: CommandType.StoredProcedure);
+
+                newBorrower.BorrowerId = p.Get<int>("BorrowerID");
+            }
+            return newBorrower;
+        }
+
 
         //Search TMDB for movies to add depending on Search String
         public List<SearchTMDBResult> RetrieveTMDBSearchResults(string movieName)
