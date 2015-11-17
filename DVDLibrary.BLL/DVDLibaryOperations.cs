@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DVDLibrary.Data;
 using DVDLibrary.Models;
+using RestSharp.Extensions;
 using TMDbLib.Client;
 using Movie = TMDbLib.Objects.Movies.Movie;
 
@@ -46,6 +47,13 @@ namespace DVDLibrary.BLL
         {
             return _repo.AddNewBorrowerToDB(newBorrower);
         }
+
+        //Check if Owner is already in the DB
+        public Response CheckIfOwnerAlreadyExists()
+        {
+            return _repo.CheckIfOwnerAlreadyExistsInDb();
+        }
+
 
         public string returnDelete(int id)
         {

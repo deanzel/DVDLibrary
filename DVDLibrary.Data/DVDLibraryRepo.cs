@@ -931,6 +931,37 @@ namespace DVDLibrary.Data
             return newBorrower;
         }
 
+        //Check if an Owner is already in the DB
+        public Response CheckIfOwnerAlreadyExistsInDb()
+        {
+            var response = new Response();
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = "select count(Borrowers.BorrowerID) from Borrowers " +
+                                  "where IsOwner = 1";
+
+                cmd.Connection = cn;
+                cn.Open();
+                int ownerCount = int.Parse(cmd.ExecuteScalar().ToString());
+
+                cn.Close();
+
+                if (ownerCount == 0)
+                {
+                    response.Success = false;
+                    response.Message = "No previous owner exists";
+                    return response;
+                }
+                else
+                {
+                    response.Success = true;
+                    response.Message = "An owner already exists!!";
+                    return response;
+                }
+            }
+        } 
 
         //Search TMDB for movies to add depending on Search String
         public List<SearchTMDBResult> RetrieveTMDBSearchResults(string movieName)

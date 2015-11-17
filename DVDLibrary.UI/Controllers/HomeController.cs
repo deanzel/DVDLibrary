@@ -88,6 +88,14 @@ namespace DVDLibrary.UI.Controllers
         [HttpPost]
         public ActionResult AddNewBorrower(AddBorrowerVM newBorrower)
         {
+            if (_oops.CheckIfOwnerAlreadyExists().Success)
+            {
+                if (newBorrower.Borrower.IsOwner)
+                {
+                    ModelState.AddModelError("IsOwner", "There is already a previous owner for this collection!!");
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 var addedBorrower = _oops.AddNewBorrower(newBorrower.Borrower);
