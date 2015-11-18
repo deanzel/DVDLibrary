@@ -40,46 +40,48 @@ namespace DVDLibrary.UI.Controllers
         }
 
 
-        [HttpPost]
-        public ActionResult DeleteDVD(int id)
-        {
-            var message = _oops.returnDelete(id);
-
-            MessageBox.Show(message);
 
 
-            return RedirectToAction("ViewAllDvds");
-        }
+        //[HttpPost]
+        //public ActionResult DeleteDVD(int id)
+        //{
+        //    var message = _oops.returnDelete(id);
 
-        public ActionResult SearchForMovie()
-        {
-            return View();
-        }
+        //    MessageBox.Show(message);
 
-        [HttpPost]
-        public ActionResult SearchForMoviePost()
-        {
-            Movie movie = new Movie();
-            movie.MovieId = int.Parse(Request.Form["movieID"]);
 
-            movie = _oops.returnMovie(movie.MovieId);
+        //    return RedirectToAction("ViewAllDvds");
+        //}
 
-            return View("SearchForMoviePost", movie);
-        }
+        //public ActionResult SearchForMovie()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public ActionResult BorrowDvdPost(ViewMovieVM newBorrowerSelection)
-        {
-            ViewMovieVM vm = new ViewMovieVM();
+        //[HttpPost]
+        //public ActionResult SearchForMoviePost()
+        //{
+        //    Movie movie = new Movie();
+        //    movie.MovieId = int.Parse(Request.Form["movieID"]);
 
-            vm.borrower = newBorrowerSelection.borrower;
+        //    movie = _oops.returnMovie(movie.MovieId);
 
-            if (ModelState.IsValid)
-            return View("BorrowDvdPost", vm);
-            else
-            {
-                return View("AddBorrower");
-            }
-        }
+        //    return View("SearchForMoviePost", movie);
+        //}
+
+        //[HttpPost]
+        //public ActionResult BorrowDvdPost(ViewMovieVM newBorrowerSelection)
+        //{
+        //    ViewMovieVM vm = new ViewMovieVM();
+
+        //    vm.borrower = newBorrowerSelection.borrower;
+
+        //    if (ModelState.IsValid)
+        //    return View("BorrowDvdPost", vm);
+        //    else
+        //    {
+        //        return View("AddBorrower");
+        //    }
+        //}
     }
 }

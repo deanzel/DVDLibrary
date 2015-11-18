@@ -75,7 +75,8 @@ create table BorrowerStatuses (
 	BorrowerID int foreign key references Borrowers(BorrowerID) not null,
 	DVDID int foreign key references DVDs(DVDID) not null,
 	CheckOutDate date not null,
-	CheckInDate date
+	CheckInDate date,
+	DVDExists bit not null
 )
 go
 
@@ -116,5 +117,13 @@ create table GenresMovies (
 	GenreID int foreign key references Genres(GenreID) not null,
 	MovieID int foreign key references Movies(MovieID) not null,
 	Constraint PK_GenresMovies PRIMARY KEY(GenreID, MovieID)
+)
+go
+
+create table DeletedDVDs (
+	DVDID int primary key not null,
+	MovieTitle nvarchar(100) not null,
+	MovieID int not null,
+	DVDType nvarchar(30) not null
 )
 go
