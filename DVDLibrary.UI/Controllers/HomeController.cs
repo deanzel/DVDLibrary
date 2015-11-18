@@ -29,18 +29,6 @@ namespace DVDLibrary.UI.Controllers
             return View(movies);
         }
 
-        //For Mock
-        public ActionResult SelectDvd(int id)
-        {
-            var movies = _oops.ReturnMoviesList();
-
-            var viewMovieVM = new ViewMovieVM();
-
-            viewMovieVM.Movie = movies.Where(m => m.MovieId == id).FirstOrDefault();
-            return View(viewMovieVM);
-        }
-
-        //For Real SQL DB
         public ActionResult SelectMovie(int id)
         {
             var dvdsList = _oops.ReturnDvdsFromDbForMovieId(id);

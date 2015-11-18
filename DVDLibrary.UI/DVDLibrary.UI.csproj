@@ -932,7 +932,6 @@
     <Content Include="Views\AddMovie\Index.cshtml" />
     <Content Include="Views\AddMovie\SearchTMDBForMovies.cshtml" />
     <Content Include="Views\AddMovie\AddMovieByTMDBId.cshtml" />
-    <Content Include="Views\Home\SelectDvd.cshtml" />
     <Content Include="Views\Home\BorrowDvdPost.cshtml" />
     <Content Include="Views\AddMovie\SuccessfullyAddedNewMovie.cshtml" />
     <Content Include="Views\Home\SelectMovie.cshtml" />

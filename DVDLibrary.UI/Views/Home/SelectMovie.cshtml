@@ -19,10 +19,13 @@
                 <a href="#" class="btn btn-primary col-xs-9">View DVDs <span class="badge">@Model.DVDs.Count</span></a>
             </div>
             <div class="row">
-                <a href="#" class="btn btn-primary col-xs-9">View Notes <span class="badge">@Model.DVDs[0].Movie.UserNotes.Count</span></a>
+                <a href="#" class="btn btn-primary col-xs-9">View Comments <span class="badge">@Model.DVDs[0].Movie.UserNotes.Count</span></a>
             </div>
             <div class="row">
                 <a href="#" class="btn btn-primary col-xs-9">View Ratings <span class="badge">@Model.DVDs[0].Movie.UserRatings.Count</span></a>
+            </div>
+            <div class="row">
+                <a href="#" class="btn btn-primary col-xs-9">Edit Movie</a>
             </div>
             <br/>
             <div class="row">
@@ -65,10 +68,7 @@
 
 
 
-
-
         </div>
-
 
 
         <div class="col-xs-9" id="right column">
@@ -98,7 +98,6 @@
                 </div>
             </div>
 
-
             <div class="row">
                 <blockquote class="blockquote-reverse">
                     <p>@Model.DVDs[0].Movie.Synopsis</p>
@@ -121,13 +120,24 @@
                     <iframe class="embed-responsive-item" src="@(Model.DVDs[0].Movie.YouTubeTrailer)"></iframe>
                 }
             </div>
-           
+            <br/>
+
+            <div class="row">
+                <table class="table table-bordered table-responsive text-center">
+                    <thead><tr><th class="text-center">Cast</th><th class="text-center">Actor Name</th><th class="text-center">Character Name</th></tr></thead>
+                    <tbody>
+                        @foreach (var a in Model.DVDs[0].Movie.MovieActors)
+                        {
+                            <tr>
+                                <td class="col-xs-3">Actor #@(Model.DVDs[0].Movie.MovieActors.IndexOf(a) + 1)</td>
+                                <td class="col-xs-3">@a.ActorName</td>
+                                <td class="col-xs-3">@a.CharacterName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
         </div>
-
-
     </div>
-
 </div>
-
-<br/>
-
