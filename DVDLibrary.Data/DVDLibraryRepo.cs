@@ -795,9 +795,13 @@ namespace DVDLibrary.Data
             Models.Movie movieInfo = new Models.Movie();
             movieInfo.MovieTitle = movie.Title;
             movieInfo.MovieTMDBNum = movie.Id;
-            if (movie.Releases.Countries.FirstOrDefault(m => m.Iso_3166_1 == "US").Certification != null)
+            if (movie.Releases.Countries.FirstOrDefault(m => m.Iso_3166_1 == "US") != null)
             {
                 movieInfo.MpaaRating = movie.Releases.Countries.FirstOrDefault(m => m.Iso_3166_1 == "US").Certification;
+            }
+            else
+            {
+                movieInfo.MpaaRating = "NR";
             }
             if (movie.ReleaseDate != null)
             {
@@ -813,7 +817,7 @@ namespace DVDLibrary.Data
             }
             if (movie.PosterPath != null)
             {
-                movieInfo.PosterUrl = "http://image.tmdb.org/t/p/w185" + movie.PosterPath;
+                movieInfo.PosterUrl = "http://image.tmdb.org/t/p/w396" + movie.PosterPath;
             }
             else
             {
@@ -834,7 +838,7 @@ namespace DVDLibrary.Data
                     movieInfo.Genres.Add(newGenre);
                 }
             }
-            if (movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name != null)
+            if (movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director") != null)
             {
                 movieInfo.Director.DirectorName = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name;
                 movieInfo.Director.DirectorTMDBNum = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Id;
@@ -1111,6 +1115,7 @@ namespace DVDLibrary.Data
 
             return stats;
         }
+
         //Search TMDB for movies to add depending on Search String
         public List<SearchTMDBResult> RetrieveTMDBSearchResults(string movieName)
         {
