@@ -6,7 +6,7 @@
 <div class="jumbotron">
     @if (Model.Owner != null)
     {
-        <h2 class="text-center">Welcome to <em>@Model.Owner's</em> DVD Library Collection!!</h2>
+        <h2 class="text-center">Welcome to <strong><em>@Model.Owner's</em></strong> DVD Library Collection!!</h2>
     }
     else
     {<h2 class="text-center">Welcome to Git Happens' DVD Library Collection!!</h2>
@@ -31,6 +31,6 @@
     <li># of Studios: <b>@Model.SutdiosCount</b></li>
     <li># of Genres: <b>@Model.GenresCount</b></li>
     <li># of Actors: <b>@Model.ActorsCount</b></li>
-    <li># of Characters: <b>@Model.ActorsRolesCount</   b></li>
+    <li># of Unique Characters: <b>@Model.ActorsRolesCount</b></li>
 </ul>
 </div>

@@ -907,6 +907,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AddMovieController.cs" />
+    <Compile Include="Controllers\BorrowerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -935,10 +936,11 @@
     <Content Include="Views\Home\BorrowDvdPost.cshtml" />
     <Content Include="Views\AddMovie\SuccessfullyAddedNewMovie.cshtml" />
     <Content Include="Views\Home\SelectMovie.cshtml" />
-    <Content Include="Views\Home\AddNewBorrower.cshtml" />
-    <Content Include="Views\Home\SuccessfullyAddedNewBorrower.cshtml" />
+    <Content Include="Views\Borrower\AddNewBorrower.cshtml" />
+    <Content Include="Views\Borrower\SuccessfullyAddedNewBorrower.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\version.json" />
+    <Content Include="Views\Borrower\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

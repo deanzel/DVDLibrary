@@ -67,37 +67,6 @@ namespace DVDLibrary.UI.Controllers
             return View("SearchForMoviePost", movie);
         }
 
-        //Real to DB
-        public ActionResult AddNewBorrower()
-        {
-            var addBorrowerVM = new AddBorrowerVM();
-
-            return View(addBorrowerVM);
-        }
-
-        [HttpPost]
-        public ActionResult AddNewBorrower(AddBorrowerVM newBorrower)
-        {
-            if (_oops.CheckIfOwnerAlreadyExists().Success)
-            {
-                if (newBorrower.Borrower.IsOwner)
-                {
-                    ModelState.AddModelError("IsOwner", "There is already a previous owner for this collection!!");
-                }
-            }
-
-            if (ModelState.IsValid)
-            {
-                var addedBorrower = _oops.AddNewBorrower(newBorrower.Borrower);
-
-                return View("SuccessfullyAddedNewBorrower", addedBorrower);
-            }
-            else
-            {
-                return View("AddNewBorrower", newBorrower);
-            }
-        }
-
         [HttpPost]
         public ActionResult BorrowDvdPost(ViewMovieVM newBorrowerSelection)
         {
