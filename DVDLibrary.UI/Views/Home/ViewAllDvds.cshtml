@@ -15,7 +15,7 @@
         @foreach (var movie in Model)
         {
                 <a class="list-group-item col-xs-4 text-center" href="/Home/SelectMovie/@movie.MovieId">
-                    <b>@movie.MovieTitle (@movie.ReleaseDate.Year)</b>
+                    <b>@movie.MovieTitle</b> (@movie.ReleaseDate.Year)
                     </a>
         }
     </div>

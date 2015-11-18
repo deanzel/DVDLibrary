@@ -12,6 +12,7 @@ namespace DVDLibrary.UI.Models
     {
         public List<DVD> DVDs { get; set; }
         public Borrower Borrower { get; set; }
+        public string Owner { get; set; }
         public List<SelectListItem> BorrowersList { get; set; }
 
         public ViewMovieDVDsVM()
@@ -25,11 +26,13 @@ namespace DVDLibrary.UI.Models
         {
             DVDLibaryOperations oops = new DVDLibaryOperations();
 
-            List<Borrower> listofBorrowers = oops.ReturnBorrowersList();
+            List<Borrower> listOfBorrowers = oops.ReturnBorrowersList();
+
+            Owner = listOfBorrowers.Where(b => b.IsOwner).FirstOrDefault().FirstName;
 
             BorrowersList = new List<SelectListItem>();
 
-            foreach (Borrower borrower in listofBorrowers)
+            foreach (Borrower borrower in listOfBorrowers)
             {
                 SelectListItem newItem = new SelectListItem();
 
