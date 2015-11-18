@@ -74,9 +74,9 @@ create table BorrowerStatuses (
 	BorrowerStatusID int identity(1,1) primary key,
 	BorrowerID int foreign key references Borrowers(BorrowerID) not null,
 	DVDID int foreign key references DVDs(DVDID) not null,
-	CheckOutDate date not null,
-	CheckInDate date,
-	DVDExists bit not null
+	DateBorrowed date not null,
+	DateReturned date,
+	DVDExists bit,
 )
 go
 

@@ -12,6 +12,8 @@ namespace DVDLibrary.UI.Models
     {
         public List<DVD> DVDs { get; set; }
         public Borrower Borrower { get; set; }
+        public int DVDIdToRent { get; set; }
+        public int MovieId { get; set; }
         public string Owner { get; set; }
         public List<SelectListItem> BorrowersList { get; set; }
 

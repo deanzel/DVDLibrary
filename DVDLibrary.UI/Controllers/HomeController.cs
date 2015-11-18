@@ -51,7 +51,20 @@ namespace DVDLibrary.UI.Controllers
             return View(vM);
         }
 
+        //Rent DVD from DVDs Statuses Page with drop down user
+        public ActionResult RentDVD(ViewMovieDVDsVM vM)
+        {
+            //Library method to rent DVD based on DVDID and BorrowerID
+            var rentalTicket = new RentalTicket();
+            rentalTicket.BorrowerId = vM.Borrower.BorrowerId;
+            rentalTicket.DVDId = vM.DVDIdToRent;
+            rentalTicket.DateBorrowed = DateTime.Now.Date;
+            rentalTicket.MovieId = vM.MovieId;
 
+            var newRentalTicket = _oops.RentDVD(rentalTicket);
+
+            return RedirectToAction("ViewDVDsStatus", "Home", new {id = newRentalTicket.MovieId});
+        }
 
 
         //[HttpPost]

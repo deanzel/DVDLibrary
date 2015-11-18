@@ -96,5 +96,12 @@ namespace DVDLibrary.BLL
         {
             return _repo.RetrieveListOfBorrowers();
         } 
+
+
+        //Rent DVD (send to DB)
+        public RentalTicket RentDVD(RentalTicket rentalTicket)
+        {
+            return _repo.RentDVDSendToDb(rentalTicket);
+        }
     }
 }

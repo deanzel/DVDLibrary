@@ -438,13 +438,13 @@ namespace DVDLibrary.Data
                                 {
                                     newStatus.DVDId = int.Parse(dr["DVDID"].ToString());
                                 }
-                                if (dr["CheckOutDate"] != DBNull.Value)
+                                if (dr["DateBorrowed"] != DBNull.Value)
                                 {
-                                    newStatus.DateBorrowed = DateTime.Parse(dr["CheckOutDate"].ToString());
+                                    newStatus.DateBorrowed = DateTime.Parse(dr["DateBorrowed"].ToString());
                                 }
-                                if (dr["CheckInDate"] != DBNull.Value)
+                                if (dr["DateReturned"] != DBNull.Value)
                                 {
-                                    newStatus.DateReturned = DateTime.Parse(dr["CheckInDate"].ToString());
+                                    newStatus.DateReturned = DateTime.Parse(dr["DateReturned"].ToString());
                                 }
                                 if (dr["IsOwner"] != DBNull.Value)
                                 {
@@ -582,13 +582,13 @@ namespace DVDLibrary.Data
                                 {
                                     newStatus.DVDId = int.Parse(dr["DVDID"].ToString());
                                 }
-                                if (dr["CheckOutDate"] != DBNull.Value)
+                                if (dr["DateBorrowed"] != DBNull.Value)
                                 {
-                                    newStatus.DateBorrowed = DateTime.Parse(dr["CheckOutDate"].ToString());
+                                    newStatus.DateBorrowed = DateTime.Parse(dr["DateBorrowed"].ToString());
                                 }
-                                if (dr["CheckInDate"] != DBNull.Value)
+                                if (dr["DateReturned"] != DBNull.Value)
                                 {
-                                    newStatus.DateReturned = DateTime.Parse(dr["CheckInDate"].ToString());
+                                    newStatus.DateReturned = DateTime.Parse(dr["DateReturned"].ToString());
                                 }
                                 if (dr["IsOwner"] != DBNull.Value)
                                 {
@@ -1327,6 +1327,26 @@ namespace DVDLibrary.Data
             movie.MpaaRating = dr["Rating"].ToString();
 
             return movie;
+        }
+
+
+        //Rent DVD (send to DB)
+        public RentalTicket RentDVDSendToDb(RentalTicket rentalTicket)
+        {
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var p = new DynamicParameters();
+                p.Add("BorrowerID", rentalTicket.BorrowerId);
+                p.Add("DVDID", rentalTicket.DVDId);
+                p.Add("DateBorrowed", rentalTicket.DateBorrowed);
+                p.Add("BorrowerStatusID", DbType.Int32, direction: ParameterDirection.Output);
+
+                cn.Execute("RentDVDToBorrowerStatuses", p, commandType: CommandType.StoredProcedure);
+
+                rentalTicket.BorrowerStatusId = p.Get<int>("BorrowerStatusID");
+            }
+
+            return rentalTicket;
         }
     }
 }

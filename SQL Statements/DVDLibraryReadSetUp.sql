@@ -117,7 +117,7 @@ Create Procedure [dbo].[GetBorrowerStatusesByDVDID](
 	)
 	as
 begin
-	SELECT bs.BorrowerStatusID, bs.BorrowerID, bs.DVDID, bs.CheckOutDate, bs.CheckInDate, b.IsOwner, b.FirstName,
+	SELECT bs.BorrowerStatusID, bs.BorrowerID, bs.DVDID, bs.DateBorrowed, bs.DateReturned, b.IsOwner, b.FirstName,
 	b.LastName, b.Email, b.StreetAddress, b.City, b.[State], b.Zipcode, b.Phone
 	FROM BorrowerStatuses bs
 		LEFT JOIN Borrowers b on bs.BorrowerID = b.BorrowerID
