@@ -40,6 +40,18 @@ namespace DVDLibrary.UI.Controllers
         }
 
 
+        //Grab all DVD statuses based on MovieID
+        public ActionResult ViewDVDsStatus(int id)
+        {
+            var vM = new ViewMovieDVDsVM();
+
+            //lighter weight return
+            vM.DVDs = _oops.ReturnPartialDVDsInfo(id);
+
+            return View(vM);
+        }
+
+
 
 
         //[HttpPost]

@@ -918,7 +918,6 @@
     <Compile Include="Models\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Models\SearchTMDBResultsVM.cs" />
     <Compile Include="Models\ViewMovieDVDsVM.cs" />
-    <Compile Include="Models\ViewMovieVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -941,6 +940,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Borrower\Index.cshtml" />
+    <Content Include="Views\Home\ViewDVDsStatus.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

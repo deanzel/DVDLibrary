@@ -36,11 +36,17 @@ namespace DVDLibrary.BLL
             return _repo.RetrieveMoviesListFromDB();
         }
 
-        //Real one from SQL DB
+        //Real Full DVDs and Movie Info from SQL DB
         public List<DVD> ReturnDvdsFromDbForMovieId(int movieId)
         {
             return _repo.RetrieveFullDVDInfoFromDB(movieId);
         }
+
+        //Partial DVDs List info from SQL DB
+        public List<DVD> ReturnPartialDVDsInfo(int movieId)
+        {
+            return _repo.RetrievePartialDVDsInfo(movieId);
+        } 
 
         //Add a New Borrower To DB
         public Borrower AddNewBorrower(Borrower newBorrower)

@@ -18,16 +18,12 @@
             </div>
             <br/>
             <div class="row">
-                <a href="#" class="btn btn-primary col-xs-9">View DVDs <span class="badge">@Model.DVDs.Count</span></a>
-            </div>
-            <div class="row">
-                <a href="#" class="btn btn-primary col-xs-9">View Comments <span class="badge">@Model.DVDs[0].Movie.UserNotes.Count</span></a>
-            </div>
-            <div class="row">
-                <a href="#" class="btn btn-primary col-xs-9">View Ratings <span class="badge">@Model.DVDs[0].Movie.UserRatings.Count</span></a>
-            </div>
-            <div class="row">
-                <a href="#" class="btn btn-primary col-xs-9">Edit Movie</a>
+                <div class="btn-group-vertical  col-xs-9">
+                    <a href="/Home/ViewDVDsStatus/@(Model.DVDs[0].Movie.MovieId)" class="btn btn-primary">View DVDs <span class="badge">@Model.DVDs.Count</span></a>
+                    <a href="#" class="btn btn-primary">View Comments <span class="badge">@Model.DVDs[0].Movie.UserNotes.Count</span></a>
+                    <a href="#" class="btn btn-primary">View Ratings <span class="badge">@Model.DVDs[0].Movie.UserRatings.Count</span></a>
+                    <a href="#" class="btn btn-primary">Edit Movie</a>
+                </div>
             </div>
             <br/>
             <div class="row">

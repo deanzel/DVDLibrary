@@ -495,6 +495,150 @@ namespace DVDLibrary.Data
         } 
 
 
+        //Retrieve partial DVDs List info from SQL DB (lighter weight; good for ViewDVDsStatuses
+        public List<DVD> RetrievePartialDVDsInfo(int movieId)
+        {
+            List<DVD> listOfDVDInfo = new List<DVD>();
+
+            using (var cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var cmd = new SqlCommand();
+
+                Models.Movie movieInfo = new Models.Movie();
+
+                //Get Movie Info including Director & Studio By MovieId
+
+                cmd.CommandText = "GetMovieInfoByMovieId";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        movieInfo.MovieId = int.Parse(dr["MovieID"].ToString());
+                        movieInfo.MovieTitle = dr["MovieTitle"].ToString();
+                    }
+                }
+                cn.Close();
+
+                //Get DVDID and DVDType Info by MovieID
+                cmd.CommandText = "GetDVDInfoByMovieID";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        if (dr["DVDID"] != DBNull.Value)
+                        {
+                            DVD newDVD = new DVD();
+                            newDVD.DVDId = int.Parse(dr["DVDID"].ToString());
+                            if (dr["DVDType"] != DBNull.Value)
+                            {
+                                newDVD.DVDType = dr["DVDType"].ToString();
+                            }
+                            newDVD.Movie = movieInfo;
+
+                            listOfDVDInfo.Add(newDVD);
+                        }
+                    }
+                }
+                cn.Close();
+
+
+                //Get Borrower Statuses for a DVD by DVDID
+                foreach (var d in listOfDVDInfo)
+                {
+                    cmd.CommandText = "GetBorrowerStatusesByDVDID";
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Connection = cn;
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@DVDID", d.DVDId);
+
+                    cn.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            if (dr["BorrowerStatusID"] != DBNull.Value)
+                            {
+                                Status newStatus = new Status();
+                                newStatus.StatusId = int.Parse(dr["BorrowerStatusID"].ToString());
+                                if (dr["BorrowerID"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                                }
+                                if (dr["DVDID"] != DBNull.Value)
+                                {
+                                    newStatus.DVDId = int.Parse(dr["DVDID"].ToString());
+                                }
+                                if (dr["CheckOutDate"] != DBNull.Value)
+                                {
+                                    newStatus.DateBorrowed = DateTime.Parse(dr["CheckOutDate"].ToString());
+                                }
+                                if (dr["CheckInDate"] != DBNull.Value)
+                                {
+                                    newStatus.DateReturned = DateTime.Parse(dr["CheckInDate"].ToString());
+                                }
+                                if (dr["IsOwner"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.IsOwner = bool.Parse(dr["IsOwner"].ToString());
+                                }
+                                if (dr["FirstName"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.FirstName = dr["FirstName"].ToString();
+                                }
+                                if (dr["LastName"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.LastName = dr["LastName"].ToString();
+                                }
+                                if (dr["Email"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Email = dr["Email"].ToString();
+                                }
+                                if (dr["StreetAddress"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Address = dr["StreetAddress"].ToString();
+                                }
+                                if (dr["City"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.City = dr["City"].ToString();
+                                }
+                                if (dr["State"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.State = dr["State"].ToString();
+                                }
+                                if (dr["Zipcode"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Zipcode = dr["Zipcode"].ToString();
+                                }
+                                if (dr["Phone"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Phone = dr["Phone"].ToString();
+                                }
+                                d.Statuses.Add(newStatus);
+                            }
+                        }
+                    }
+                    cn.Close();
+                }
+
+            }
+
+            return listOfDVDInfo;
+        }
+
+
         //Adding a New DVD To the SQL Database (Checks if it already exists as well)
         public DVD AddNewDVDToDBViaTMDB(DVD newDVD)
         {

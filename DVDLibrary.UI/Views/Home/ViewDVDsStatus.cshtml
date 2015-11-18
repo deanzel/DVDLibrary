@@ -1,0 +1,118 @@
+﻿@model DVDLibrary.UI.Models.ViewMovieDVDsVM
+
+@{
+    ViewBag.Title = @Model.DVDs[0].Movie.MovieTitle;
+}
+
+<h2>DVDs Statuses for <b>@(Model.DVDs[0].Movie.MovieTitle)</b> <small>(ID# @Model.DVDs[0].Movie.MovieId)</small></h2>
+
+<div class="container-fluid">
+    <div class="row">
+        <table class="table table-hover table-responsive text-center">
+            <thead>
+            <tr>
+                <th class="col-xs-1 text-center">DVDID</th>
+                <th class="col-xs-1 text-center">DVD Type</th>
+                <th class="col-xs-1 text-center">Status</th>
+                <th class="col-xs-2 text-center">Borrower</th>
+                <th class="col-xs-3 text-center">Manage</th>
+                <th class="col-xs-4 text-center">Rent?</th>
+            </tr>
+            </thead>
+            <tbody>
+            
+            @foreach (var dvd in Model.DVDs)
+            {
+                <tr>
+                    <td class="col-xs-1">@dvd.DVDId</td>
+                    <td class="col-xs-1">@dvd.DVDType</td>
+                    <td class="col-xs-1">
+                        @if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault() != null)
+                        {
+                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().DateReturned == null)
+                            {
+                                <span class="label label-warning">CHECKED OUT</span>
+                            }
+                            else
+                            {
+                                <span class="label label-success">AVAILABLE</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="label label-success">AVAILABLE</span>
+                        }
+                    </td>
+                    <td class="col-xs-2">
+                        @if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault() != null)
+                        {
+                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().DateReturned == null)
+                            {
+                                <span>@(dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().Borrower.FirstName) 
+                        @(dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().Borrower.LastName)</span>
+
+                            }
+                            else
+                            {
+                                <span class="label label-warning">NONE</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="label label-warning">NONE</span>
+                        }
+                    </td>
+                    <td class="col-xs-3 btn-group">
+                        @if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault() != null)
+                        {
+                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().DateReturned == null)
+                            {
+                                @Html.ActionLink("History", "RentalHistory", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-primary col-xs-4" })
+                                @Html.ActionLink("Return", "ReturnDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-warning col-xs-4" })
+                                @Html.ActionLink("DELETE", "DeleteDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-danger col-xs-4" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("History", "RentalHistory", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-primary col-xs-4" })
+                                @Html.ActionLink("Return", "ReturnDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-warning col-xs-4", @disabled = "disabled" })
+                                @Html.ActionLink("DELETE", "DeleteDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-danger col-xs-4" })
+                            }
+                        }
+                        else
+                        {
+                            @Html.ActionLink("History", "RentalHistory", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-primary col-xs-4" })
+                            @Html.ActionLink("Return", "ReturnDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-warning col-xs-4", @disabled = "disabled" })
+                            @Html.ActionLink("DELETE", "DeleteDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-danger col-xs-4" })
+                        }
+                    </td>
+                    <td class="col-xs-4">
+                        @using (Html.BeginForm("RentDVD", "Home", null, FormMethod.Post, new {@class="form-inline"}))
+                        {
+                            @Html.DropDownListFor(m => m.Borrower.BorrowerId, Model.BorrowersList, new { @class = "form-control" })
+                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault() != null)
+                            {
+                                if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().DateReturned == null)
+                                {
+                                    <button type="submit" class="btn btn-info" disabled="disabled">Rent</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-info">Rent</button>
+                                }
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-info">Rent</button>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="clearfix">
+    @Html.ActionLink("Back to Movie Details", "SelectMovie", "Home", new {id = Model.DVDs[0].Movie.MovieId}, new { @class = "btn btn-default" })
+</div>

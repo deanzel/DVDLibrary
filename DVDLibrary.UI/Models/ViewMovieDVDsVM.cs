@@ -28,8 +28,11 @@ namespace DVDLibrary.UI.Models
 
             List<Borrower> listOfBorrowers = oops.ReturnBorrowersList();
 
-            Owner = listOfBorrowers.Where(b => b.IsOwner).FirstOrDefault().FirstName;
-
+            if (listOfBorrowers.FirstOrDefault(b => b.IsOwner) != null)
+            {
+                 Owner = listOfBorrowers.FirstOrDefault(b => b.IsOwner).FirstName;
+            }
+           
             BorrowersList = new List<SelectListItem>();
 
             foreach (Borrower borrower in listOfBorrowers)
