@@ -84,5 +84,11 @@ namespace DVDLibrary.BLL
         {
             return _repo.RetrieveCollectionStats();
         }
+
+        //Return list of Borrowers from DB
+        public List<Borrower> ReturnBorrowersList()
+        {
+            return _repo.RetrieveListOfBorrowers();
+        } 
     }
 }

@@ -4,28 +4,38 @@
     ViewBag.Title = "View All DVDs";
 }
 
-<h2>View All DVDss</h2>
+<h2>View All Movies In Your Collection</h2>
 
-@*<button class="btn-primary">Add DVD</button>*@
-
-@*@Html.ActionLink("Add A DVD","AddDvd", "Home")*@
-<div>
-    <input id="search" name="search" type="text" placeholder="Filter Movie Title Here" data-list=".list">
+<div class="form-group">
+    <input id="search" name="search" class="form-control" type="text" placeholder="Filter Movie Titles Here..." data-list=".list">
     <p></p>
 </div>
-<div class ="row">
-<ul class="list-group list">
-    @foreach (var movie in Model)
-    {
-        <div class="col-md-3">
-            <li class="list-group-item"><a href="/Home/SelectMovie/@movie.MovieId">
-                    @movie.MovieTitle
-                </a>
-            </li>
-        </div>
-    }
-    </ul>
+<div class="row">
+    <div class="list-group list-inline list">
+        @foreach (var movie in Model)
+        {
+                <a class="list-group-item col-xs-4 text-center" href="/Home/SelectMovie/@movie.MovieId">
+                    <b>@movie.MovieTitle (@movie.ReleaseDate.Year)</b>
+                    </a>
+        }
+    </div>
 </div>
+
+
+@*<div class="row">
+    <ul class="list-group list">
+        @foreach (var movie in Model)
+        {
+            <div class="col-md-3">
+                <li class="list-group-item text-center">
+                    <a href="/Home/SelectMovie/@movie.MovieId">
+                        @movie.MovieTitle
+                    </a>
+                </li>
+            </div>
+        }
+    </ul>
+</div>*@
 
 @section Scripts{
     <script src="~/Scripts/jquery.hideseek.js"></script>

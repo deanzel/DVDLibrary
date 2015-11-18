@@ -7,7 +7,7 @@
 <h2>Add Movie By TMDB Id</h2>
 
 <div>
-    @using (Html.BeginForm("SendNewMovieInfoToDB", "AddMovie", null, FormMethod.Post, new {id = "newdvdinfo"}))
+    @using (Html.BeginForm("SendNewMovieInfoToDB", "AddMovie", null, FormMethod.Post, new {id = "newdvdinfo", @class="form-horizontal"}))
     {
         <div class="container-fluid form-group">
             <div class="row">

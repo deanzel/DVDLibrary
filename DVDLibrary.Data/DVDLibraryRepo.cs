@@ -916,6 +916,64 @@ namespace DVDLibrary.Data
             return newBorrower;
         }
 
+        //Return a list of Borrowers Names in the DB and their BorrowerID
+        public List<Borrower> RetrieveListOfBorrowers()
+        {
+            List<Borrower> listOfBorrowers = new List<Borrower>();
+
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                //Get Owner Name first!!
+                cmd.CommandText = "select FirstName, LastName, BorrowerID, IsOwner from Borrowers " +
+                                  "where IsOwner = 1";
+                cmd.Connection = cn;
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var newBorrower = new Borrower();
+                        newBorrower.FirstName = dr["FirstName"].ToString();
+                        newBorrower.LastName = dr["LastName"].ToString();
+                        newBorrower.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                        newBorrower.IsOwner = bool.Parse(dr["IsOwner"].ToString());
+
+                        listOfBorrowers.Add(newBorrower);
+                    }
+                }
+                cn.Close();
+
+                //Get Rest of Users and order by First Name
+                List<Borrower> nonOwnerBorrowers = new List<Borrower>();
+
+                cmd.CommandText = "select FirstName, LastName, BorrowerID, IsOwner from Borrowers " +
+                                  "where IsOwner = 0";
+                cmd.Connection = cn;
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var newBorrower = new Borrower();
+                        newBorrower.FirstName = dr["FirstName"].ToString();
+                        newBorrower.LastName = dr["LastName"].ToString();
+                        newBorrower.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                        newBorrower.IsOwner = bool.Parse(dr["IsOwner"].ToString());
+
+                        nonOwnerBorrowers.Add(newBorrower);
+                    }
+                }
+                cn.Close();
+
+                var ordered = nonOwnerBorrowers.OrderBy(b => b.FirstName);
+                listOfBorrowers.AddRange(ordered);
+            }
+
+            return listOfBorrowers;
+        }
+
         //Check if an Owner is already in the DB
         public Response CheckIfOwnerAlreadyExistsInDb()
         {
