@@ -1034,13 +1034,6 @@ namespace DVDLibrary.Data
             return movieInfo;
         }
 
-
-        public string DeleteDVD(int id)
-        {
-            return "Your movie has been deleted from the DVD collection";
-
-        }
-
         //Add a New Borrower to DB
         public Borrower AddNewBorrowerToDB(Borrower newBorrower)
         {

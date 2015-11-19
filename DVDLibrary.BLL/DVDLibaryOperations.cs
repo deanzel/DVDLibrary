@@ -60,23 +60,6 @@ namespace DVDLibrary.BLL
             return _repo.CheckIfOwnerAlreadyExistsInDb();
         }
 
-
-        public string returnDelete(int id)
-        {
-            return _repo.DeleteDVD(id);
-        }
-
-        public Models.Movie returnMovie(int id)
-        {
-            return _repo.ReturnMovieInfoFromTMDB(id);
-        }
-
-        //Add movie to SQL Database (for Patty)
-        public DVD AddMovieToDB(DVD addDVDInfo)
-        {
-            return _repo.AddNewDVDToDBViaTMDB(addDVDInfo);
-        }
-        
         
         //Getting TMDB Search results depending on Movie name string
         public List<SearchTMDBResult> ReturnTMDBSearchResults(string movieName)

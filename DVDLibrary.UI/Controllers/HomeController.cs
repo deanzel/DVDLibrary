@@ -74,47 +74,11 @@ namespace DVDLibrary.UI.Controllers
             return RedirectToAction("ViewDVDsStatus", "Home", new {id = movieId});
         }
 
-
-        //[HttpPost]
-        //public ActionResult DeleteDVD(int id)
-        //{
-        //    var message = _oops.returnDelete(id);
-
-        //    MessageBox.Show(message);
+        //DeleteDVD via DVDID
 
 
-        //    return RedirectToAction("ViewAllDvds");
-        //}
 
-        //public ActionResult SearchForMovie()
-        //{
-        //    return View();
-        //}
+        //Search Movies via SQL Database
 
-        //[HttpPost]
-        //public ActionResult SearchForMoviePost()
-        //{
-        //    Movie movie = new Movie();
-        //    movie.MovieId = int.Parse(Request.Form["movieID"]);
-
-        //    movie = _oops.returnMovie(movie.MovieId);
-
-        //    return View("SearchForMoviePost", movie);
-        //}
-
-        //[HttpPost]
-        //public ActionResult BorrowDvdPost(ViewMovieVM newBorrowerSelection)
-        //{
-        //    ViewMovieVM vm = new ViewMovieVM();
-
-        //    vm.borrower = newBorrowerSelection.borrower;
-
-        //    if (ModelState.IsValid)
-        //    return View("BorrowDvdPost", vm);
-        //    else
-        //    {
-        //        return View("AddBorrower");
-        //    }
-        //}
     }
 }

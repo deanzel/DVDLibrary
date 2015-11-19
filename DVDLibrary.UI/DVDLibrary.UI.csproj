@@ -927,12 +927,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\ViewAllDvds.cshtml" />
-    <Content Include="Views\Home\SearchForMovie.cshtml" />
-    <Content Include="Views\Home\SearchForMoviePost.cshtml" />
     <Content Include="Views\AddMovie\Index.cshtml" />
     <Content Include="Views\AddMovie\SearchTMDBForMovies.cshtml" />
     <Content Include="Views\AddMovie\AddMovieByTMDBId.cshtml" />
-    <Content Include="Views\Home\BorrowDvdPost.cshtml" />
     <Content Include="Views\AddMovie\SuccessfullyAddedNewMovie.cshtml" />
     <Content Include="Views\Home\SelectMovie.cshtml" />
     <Content Include="Views\Borrower\AddNewBorrower.cshtml" />
