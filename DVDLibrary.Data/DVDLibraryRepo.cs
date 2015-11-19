@@ -116,7 +116,7 @@ namespace DVDLibrary.Data
             {
                 var cmd = new SqlCommand();
                 cmd.CommandText =
-                    ("SELECT [MovieID], [MovieTitle], [ReleaseDate], [Synopsis], [PosterUrl], [Rating] From Movies");
+                    ("SELECT [MovieID], [MovieTitle], [ReleaseDate], [Synopsis], [PosterUrl], [Rating] From Movies Where [InCollection]=1");
                 cmd.Connection = cn;
                 cn.Open();
 
@@ -761,6 +761,7 @@ namespace DVDLibrary.Data
                         p.Add("Synopsis", newDVD.Movie.Synopsis);
                         p.Add("PosterUrl", newDVD.Movie.PosterUrl);
                         p.Add("YouTubeTrailer", newDVD.Movie.YouTubeTrailer);
+                        p.Add("InCollection", true);
                         p.Add("MovieID", DbType.Int32, direction: ParameterDirection.Output);
 
                         cn.Execute("AddNewMovieToMovies", p, commandType: CommandType.StoredProcedure);
@@ -909,6 +910,14 @@ namespace DVDLibrary.Data
                         }
                     }
                     cn.Close();
+
+                    //Change InCollection to True
+                    var pInColl = new DynamicParameters();
+
+                    pInColl.Add("MovieID", newDVD.Movie.MovieId);
+                    pInColl.Add("InCollection", true);
+
+                    cn.Execute("ChangeInCollectionBoolean", pInColl, commandType: CommandType.StoredProcedure);
                 }
 
 
@@ -927,6 +936,7 @@ namespace DVDLibrary.Data
 
             return newDVD;
         }
+
 
         //Retrieve TMDB info with a TMDBNum
         public Models.Movie ReturnMovieInfoFromTMDB(int tmdbNum)

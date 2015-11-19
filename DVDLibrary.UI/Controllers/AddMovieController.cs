@@ -36,7 +36,7 @@ namespace DVDLibrary.UI.Controllers
             //to a different view that only adds more copies of it and not edit metadata
 
             var newDVDVM = new AddDVDVM();
-            newDVDVM.Movie = _oops.returnMovie(id);
+            newDVDVM.Movie = _oops.ReturnMovie(id);
 
             return View(newDVDVM);
         }
