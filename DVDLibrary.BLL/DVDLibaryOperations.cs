@@ -20,15 +20,15 @@ namespace DVDLibrary.BLL
             _repo = new DVDLibraryRepo();    
         }
 
-        public List<DVD> ReturnDVDsList()
-        {
-            return _repo.RetrieveDVDsList();
-        }
+        //public List<DVD> ReturnDVDsList()
+        //{
+        //    return _repo.RetrieveDVDsList();
+        //}
 
-        public List<Models.Movie> ReturnMoviesList()
-        {
-            return _repo.RetrieveMoviesList();
-        }
+        //public List<Models.Movie> ReturnMoviesList()
+        //{
+        //    return _repo.RetrieveMoviesList();
+        //}
 
         //Real one from SQL DB
         public List<Models.Movie> ReturnMoviesListFromDB()
@@ -104,5 +104,13 @@ namespace DVDLibrary.BLL
         {
             return _repo.ReturnDVDToDb(statusId);
         }
+
+
+        //Remove DVD from Database via DVDID (get back MovieID for redirect)
+        public Response RemoveDVD(int dvdId)
+        {
+            return _repo.RemoveDVDFromDb(dvdId);
+        }
+
     }
 }

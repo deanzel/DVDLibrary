@@ -18,96 +18,97 @@ namespace DVDLibrary.Data
 {
     public class DVDLibraryRepo
     {
-        private List<DVD> ListOfDVDs;
-        private List<Models.Movie> ListOfMovies;
+        //private List<DVD> ListOfDVDs;
+        //private List<Models.Movie> ListOfMovies;
 
-        public DVDLibraryRepo()
-        {
-            ListOfDVDs = new List<DVD>();
-            ListOfMovies = new List<Models.Movie>();
+        //public DVDLibraryRepo()
+        //{
+        //    ListOfDVDs = new List<DVD>();
+        //    ListOfMovies = new List<Models.Movie>();
 
-        }
+        //}
 
-        //Initialize a mock list of DVDs and movies
-        public void InitializeMockDataRepo()
-        {
-            for (int i = 11; i < 20; i++)
-            {
-                DVD newDVD = new DVD();
-                newDVD.DVDId = i - 10;
-                newDVD.DVDType = "Blu-Ray";
+        ////Initialize a mock list of DVDs and movies
+        //public void InitializeMockDataRepo()
+        //{
+        //    for (int i = 11; i < 20; i++)
+        //    {
+        //        DVD newDVD = new DVD();
+        //        newDVD.DVDId = i - 10;
+        //        newDVD.DVDType = "Blu-Ray";
 
-                newDVD.Movie = ReturnMovieInfoFromTMDB(i);
-                newDVD.Movie.MovieId = i - 10;
+        //        newDVD.Movie = ReturnMovieInfoFromTMDB(i);
+        //        newDVD.Movie.MovieId = i - 10;
 
-                //**need to show status info:
-                //Status status = new Status();
-                //{
-                //    StatusId = i - 10;
-                //}
+        //        //**need to show status info:
+        //        //Status status = new Status();
+        //        //{
+        //        //    StatusId = i - 10;
+        //        //}
 
-                UserNote newUserNote = new UserNote()
-                {
-                    UserNoteId = i - 10,
-                    BorrowerId = 1,
-                    BorrowerName = "Dean Choi",
-                    MovieId = i - 10,
-                    Note = "Greatest. Movie. EVAR!!!!!",
-                    Owner = true
-                };
-                newDVD.Movie.UserNotes.Add(newUserNote);
+        //        UserNote newUserNote = new UserNote()
+        //        {
+        //            UserNoteId = i - 10,
+        //            BorrowerId = 1,
+        //            BorrowerName = "Dean Choi",
+        //            MovieId = i - 10,
+        //            Note = "Greatest. Movie. EVAR!!!!!",
+        //            Owner = true
+        //        };
+        //        newDVD.Movie.UserNotes.Add(newUserNote);
 
-                UserNote newUserNote2 = new UserNote()
-                {
-                    UserNoteId = (i - 10)*100,
-                    BorrowerId = 2,
-                    BorrowerName = "Chary Gurney",
-                    MovieId = i - 10,
-                    Note = "FAIL!!!!!",
-                    Owner = false
-                };
-                newDVD.Movie.UserNotes.Add(newUserNote2);
+        //        UserNote newUserNote2 = new UserNote()
+        //        {
+        //            UserNoteId = (i - 10)*100,
+        //            BorrowerId = 2,
+        //            BorrowerName = "Chary Gurney",
+        //            MovieId = i - 10,
+        //            Note = "FAIL!!!!!",
+        //            Owner = false
+        //        };
+        //        newDVD.Movie.UserNotes.Add(newUserNote2);
 
-                UserRating newUserRating = new UserRating()
-                {
-                    BorrowerId = 1,
-                    BorrowerName = "Dean Choi",
-                    MovieId = i - 10,
-                    Rating = 9,
-                    UserRatingId = i - 10,
-                    Owner = true
-                };
-                newDVD.Movie.UserRatings.Add(newUserRating);
+        //        UserRating newUserRating = new UserRating()
+        //        {
+        //            BorrowerId = 1,
+        //            BorrowerName = "Dean Choi",
+        //            MovieId = i - 10,
+        //            Rating = 9,
+        //            UserRatingId = i - 10,
+        //            Owner = true
+        //        };
+        //        newDVD.Movie.UserRatings.Add(newUserRating);
 
-                UserRating newUserRating2 = new UserRating()
-                {
-                    BorrowerId = 2,
-                    BorrowerName = "Charey Gurney",
-                    MovieId = i - 10,
-                    Rating = 2,
-                    UserRatingId = (i - 10)*100,
-                    Owner = false
-                };
-                newDVD.Movie.UserRatings.Add(newUserRating2);
+        //        UserRating newUserRating2 = new UserRating()
+        //        {
+        //            BorrowerId = 2,
+        //            BorrowerName = "Charey Gurney",
+        //            MovieId = i - 10,
+        //            Rating = 2,
+        //            UserRatingId = (i - 10)*100,
+        //            Owner = false
+        //        };
+        //        newDVD.Movie.UserRatings.Add(newUserRating2);
 
-                ListOfDVDs.Add(newDVD);
-                ListOfMovies.Add(newDVD.Movie);
-            }
-        }
+        //        ListOfDVDs.Add(newDVD);
+        //        ListOfMovies.Add(newDVD.Movie);
+        //    }
+        //}
 
-        //Return DVDList (mock)
-        public List<DVD> RetrieveDVDsList()
-        {
-            return ListOfDVDs;
-        }
+        ////Return DVDList (mock)
+        //public List<DVD> RetrieveDVDsList()
+        //{
+        //    return ListOfDVDs;
+        //}
 
-        //Return MoviesList (mock)
-        public List<Models.Movie> RetrieveMoviesList()
-        {
-            return ListOfMovies;
-        }
+        ////Return MoviesList (mock)
+        //public List<Models.Movie> RetrieveMoviesList()
+        //{
+        //    return ListOfMovies;
+        //}
 
         //Build ListOfMovies list from SQL Database method (just with basic info)
+
         public List<Models.Movie> RetrieveMoviesListFromDB()
         {
             List<Models.Movie> moviesListFromDB = new List<Models.Movie>();
@@ -978,7 +979,7 @@ namespace DVDLibrary.Data
             {
                 movieInfo.PosterUrl =
                     "http://assets.tmdb.org/assets/7f29bd8b3370c71dd379b0e8b570887c/images/no-poster-w185-v2.png";
-            } 
+            }
             if (movie.Videos.Results.Where(v => v.Type == "Trailer").FirstOrDefault() != null)
             {
                 movieInfo.YouTubeTrailer = "http://www.youtube.com/embed/" +
@@ -1183,7 +1184,7 @@ namespace DVDLibrary.Data
                 cn.Close();
 
                 //Movies Count
-                cmd.CommandText = "select count(Movies.MovieID) from Movies";
+                cmd.CommandText = "select count(Movies.MovieID) from Movies where InCollection=1";
                 cmd.Connection = cn;
                 cn.Open();
                 stats.MoviesCount = int.Parse(cmd.ExecuteScalar().ToString());
@@ -1354,7 +1355,7 @@ namespace DVDLibrary.Data
         }
 
 
-        //Return DVD based on StatusId (BorrowerStatusID) (sent to DB)
+        //Borrower Returns DVD based on StatusId (BorrowerStatusID) (sent to DB)
         public int ReturnDVDToDb(int statusId)
         {
             using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
@@ -1380,7 +1381,7 @@ namespace DVDLibrary.Data
 
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("BorrowerStatusID", statusId);
-                
+
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
@@ -1392,5 +1393,97 @@ namespace DVDLibrary.Data
 
             return movieId;
         }
+
+
+        //Remove DVD from Database via DVDID
+
+        public Response RemoveDVDFromDb(int dvdId)
+        {
+            var dvdToDelete = new DVD();
+            dvdToDelete.DVDId = dvdId;
+
+            var response = new Response();
+
+            //Get dvdToDelete info first to save as object
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = "select MovieID, DVDType from DVDs where DVDID=@DVDID";
+                cmd.Connection = cn;
+                cn.Open();
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("DVDID", dvdId);
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        dvdToDelete.Movie.MovieId = int.Parse(dr["MovieID"].ToString());
+                        dvdToDelete.DVDType = dr["DVDType"].ToString();
+                    }
+                }
+                cn.Close();
+
+                //First Delete All BorrowerStatuses on that DVDID to eliminate FK
+                var p = new DynamicParameters();
+                p.Add("DVDID", dvdToDelete.DVDId);
+
+                cn.Execute("RemoveBorrowerStatusOnDVDID", p, commandType: CommandType.StoredProcedure);
+
+                //Add DVDInfo to DeletedDVDs table
+
+                var p1 = new DynamicParameters();
+                p1.Add("DVDID", dvdToDelete.DVDId);
+                p1.Add("MovieID", dvdToDelete.Movie.MovieId);
+                p1.Add("DVDType", dvdToDelete.DVDType);
+
+                cn.Execute("AddDVDtoDeletedDVDs", p1, commandType: CommandType.StoredProcedure);
+
+
+                //Delete DVDID from DVDs table
+
+                var p2 = new DynamicParameters();
+                p2.Add("DVDID", dvdToDelete.DVDId);
+
+                cn.Execute("RemoveDVDFromDVDs", p2, commandType: CommandType.StoredProcedure);
+
+
+                //Check if that is the last DVD copy of the Movie, and if yes, must mark InCollection as false in Movies
+                cmd.CommandText = "select count(DVDs.MovieID) from DVDs where MovieID=@MovieID";
+                cmd.Connection = cn;
+                cn.Open();
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("MovieID", dvdToDelete.Movie.MovieId);
+                
+                int dvdsCount = int.Parse(cmd.ExecuteScalar().ToString());
+
+                if (dvdsCount == 0)
+                {
+                    var pInColl = new DynamicParameters();
+
+                    pInColl.Add("MovieID", dvdToDelete.Movie.MovieId);
+                    pInColl.Add("InCollection", false);
+
+                    cn.Execute("ChangeInCollectionBoolean", pInColl, commandType: CommandType.StoredProcedure);
+
+                    response.DVDsLeft = false;
+                }
+                else
+                {
+                    response.DVDsLeft = true;
+                }
+            }
+
+            response.MovieId = dvdToDelete.Movie.MovieId;
+
+            return response;
+        }
+
+
+
+
     }
 }

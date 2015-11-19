@@ -74,9 +74,21 @@ namespace DVDLibrary.UI.Controllers
             return RedirectToAction("ViewDVDsStatus", "Home", new {id = movieId});
         }
 
-        //DeleteDVD via DVDID
+        //Remove DVD via DVDID (and return MovieId for redirect)
+        public ActionResult DeleteDVD(int id)
+        {
+            var response = _oops.RemoveDVD(id);
 
+            if (response.DVDsLeft)
+            {
+                return RedirectToAction("ViewDVDsStatus", "Home", new {id = response.MovieId});
+            }
+            else
+            {
+                return RedirectToAction("ViewAllDvds", "Home");
+            }
 
+        }
 
         //Search Movies via SQL Database
 

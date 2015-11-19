@@ -123,7 +123,6 @@ go
 
 create table DeletedDVDs (
 	DVDID int primary key not null,
-	MovieTitle nvarchar(100) not null,
 	MovieID int not null,
 	DVDType nvarchar(30) not null
 )
