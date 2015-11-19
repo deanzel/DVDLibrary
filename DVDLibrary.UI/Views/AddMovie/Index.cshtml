@@ -11,8 +11,9 @@
     @using (Html.BeginForm("SearchTMDBForMovies", "AddMovie", null, FormMethod.Post, new {id = "searchForm"}))
     {
         <div class="form-inline">
-            <p>Movie Search (TMDb): @Html.PlaceHolderTextBox("movieSearchString", "Enter your movie here...", "form-control")
-            <button type="Submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Search</button></p>
+        <p>Movie Search (TMDb):</p>
+            @Html.PlaceHolderTextBox("movieSearchString", "Enter your movie here...", "form-control")
+            <button type="Submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Search</button>
         </div>
     }
 </div>
