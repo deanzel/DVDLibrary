@@ -33,6 +33,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,12 +45,15 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Borrower.cs" />
+    <Compile Include="CollectionStats.cs" />
     <Compile Include="Director.cs" />
     <Compile Include="DVD.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieAlias.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RentalTicket.cs" />
+    <Compile Include="Response.cs" />
     <Compile Include="SearchTMDBResult.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="Studio.cs" />

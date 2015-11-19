@@ -26,7 +26,6 @@ namespace DVDLibrary.Data
             ListOfDVDs = new List<DVD>();
             ListOfMovies = new List<Models.Movie>();
 
-            //InitializeMockDataRepo();
         }
 
         //Initialize a mock list of DVDs and movies
@@ -116,7 +115,8 @@ namespace DVDLibrary.Data
             using (var cn = new SqlConnection(Settings.ConnectionString))
             {
                 var cmd = new SqlCommand();
-                cmd.CommandText = ("SELECT [MovieID], [MovieTitle], [ReleaseDate], [Synopsis], [PosterUrl], [Rating] From Movies");
+                cmd.CommandText =
+                    ("SELECT [MovieID], [MovieTitle], [ReleaseDate], [Synopsis], [PosterUrl], [Rating] From Movies");
                 cmd.Connection = cn;
                 cn.Open();
 
@@ -130,7 +130,7 @@ namespace DVDLibrary.Data
                 }
             }
             return moviesListFromDB;
-        } 
+        }
 
 
         //Retrieve Full Movie Info and DVDs based on MovieID from the SQL DB
@@ -162,6 +162,7 @@ namespace DVDLibrary.Data
                         movieInfo.MovieTMDBNum = int.Parse(dr["MovieTMDBNum"].ToString());
                         movieInfo.ReleaseDate = DateTime.Parse(dr["ReleaseDate"].ToString());
                         movieInfo.MpaaRating = dr["Rating"].ToString();
+                        movieInfo.Duration = int.Parse(dr["DurationInMin"].ToString());
                         if (dr["Synopsis"] != DBNull.Value)
                         {
                             movieInfo.Synopsis = dr["Synopsis"].ToString();
@@ -199,7 +200,7 @@ namespace DVDLibrary.Data
                 cmd.Connection = cn;
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@MovieID", movieId);
-                //Perhaps need an option if Actor List is null *****GetActorsListByMovieID has too many arguments specified
+
                 cn.Open();
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
@@ -438,13 +439,13 @@ namespace DVDLibrary.Data
                                 {
                                     newStatus.DVDId = int.Parse(dr["DVDID"].ToString());
                                 }
-                                if (dr["CheckOutDate"] != DBNull.Value)
+                                if (dr["DateBorrowed"] != DBNull.Value)
                                 {
-                                    newStatus.DateBorrowed = DateTime.Parse(dr["CheckOutDate"].ToString());
+                                    newStatus.DateBorrowed = DateTime.Parse(dr["DateBorrowed"].ToString());
                                 }
-                                if (dr["CheckInDate"] != DBNull.Value)
+                                if (dr["DateReturned"] != DBNull.Value)
                                 {
-                                    newStatus.DateReturned = DateTime.Parse(dr["CheckInDate"].ToString());
+                                    newStatus.DateReturned = DateTime.Parse(dr["DateReturned"].ToString());
                                 }
                                 if (dr["IsOwner"] != DBNull.Value)
                                 {
@@ -492,7 +493,151 @@ namespace DVDLibrary.Data
             }
 
             return listOfDVDInfo;
-        } 
+        }
+
+
+        //Retrieve partial DVDs List info from SQL DB (lighter weight; good for ViewDVDsStatuses
+        public List<DVD> RetrievePartialDVDsInfo(int movieId)
+        {
+            List<DVD> listOfDVDInfo = new List<DVD>();
+
+            using (var cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var cmd = new SqlCommand();
+
+                Models.Movie movieInfo = new Models.Movie();
+
+                //Get Movie Info including Director & Studio By MovieId
+
+                cmd.CommandText = "GetMovieInfoByMovieId";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        movieInfo.MovieId = int.Parse(dr["MovieID"].ToString());
+                        movieInfo.MovieTitle = dr["MovieTitle"].ToString();
+                    }
+                }
+                cn.Close();
+
+                //Get DVDID and DVDType Info by MovieID
+                cmd.CommandText = "GetDVDInfoByMovieID";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        if (dr["DVDID"] != DBNull.Value)
+                        {
+                            DVD newDVD = new DVD();
+                            newDVD.DVDId = int.Parse(dr["DVDID"].ToString());
+                            if (dr["DVDType"] != DBNull.Value)
+                            {
+                                newDVD.DVDType = dr["DVDType"].ToString();
+                            }
+                            newDVD.Movie = movieInfo;
+
+                            listOfDVDInfo.Add(newDVD);
+                        }
+                    }
+                }
+                cn.Close();
+
+
+                //Get Borrower Statuses for a DVD by DVDID
+                foreach (var d in listOfDVDInfo)
+                {
+                    cmd.CommandText = "GetBorrowerStatusesByDVDID";
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Connection = cn;
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@DVDID", d.DVDId);
+
+                    cn.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            if (dr["BorrowerStatusID"] != DBNull.Value)
+                            {
+                                Status newStatus = new Status();
+                                newStatus.StatusId = int.Parse(dr["BorrowerStatusID"].ToString());
+                                if (dr["BorrowerID"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                                }
+                                if (dr["DVDID"] != DBNull.Value)
+                                {
+                                    newStatus.DVDId = int.Parse(dr["DVDID"].ToString());
+                                }
+                                if (dr["DateBorrowed"] != DBNull.Value)
+                                {
+                                    newStatus.DateBorrowed = DateTime.Parse(dr["DateBorrowed"].ToString());
+                                }
+                                if (dr["DateReturned"] != DBNull.Value)
+                                {
+                                    newStatus.DateReturned = DateTime.Parse(dr["DateReturned"].ToString());
+                                }
+                                if (dr["IsOwner"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.IsOwner = bool.Parse(dr["IsOwner"].ToString());
+                                }
+                                if (dr["FirstName"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.FirstName = dr["FirstName"].ToString();
+                                }
+                                if (dr["LastName"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.LastName = dr["LastName"].ToString();
+                                }
+                                if (dr["Email"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Email = dr["Email"].ToString();
+                                }
+                                if (dr["StreetAddress"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Address = dr["StreetAddress"].ToString();
+                                }
+                                if (dr["City"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.City = dr["City"].ToString();
+                                }
+                                if (dr["State"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.State = dr["State"].ToString();
+                                }
+                                if (dr["Zipcode"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Zipcode = dr["Zipcode"].ToString();
+                                }
+                                if (dr["Phone"] != DBNull.Value)
+                                {
+                                    newStatus.Borrower.Phone = dr["Phone"].ToString();
+                                }
+                                d.Statuses.Add(newStatus);
+                            }
+                        }
+                    }
+                    cn.Close();
+                }
+
+            }
+
+            return listOfDVDInfo;
+        }
 
 
         //Adding a New DVD To the SQL Database (Checks if it already exists as well)
@@ -502,7 +647,7 @@ namespace DVDLibrary.Data
             {
 
                 SqlCommand cmd = new SqlCommand();
-                
+
                 cmd.CommandText = "select count(movies.movietmdbnum) from movies " +
                                   "where movietmdbnum = @MovieTMDBNum";
                 cmd.Parameters.AddWithValue("@MovieTMDBNum", newDVD.Movie.MovieTMDBNum);
@@ -543,10 +688,10 @@ namespace DVDLibrary.Data
                                           "where studioname = @StudioName";
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@StudioName", newDVD.Movie.Studio.StudioName);
-                        SqlDataReader rdr = cmd.ExecuteReader();
-                        while (rdr.Read())
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        while (dr.Read())
                         {
-                            newDVD.Movie.Studio.StudioId = (int) rdr["StudioID"];
+                            newDVD.Movie.Studio.StudioId = int.Parse(dr["StudioID"].ToString());
                         }
                     }
 
@@ -581,11 +726,11 @@ namespace DVDLibrary.Data
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@DirectorName", newDVD.Movie.Director.DirectorName);
 
-                        using (SqlDataReader rdr = cmd.ExecuteReader())
+                        using (SqlDataReader dr = cmd.ExecuteReader())
                         {
-                            while (rdr.Read())
+                            while (dr.Read())
                             {
-                                newDVD.Movie.Director.DirectorId = (int) rdr["DirectorID"];
+                                newDVD.Movie.Director.DirectorId = int.Parse(dr["DirectorID"].ToString());
                             }
                         }
                     }
@@ -657,11 +802,11 @@ namespace DVDLibrary.Data
                                                   "where actorname = @ActorName";
                                 cmd.Parameters.Clear();
                                 cmd.Parameters.AddWithValue("@ActorName", newDVD.Movie.MovieActors[i].ActorName);
-                                using (SqlDataReader rdr = cmd.ExecuteReader())
+                                using (SqlDataReader dr = cmd.ExecuteReader())
                                 {
-                                    while (rdr.Read())
+                                    while (dr.Read())
                                     {
-                                        newDVD.Movie.MovieActors[i].ActorId = (int) rdr["ActorID"];
+                                        newDVD.Movie.MovieActors[i].ActorId = int.Parse(dr["ActorID"].ToString());
                                     }
                                 }
                             }
@@ -675,11 +820,7 @@ namespace DVDLibrary.Data
                             p.Add("MovieID", newDVD.Movie.MovieId);
                             p.Add("CharacterName", a.CharacterName);
 
-                            cn.Open();
-
                             cn.Execute("AddNewActorMovieToActorsMovies", p, commandType: CommandType.StoredProcedure);
-
-                            cn.Close();
                         }
                     }
 
@@ -713,11 +854,11 @@ namespace DVDLibrary.Data
                                                   "where genrename = @GenreName";
                                 cmd.Parameters.Clear();
                                 cmd.Parameters.AddWithValue("@GenreName", newDVD.Movie.Genres[i].GenreName);
-                                using (SqlDataReader rdr = cmd.ExecuteReader())
+                                using (SqlDataReader dr = cmd.ExecuteReader())
                                 {
-                                    while (rdr.Read())
+                                    while (dr.Read())
                                     {
-                                        newDVD.Movie.Genres[i].GenreId = (int) rdr["GenreID"];
+                                        newDVD.Movie.Genres[i].GenreId = int.Parse(dr["GenreID"].ToString());
                                     }
                                 }
                             }
@@ -730,11 +871,7 @@ namespace DVDLibrary.Data
                             p.Add("GenreID", g.GenreId);
                             p.Add("MovieID", newDVD.Movie.MovieId);
 
-                            cn.Open();
-
                             cn.Execute("AddNewGenreMovieToGenresMovies", p, commandType: CommandType.StoredProcedure);
-
-                            cn.Close();
                         }
                     }
 
@@ -743,8 +880,6 @@ namespace DVDLibrary.Data
                     {
                         for (int i = 0; i < newDVD.Movie.MovieAliases.Count; i++)
                         {
-                            cn.Open();
-
                             var p = new DynamicParameters();
 
                             p.Add("MovieID", newDVD.Movie.MovieId);
@@ -754,15 +889,13 @@ namespace DVDLibrary.Data
                             cn.Execute("AddNewMovieAliasToMovieAliases", p, commandType: CommandType.StoredProcedure);
 
                             newDVD.Movie.MovieAliases[i].MovieAliasId = p.Get<int>("MovieAliasID");
-
-                            cn.Close();
                         }
                     }
                 }
                 else
                 {
                     cmd.CommandText = "select movieid from movies " +
-                        "where movietmdbnum = @MovieTMDBNum";
+                                      "where movietmdbnum = @MovieTMDBNum";
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("MovieTMDBNum", newDVD.Movie.MovieTMDBNum);
                     cmd.Connection = cn;
@@ -780,7 +913,6 @@ namespace DVDLibrary.Data
 
 
                 //Add DVD to Database
-                cn.Open();
 
                 var pDVD = new DynamicParameters();
 
@@ -791,8 +923,6 @@ namespace DVDLibrary.Data
                 cn.Execute("AddNewDVDToDVDs", pDVD, commandType: CommandType.StoredProcedure);
 
                 newDVD.DVDId = pDVD.Get<int>("DVDID");
-
-                cn.Close();
             }
 
             return newDVD;
@@ -810,9 +940,13 @@ namespace DVDLibrary.Data
             Models.Movie movieInfo = new Models.Movie();
             movieInfo.MovieTitle = movie.Title;
             movieInfo.MovieTMDBNum = movie.Id;
-            if (movie.Releases.Countries.FirstOrDefault(m => m.Iso_3166_1 == "US").Certification != null)
+            if (movie.Releases.Countries.FirstOrDefault(m => m.Iso_3166_1 == "US") != null)
             {
                 movieInfo.MpaaRating = movie.Releases.Countries.FirstOrDefault(m => m.Iso_3166_1 == "US").Certification;
+            }
+            else
+            {
+                movieInfo.MpaaRating = "NR";
             }
             if (movie.ReleaseDate != null)
             {
@@ -828,7 +962,7 @@ namespace DVDLibrary.Data
             }
             if (movie.PosterPath != null)
             {
-                movieInfo.PosterUrl = "http://image.tmdb.org/t/p/w185" + movie.PosterPath;
+                movieInfo.PosterUrl = "http://image.tmdb.org/t/p/w396" + movie.PosterPath;
             }
             else
             {
@@ -849,7 +983,7 @@ namespace DVDLibrary.Data
                     movieInfo.Genres.Add(newGenre);
                 }
             }
-            if (movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name != null)
+            if (movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director") != null)
             {
                 movieInfo.Director.DirectorName = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Name;
                 movieInfo.Director.DirectorTMDBNum = movie.Credits.Crew.FirstOrDefault(d => d.Job == "Director").Id;
@@ -905,6 +1039,226 @@ namespace DVDLibrary.Data
         {
             return "Your movie has been deleted from the DVD collection";
 
+        }
+
+        //Add a New Borrower to DB
+        public Borrower AddNewBorrowerToDB(Borrower newBorrower)
+        {
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var p = new DynamicParameters();
+                p.Add("IsOwner", newBorrower.IsOwner);
+                p.Add("FirstName", newBorrower.FirstName);
+                p.Add("LastName", newBorrower.LastName);
+                p.Add("Email", newBorrower.Email);
+                p.Add("StreetAddress", newBorrower.Address);
+                p.Add("City", newBorrower.City);
+                p.Add("State", newBorrower.State);
+                p.Add("Zipcode", newBorrower.Zipcode);
+                p.Add("Phone", newBorrower.Phone);
+                p.Add("BorrowerID", DbType.Int32, direction: ParameterDirection.Output);
+
+                cn.Execute("AddNewBorrowerToBorrowers", p, commandType: CommandType.StoredProcedure);
+
+                newBorrower.BorrowerId = p.Get<int>("BorrowerID");
+            }
+            return newBorrower;
+        }
+
+        //Return a list of Borrowers Names in the DB and their BorrowerID
+        public List<Borrower> RetrieveListOfBorrowers()
+        {
+            List<Borrower> listOfBorrowers = new List<Borrower>();
+
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                //Get Owner Name first!!
+                cmd.CommandText = "select FirstName, LastName, BorrowerID, IsOwner from Borrowers " +
+                                  "where IsOwner = 1";
+                cmd.Connection = cn;
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var newBorrower = new Borrower();
+                        newBorrower.FirstName = dr["FirstName"].ToString();
+                        newBorrower.LastName = dr["LastName"].ToString();
+                        newBorrower.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                        newBorrower.IsOwner = bool.Parse(dr["IsOwner"].ToString());
+
+                        listOfBorrowers.Add(newBorrower);
+                    }
+                }
+                cn.Close();
+
+                //Get Rest of Users and order by First Name
+                List<Borrower> nonOwnerBorrowers = new List<Borrower>();
+
+                cmd.CommandText = "select FirstName, LastName, BorrowerID, IsOwner from Borrowers " +
+                                  "where IsOwner = 0";
+                cmd.Connection = cn;
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var newBorrower = new Borrower();
+                        newBorrower.FirstName = dr["FirstName"].ToString();
+                        newBorrower.LastName = dr["LastName"].ToString();
+                        newBorrower.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                        newBorrower.IsOwner = bool.Parse(dr["IsOwner"].ToString());
+
+                        nonOwnerBorrowers.Add(newBorrower);
+                    }
+                }
+                cn.Close();
+
+                var ordered = nonOwnerBorrowers.OrderBy(b => b.FirstName);
+                listOfBorrowers.AddRange(ordered);
+            }
+
+            return listOfBorrowers;
+        }
+
+        //Check if an Owner is already in the DB
+        public Response CheckIfOwnerAlreadyExistsInDb()
+        {
+            var response = new Response();
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = "select count(Borrowers.BorrowerID) from Borrowers " +
+                                  "where IsOwner = 1";
+
+                cmd.Connection = cn;
+                cn.Open();
+                int ownerCount = int.Parse(cmd.ExecuteScalar().ToString());
+
+                cn.Close();
+
+                if (ownerCount == 0)
+                {
+                    response.Success = false;
+                    response.Message = "No previous owner exists";
+                    return response;
+                }
+                else
+                {
+                    response.Success = true;
+                    response.Message = "An owner already exists!!";
+                    return response;
+                }
+            }
+        }
+
+
+        //Collection Statistics for Index Page
+        public CollectionStats RetrieveCollectionStats()
+        {
+            var stats = new CollectionStats();
+
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                //Owner Name
+                cmd.CommandText = "select FirstName, LastName from Borrowers " +
+                                  "where IsOwner = 1";
+                cmd.Connection = cn;
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        stats.Owner = dr["FirstName"].ToString() + " " + dr["LastName"].ToString();
+                    }
+                }
+                cn.Close();
+
+                //Movies Count
+                cmd.CommandText = "select count(Movies.MovieID) from Movies";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.MoviesCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //DVDs Count
+                cmd.CommandText = "select count(DVDs.DVDID) from DVDs";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.DVDsCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Borrowers Count
+                cmd.CommandText = "select count(Borrowers.BorrowerID) from Borrowers";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.BorrowersCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Borrower Status Count
+                cmd.CommandText = "select count(BorrowerStatuses.BorrowerStatusID) from BorrowerStatuses";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.BorrowerStatusesCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //User Ratings Count
+                cmd.CommandText = "select count(UserRatings.UserRatingID) from UserRatings";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.UserRatingsCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //User Notes Count
+                cmd.CommandText = "select count(UserNotes.UserNoteID) from UserNotes";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.UserNotesCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Directors Count
+                cmd.CommandText = "select count(Directors.DirectorID) from Directors";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.DirectorsCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Studios Count
+                cmd.CommandText = "select count(Studios.StudioID) from Studios";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.SutdiosCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Genres Count
+                cmd.CommandText = "select count(Genres.GenreID) from Genres";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.GenresCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Actors Count
+                cmd.CommandText = "select count(Actors.ActorID) from Actors";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.ActorsCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+
+                //Actors Roles Count
+                cmd.CommandText = "select count(ActorsMovies.MovieID) from ActorsMovies";
+                cmd.Connection = cn;
+                cn.Open();
+                stats.ActorsRolesCount = int.Parse(cmd.ExecuteScalar().ToString());
+                cn.Close();
+            }
+
+
+            return stats;
         }
 
         //Search TMDB for movies to add depending on Search String
@@ -974,6 +1328,66 @@ namespace DVDLibrary.Data
             movie.MpaaRating = dr["Rating"].ToString();
 
             return movie;
+        }
+
+
+        //Rent DVD (send to DB)
+        public RentalTicket RentDVDSendToDb(RentalTicket rentalTicket)
+        {
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var p = new DynamicParameters();
+                p.Add("BorrowerID", rentalTicket.BorrowerId);
+                p.Add("DVDID", rentalTicket.DVDId);
+                p.Add("DateBorrowed", rentalTicket.DateBorrowed);
+                p.Add("BorrowerStatusID", DbType.Int32, direction: ParameterDirection.Output);
+
+                cn.Execute("RentDVDToBorrowerStatuses", p, commandType: CommandType.StoredProcedure);
+
+                rentalTicket.BorrowerStatusId = p.Get<int>("BorrowerStatusID");
+            }
+
+            return rentalTicket;
+        }
+
+
+        //Return DVD based on StatusId (BorrowerStatusID) (sent to DB)
+        public int ReturnDVDToDb(int statusId)
+        {
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var p = new DynamicParameters();
+                p.Add("BorrowerStatusID", statusId);
+                p.Add("DateReturned", DateTime.Now.Date);
+
+                cn.Execute("ReturnDVDToBorrowerStatuses", p, commandType: CommandType.StoredProcedure);
+            }
+
+            int movieId = 0;
+
+            using (var cn = new SqlConnection(Settings.ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = "select d.MovieID from BorrowerStatuses bs " +
+                                  "LEFT JOIN DVDs d on bs.DVDID = d.DVDID " +
+                                  "where BorrowerStatusID = @BorrowerStatusID";
+                cmd.Connection = cn;
+                cn.Open();
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("BorrowerStatusID", statusId);
+                
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        movieId = int.Parse(dr["MovieID"].ToString());
+                    }
+                }
+            }
+
+            return movieId;
         }
     }
 }

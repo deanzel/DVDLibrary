@@ -17,33 +17,18 @@ namespace DVDLibrary.UI.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+            var stats = _oops.ReturnCollectionStats();
+
+            return View(stats);
         }
 
         public ActionResult ViewAllDvds()
         {
-            //_oops = new DVDLibaryOperations();
-
-            //var movies = _oops.ReturnMoviesList().OrderBy(m => m.MovieTitle).ToList();
             var movies = _oops.ReturnMoviesListFromDB().OrderBy(m => m.MovieTitle).ToList();
 
             return View(movies);
         }
 
-        //For Mock
-        public ActionResult SelectDvd(int id)
-        {
-            //_oops = new DVDLibaryOperations();
-
-            var movies = _oops.ReturnMoviesList();
-
-            var viewMovieVM = new ViewMovieVM();
-
-            viewMovieVM.Movie = movies.Where(m => m.MovieId == id).FirstOrDefault();
-            return View(viewMovieVM);
-        }
-
-        //For Real SQL DB
         public ActionResult SelectMovie(int id)
         {
             var dvdsList = _oops.ReturnDvdsFromDbForMovieId(id);
@@ -55,66 +40,81 @@ namespace DVDLibrary.UI.Controllers
         }
 
 
-        [HttpPost]
-        public ActionResult DeleteDVD(int id)
+        //Grab all DVD statuses based on MovieID
+        public ActionResult ViewDVDsStatus(int id)
         {
-            //_oops = new DVDLibaryOperations();
+            var vM = new ViewMovieDVDsVM();
 
-            var message = _oops.returnDelete(id);
+            //lighter weight return
+            vM.DVDs = _oops.ReturnPartialDVDsInfo(id);
 
-            MessageBox.Show(message);
-
-
-            return RedirectToAction("ViewAllDvds");
+            return View(vM);
         }
 
-        public ActionResult SearchForMovie()
+        //Rent DVD from DVDs Statuses Page with drop down user
+        public ActionResult RentDVD(ViewMovieDVDsVM vM)
         {
-            return View();
+            //Library method to rent DVD based on DVDID and BorrowerID
+            var rentalTicket = new RentalTicket();
+            rentalTicket.BorrowerId = vM.Borrower.BorrowerId;
+            rentalTicket.DVDId = vM.DVDIdToRent;
+            rentalTicket.DateBorrowed = DateTime.Now.Date;
+            rentalTicket.MovieId = vM.MovieId;
+
+            var newRentalTicket = _oops.RentDVD(rentalTicket);
+
+            return RedirectToAction("ViewDVDsStatus", "Home", new {id = newRentalTicket.MovieId});
         }
 
-        [HttpPost]
-        public ActionResult SearchForMoviePost()
+        //Return DVD based on *StatusId (BorrowerStatusID) from DVDs Statuses Page
+        public ActionResult ReturnDVD(int id)
         {
-            Movie movie = new Movie();
-            movie.MovieId = int.Parse(Request.Form["movieID"]);
+            var movieId = _oops.ReturnDVD(id);
 
-            //_oops = new DVDLibaryOperations();
-            movie = _oops.returnMovie(movie.MovieId);
-
-            return View("SearchForMoviePost", movie);
+            return RedirectToAction("ViewDVDsStatus", "Home", new {id = movieId});
         }
 
-        public ActionResult AddBorrower()
-        {
-            return View();
-        }
 
-        [HttpPost]
-        public ActionResult AddBorrowerPost()
-        {
-            Borrower borrower = new Borrower();
-            borrower.FirstName = Request.Form["firstName"];
-            borrower.LastName = Request.Form["lastName"];
-            borrower.Email = Request.Form["email"];
-            borrower.Phone = Request.Form["phone"];
+        //[HttpPost]
+        //public ActionResult DeleteDVD(int id)
+        //{
+        //    var message = _oops.returnDelete(id);
 
-            return View("AddBorrowerPost", borrower);
-        }
+        //    MessageBox.Show(message);
 
-        [HttpPost]
-        public ActionResult BorrowDvdPost(ViewMovieVM newBorrowerSelection)
-        {
-            ViewMovieVM vm = new ViewMovieVM();
 
-            vm.borrower = newBorrowerSelection.borrower;
+        //    return RedirectToAction("ViewAllDvds");
+        //}
 
-            if (ModelState.IsValid)
-            return View("BorrowDvdPost", vm);
-            else
-            {
-                return View("AddBorrower");
-            }
-        }
+        //public ActionResult SearchForMovie()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public ActionResult SearchForMoviePost()
+        //{
+        //    Movie movie = new Movie();
+        //    movie.MovieId = int.Parse(Request.Form["movieID"]);
+
+        //    movie = _oops.returnMovie(movie.MovieId);
+
+        //    return View("SearchForMoviePost", movie);
+        //}
+
+        //[HttpPost]
+        //public ActionResult BorrowDvdPost(ViewMovieVM newBorrowerSelection)
+        //{
+        //    ViewMovieVM vm = new ViewMovieVM();
+
+        //    vm.borrower = newBorrowerSelection.borrower;
+
+        //    if (ModelState.IsValid)
+        //    return View("BorrowDvdPost", vm);
+        //    else
+        //    {
+        //        return View("AddBorrower");
+        //    }
+        //}
     }
 }

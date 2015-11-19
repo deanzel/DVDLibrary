@@ -14,7 +14,7 @@ Create Procedure [dbo].[GetMovieInfoByMovieId](
 	)
 	as
 begin
-	SELECT m.MovieID, m.MovieTitle, m.MovieTMDBNum, m.ReleaseDate, m.Rating, m.Synopsis, m.PosterUrl,
+	SELECT m.MovieID, m.MovieTitle, m.MovieTMDBNum, m.ReleaseDate, m.DurationInMin, m.Rating, m.Synopsis, m.PosterUrl,
 	m.YouTubeTrailer, m.DirectorID, d.DirectorName, d.DirectorTMDBNum, m.StudioID, s.StudioName, s.StudioTMDBNum
 	FROM Movies m
 		LEFT JOIN Directors d on m.DirectorID = d.DirectorID
@@ -117,7 +117,7 @@ Create Procedure [dbo].[GetBorrowerStatusesByDVDID](
 	)
 	as
 begin
-	SELECT bs.BorrowerStatusID, bs.BorrowerID, bs.DVDID, bs.CheckOutDate, bs.CheckInDate, b.IsOwner, b.FirstName,
+	SELECT bs.BorrowerStatusID, bs.BorrowerID, bs.DVDID, bs.DateBorrowed, bs.DateReturned, b.IsOwner, b.FirstName,
 	b.LastName, b.Email, b.StreetAddress, b.City, b.[State], b.Zipcode, b.Phone
 	FROM BorrowerStatuses bs
 		LEFT JOIN Borrowers b on bs.BorrowerID = b.BorrowerID

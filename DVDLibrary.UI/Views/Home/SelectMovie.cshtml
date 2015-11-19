@@ -3,95 +3,139 @@
 @{
     ViewBag.Title = @Model.DVDs[0].Movie.MovieTitle;
 }
-
-<br />
-<p>@Html.ActionLink("Back to DVD Collection", "ViewAllDvds", "Home")</p>
-
-<h2>@Model.DVDs[0].Movie.MovieTitle</h2>
-<img src="@Model.DVDs[0].Movie.PosterUrl" align="right">
-<div class="table-striped">
-    <ul>
-        <li>@Model.DVDs[0].Movie.MpaaRating</li>
-        @foreach (var genre in @Model.DVDs[0].Movie.Genres)
-        {
-            <li>Genre: @genre.GenreName</li>
-        }
-        <li>Duration: @Model.DVDs[0].Movie.Duration</li>
-        <li>Release Date: @Model.DVDs[0].Movie.ReleaseDate.ToString("d")</li>
-        <li>Director Name: @Model.DVDs[0].Movie.Director.DirectorName</li>
-        <li>Studio: @Model.DVDs[0].Movie.Studio.StudioName</li>
-        <li>Actors:</li>
-        @foreach (var actor in @Model.DVDs[0].Movie.MovieActors)
-        {
-            <span>@actor.CharacterName: @actor.ActorName</span>
-            <span>;</span>
-        }
-        <p></p>
-        <p style="font-weight: bold">Synopsis:</p>
-        <span>@Model.DVDs[0].Movie.Synopsis</span>
-        <p></p>
-        <p style="font-weight: bold">Viewer Comments:</p>
-        <li>
-            Owner Rating:
-
-            @if (@Model.DVDs[0].Movie.UserRatings.Where(r => r.Owner).FirstOrDefault() != null)
-            {
-                <span>@Model.DVDs[0].Movie.UserRatings.Where(r => r.Owner).FirstOrDefault().Rating / 10 </span>
-            }
-            else
-            {
-                <span>You have not rated this movie.</span>
-            }
-        </li>
-
-        <li>
-            Average User Rating (@(Model.DVDs[0].Movie.UserRatings.Count) users):
-            @if (@Model.DVDs[0].Movie.UserRatings.Count != 0)
-            {
-                <span>@Model.DVDs[0].Movie.UserRatings.Average(r => r.Rating) / 10</span>
-            }
-            else
-            {
-                <span>No users have rated this movie.</span>
-            }
-        </li>
-
-        @foreach (var note in @Model.DVDs[0].Movie.UserNotes)
-        {
-            <li>User Notes: @note.Note ~@note.BorrowerName</li>
-        }
-
-        <p></p>
-        <p style="font-weight: bold">Borrower Information:</p>
-        @*@if (@Model.status.DVDId != null && @Model.status.DateReturned == null)
-            {
-                <li>Borrower: @Model.status.Borrower</li>
-                <li>Date Borrowed: @Model.status.DateBorrowed</li>
-            }
-            else
-            {
-                <p>This movie is available to be borrowed.</p>
-            }*@
-
-        @using (Html.BeginForm("BorrowDvdPost", "Home", FormMethod.Post))
-        {
-            <p>Select Borrower: @Html.DropDownListFor(b => b.Borrower.FirstName, Model.BorrowersList)</p>
-            <button type="submit" class="btn btn-primary">Borrower Movie</button>
-        }
-    </ul>
+<br/>
+<div class="clearfix">
+    @Html.ActionLink("Back to DVD Collection", "ViewAllDvds", "Home", null, new {@class = "btn btn-default pull-right"})
 </div>
-<br />
-<div id="trailer">
-    @if (@Model.DVDs[0].Movie.YouTubeTrailer != null)
-    {
-        <iframe width="420" height="315" src="@Model.DVDs[0].Movie.YouTubeTrailer"></iframe>
-    }
-</div>
-<br />
-<div>
-    @using (Html.BeginForm("DeleteDVD", "Home", FormMethod.Post))
-    {
-        @Html.Hidden("id", @Model.DVDs[0].Movie.MovieId)
-        <button class="btn btn-danger">Delete</button>
-    }
+<br/>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-3" id="left column">
+            <div class="row">
+                <div class="col-xs-9">
+                    <img class="img-responsive" src="@Model.DVDs[0].Movie.PosterUrl">
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="btn-group-vertical  col-xs-9">
+                    <a href="/Home/ViewDVDsStatus/@(Model.DVDs[0].Movie.MovieId)" class="btn btn-primary">View DVDs <span class="badge">@Model.DVDs.Count</span></a>
+                    <a href="#" class="btn btn-primary">View Comments <span class="badge">@Model.DVDs[0].Movie.UserNotes.Count</span></a>
+                    <a href="#" class="btn btn-primary">View Ratings <span class="badge">@Model.DVDs[0].Movie.UserRatings.Count</span></a>
+                    <a href="#" class="btn btn-primary">Edit Movie</a>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <span><b>@(Model.Owner)'s Rating:</b></span>
+            </div>
+            <div class="row">
+                @if (@Model.DVDs[0].Movie.UserRatings.Where(r => r.Owner).FirstOrDefault() != null)
+                {
+                    <span>@Model.DVDs[0].Movie.UserRatings.Where(r => r.Owner).FirstOrDefault().Rating / 5</span>
+                }
+                else
+                {
+                    <span>@(Model.Owner) has not rated this.</span>
+                }
+            </div>
+            <br/>
+            <div class="row">
+                <span><b>Avg Rating (@Model.DVDs[0].Movie.UserRatings.Count Users):</b></span>
+            </div>
+            <div class="row">
+                @if (@Model.DVDs[0].Movie.UserRatings.Count != 0)
+                {
+                    <span>@Model.DVDs[0].Movie.UserRatings.Average(r => r.Rating) / 5</span>
+                }
+                else
+                {
+                    <span>No users have rated this.</span>
+                }
+            </div>
+            <br/>
+
+            <div class="row">
+                <p><b>MovieID:</b> @(Model.DVDs[0].Movie.MovieId)</p>
+            </div>
+
+            <div class="row">
+                <p><b>TMDB#:</b> @(Model.DVDs[0].Movie.MovieTMDBNum)</p>
+            </div>
+            
+
+
+
+        </div>
+
+
+        <div class="col-xs-9" id="right column">
+            <div class="row panel panel-default text-center">
+                <div class="panel-heading">
+                    <h1>
+                        @Model.DVDs[0].Movie.MovieTitle <small>(@Model.DVDs[0].Movie.ReleaseDate.Year)</small>
+                    </h1>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-inline">
+                        <li>@Model.DVDs[0].Movie.MpaaRating</li>
+                        <li> | </li>
+                        <li>@(Model.DVDs[0].Movie.Duration) mins</li>
+                        <li> | </li>
+                        <li>
+                            @for (int i = 0; i < Model.DVDs[0].Movie.Genres.Count - 1; i++)
+                            {
+                                @(Model.DVDs[0].Movie.Genres[i].GenreName + ", ")
+                            }
+                            @Model.DVDs[0].Movie.Genres[Model.DVDs[0].Movie.Genres.Count - 1].GenreName
+                        </li>
+                        <li> | </li>
+                        
+                        <li>@(Model.DVDs[0].Movie.ReleaseDate.ToString("d")) (USA)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <blockquote class="blockquote-reverse">
+                    <p>@Model.DVDs[0].Movie.Synopsis</p>
+                    <small>Synopsis from <cite title="Source Title">themoviedb.org</cite></small>
+                </blockquote>
+            </div>
+
+            <div class="text-center">
+                    <ul class="list-inline">
+                        <li><h4>Directed by <b>@(Model.DVDs[0].Movie.Director.DirectorName)</b></h4></li>
+                        <li> | </li>
+                        <li><h4>Produced by <b>@(Model.DVDs[0].Movie.Studio.StudioName)</b></h4></li>
+                    </ul>
+            </div>
+            <br/>
+
+            <div class="row embed-responsive embed-responsive-16by9" id="trailer">
+                @if (@Model.DVDs[0].Movie.YouTubeTrailer != null)
+                {
+                    <iframe class="embed-responsive-item" src="@(Model.DVDs[0].Movie.YouTubeTrailer)"></iframe>
+                }
+            </div>
+            <br/>
+
+            <div class="row">
+                <table class="table table-bordered table-responsive text-center">
+                    <thead><tr><th class="text-center">Cast</th><th class="text-center">Actor Name</th><th class="text-center">Character Name</th></tr></thead>
+                    <tbody>
+                        @foreach (var a in Model.DVDs[0].Movie.MovieActors)
+                        {
+                            <tr>
+                                <td class="col-xs-3">Actor #@(Model.DVDs[0].Movie.MovieActors.IndexOf(a) + 1)</td>
+                                <td class="col-xs-3">@a.ActorName</td>
+                                <td class="col-xs-3">@a.CharacterName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
 </div>

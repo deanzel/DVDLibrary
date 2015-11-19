@@ -40,12 +40,12 @@
 
     var defaults = {
       list:           '.hideseek-data',
-      nodata:         '',
+      nodata:         'No movies found...',
       attribute:      'text',
-      highlight:      false,
+      highlight:      true,
       ignore:         '',
-      navigation:     false,
-      ignore_accents: false,
+      navigation:     true,
+      ignore_accents: true,
       hidden_mode:    false
     };
 

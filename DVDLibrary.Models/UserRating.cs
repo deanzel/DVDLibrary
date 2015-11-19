@@ -13,7 +13,7 @@ namespace DVDLibrary.Models
         public int MovieId { get; set; }
         public int BorrowerId { get; set; }
         public string BorrowerName { get; set; }
-        [Range(1, 11, ErrorMessage = "Please enter a rating between 1-10.")]
+        [Range(1, 6, ErrorMessage = "Please enter a rating between 1-5.")]
         [Required]
         public int Rating { get; set; }
         public bool Owner { get; set; }

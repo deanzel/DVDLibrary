@@ -1,0 +1,61 @@
+﻿@model DVDLibrary.Models.Borrower
+
+@{
+    ViewBag.Title = "Successfully Added a New Borrower";
+}
+
+<h2>You Have Successfully Added a New Borrower!!</h2>
+
+<div class="row">
+    <table class="table table-striped col-xs-12">
+        <thead>
+        <tr><th>New Borrower Information</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="col-xs-4">Borrower ID</td>
+            <td class="col-xs-8">@Html.DisplayFor(m => m.BorrowerId)</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4">First Name</td>
+            <td class="col-xs-8">@Html.DisplayFor(m => m.FirstName)</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4">Last Name</td>
+            <td class="col-xs-8">@Html.DisplayFor(m => m.LastName)</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4">Are You the Owner of Collection?</td>
+            <td class="col-xs-8">@Html.DisplayFor(m => m.IsOwner)</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4">Email</td>
+            <td class="col-xs-8">@Html.DisplayFor(m => m.Email)</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4">Phone Number</td>
+            <td class="col-xs-8">@Html.DisplayFor(m => m.Phone)</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4">Address</td>
+            <td class="col-xs-8">@Html.DisplayFor(m => m.Address)</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4">City</td>
+            <td class="col-xs-8">@Html.DisplayFor(m => m.City)</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4">State</td>
+            <td class="col-xs-8">@Html.DisplayFor(m => m.State)</td>
+        </tr>
+        <tr>
+            <td class="col-xs-4">Zipcode</td>
+            <td class="col-xs-8">@Html.DisplayFor(m => m.Zipcode)</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    @Html.ActionLink("Return to Home Page", "Index", "Home", null, new { @class = "btn btn-primary" })
+</div>

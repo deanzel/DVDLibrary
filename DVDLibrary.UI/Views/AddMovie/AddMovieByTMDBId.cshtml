@@ -7,7 +7,7 @@
 <h2>Add Movie By TMDB Id</h2>
 
 <div>
-    @using (Html.BeginForm("SendNewMovieInfoToDB", "AddMovie", null, FormMethod.Post, new {id = "newdvdinfo"}))
+    @using (Html.BeginForm("SendNewMovieInfoToDB", "AddMovie", null, FormMethod.Post, new {id = "newdvdinfo", @class="form-horizontal"}))
     {
         <div class="container-fluid form-group">
             <div class="row">
@@ -42,6 +42,7 @@
                         </tr>
                         <tr>
                             <td class="col-xs-3">Release Date</td>
+                            @*<td class="col-xs-6">@Html.EditorFor(m => m.Movie.ReleaseDate)</td>*@
                             <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.ReleaseDate, "{0:MM/dd/yyyy}", new {@class = "form-control"})</td>
                         </tr>
                         <tr>
@@ -87,8 +88,8 @@
                     <img src="@Model.Movie.PosterUrl">
                 </div>
                 <div class="col-xs-9">
-                    <table class="table table-striped col-xs-9">
-                        <thead><tr><th>List of Actors</th><th>Actor Name</th><th>Character Name</th></tr></thead>
+                    <table class="table table-striped col-xs-9 text-center">
+                        <thead><tr><th class="text-center">Cast</th><th class="text-center">Actor Name</th><th class="text-center">Character Name</th></tr></thead>
                         <tbody>
                         @foreach (var a in Model.Movie.MovieActors)
                         {

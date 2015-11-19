@@ -64,25 +64,5 @@ namespace DVDLibrary.UI.Controllers
                 return View("AddMovieByTMDBId", newDVDs);
             }
         }
-
-        public ActionResult GivePattyData()
-        {
-            var newDVDVM = new AddDVDVM();
-            newDVDVM.Movie = _oops.returnMovie(11);
-            newDVDVM.Quantity = 1;
-            newDVDVM.DVDType = "Blu-ray";
-
-
-            for (int i = 0; i < newDVDVM.Quantity; i++)
-            {
-                var newDVD = new DVD();
-                newDVD.Movie = newDVDVM.Movie;
-                newDVD.DVDType = newDVDVM.DVDType;
-
-                _oops.AddMovieToDB(newDVD);
-            }
-
-            return View(newDVDVM);
-        }
     }
 }
