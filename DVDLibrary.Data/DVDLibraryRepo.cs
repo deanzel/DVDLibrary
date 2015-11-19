@@ -834,7 +834,7 @@ namespace DVDLibrary.Data
             {
                 movieInfo.PosterUrl =
                     "http://assets.tmdb.org/assets/7f29bd8b3370c71dd379b0e8b570887c/images/no-poster-w185-v2.png";
-            }
+            } 
             if (movie.Videos.Results.Where(v => v.Type == "Trailer").FirstOrDefault() != null)
             {
                 movieInfo.YouTubeTrailer = "http://www.youtube.com/embed/" +
