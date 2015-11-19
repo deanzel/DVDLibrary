@@ -27,9 +27,9 @@
                     <td class="col-xs-1">@dvd.DVDId</td>
                     <td class="col-xs-1">@dvd.DVDType</td>
                     <td class="col-xs-1">
-                        @if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault() != null)
+                        @if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault() != null)
                         {
-                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().DateReturned == null)
+                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault().DateReturned == null)
                             {
                                 <span class="label label-danger">CHECKED OUT</span>
                             }
@@ -44,12 +44,12 @@
                         }
                     </td>
                     <td class="col-xs-2">
-                        @if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault() != null)
+                        @if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault() != null)
                         {
-                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().DateReturned == null)
+                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault().DateReturned == null)
                             {
-                                <span>@(dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().Borrower.FirstName) 
-                        @(dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().Borrower.LastName)</span>
+                                <span>@(dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault().Borrower.FirstName) 
+                        @(dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault().Borrower.LastName)</span>
 
                             }
                             else
@@ -63,25 +63,25 @@
                         }
                     </td>
                     <td class="col-xs-3 btn-group">
-                        @if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault() != null)
+                        @if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault() != null)
                         {
-                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().DateReturned == null)
+                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault().DateReturned == null)
                             {
                                 @Html.ActionLink("History", "RentalHistory", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-primary col-xs-4" })
-                                @Html.ActionLink("Return", "ReturnDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-warning col-xs-4" })
+                                @Html.ActionLink("Return", "ReturnDVD", "Home", new { id = dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault().StatusId }, new { @class = "btn btn-warning col-xs-4" })
                                 @Html.ActionLink("DELETE", "DeleteDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-danger col-xs-4" })
                             }
                             else
                             {
                                 @Html.ActionLink("History", "RentalHistory", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-primary col-xs-4" })
-                                @Html.ActionLink("Return", "ReturnDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-warning col-xs-4", @disabled = "disabled" })
+                                @Html.ActionLink("Return", "ReturnDVD", "Home", null, new { @class = "btn btn-warning col-xs-4", @disabled = "disabled" })
                                 @Html.ActionLink("DELETE", "DeleteDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-danger col-xs-4" })
                             }
                         }
                         else
                         {
                             @Html.ActionLink("History", "RentalHistory", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-primary col-xs-4" })
-                            @Html.ActionLink("Return", "ReturnDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-warning col-xs-4", @disabled = "disabled" })
+                            @Html.ActionLink("Return", "ReturnDVD", "Home", null, new { @class = "btn btn-warning col-xs-4", @disabled = "disabled" })
                             @Html.ActionLink("DELETE", "DeleteDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-danger col-xs-4" })
                         }
                     </td>
@@ -90,9 +90,9 @@
                         {
                             @Html.Hidden("DVDIdToRent", dvd.DVDId)
                             @Html.Hidden("MovieId", dvd.Movie.MovieId)
-                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault() != null)
+                            if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault() != null)
                             {
-                                if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).FirstOrDefault().DateReturned == null)
+                                if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault().DateReturned == null)
                                 {
                                     @Html.DropDownListFor(m => m.Borrower.BorrowerId, Model.BorrowersList, new { @class = "form-control", @disabled="disabled" })
                                     <button type="submit" class="btn btn-info" disabled="disabled">Rent</button>

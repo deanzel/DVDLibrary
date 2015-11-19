@@ -115,7 +115,8 @@ namespace DVDLibrary.Data
             using (var cn = new SqlConnection(Settings.ConnectionString))
             {
                 var cmd = new SqlCommand();
-                cmd.CommandText = ("SELECT [MovieID], [MovieTitle], [ReleaseDate], [Synopsis], [PosterUrl], [Rating] From Movies");
+                cmd.CommandText =
+                    ("SELECT [MovieID], [MovieTitle], [ReleaseDate], [Synopsis], [PosterUrl], [Rating] From Movies");
                 cmd.Connection = cn;
                 cn.Open();
 
@@ -129,7 +130,7 @@ namespace DVDLibrary.Data
                 }
             }
             return moviesListFromDB;
-        } 
+        }
 
 
         //Retrieve Full Movie Info and DVDs based on MovieID from the SQL DB
@@ -199,7 +200,7 @@ namespace DVDLibrary.Data
                 cmd.Connection = cn;
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@MovieID", movieId);
-                
+
                 cn.Open();
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
@@ -492,7 +493,7 @@ namespace DVDLibrary.Data
             }
 
             return listOfDVDInfo;
-        } 
+        }
 
 
         //Retrieve partial DVDs List info from SQL DB (lighter weight; good for ViewDVDsStatuses
@@ -646,7 +647,7 @@ namespace DVDLibrary.Data
             {
 
                 SqlCommand cmd = new SqlCommand();
-                
+
                 cmd.CommandText = "select count(movies.movietmdbnum) from movies " +
                                   "where movietmdbnum = @MovieTMDBNum";
                 cmd.Parameters.AddWithValue("@MovieTMDBNum", newDVD.Movie.MovieTMDBNum);
@@ -687,10 +688,10 @@ namespace DVDLibrary.Data
                                           "where studioname = @StudioName";
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@StudioName", newDVD.Movie.Studio.StudioName);
-                        SqlDataReader rdr = cmd.ExecuteReader();
-                        while (rdr.Read())
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        while (dr.Read())
                         {
-                            newDVD.Movie.Studio.StudioId = (int) rdr["StudioID"];
+                            newDVD.Movie.Studio.StudioId = int.Parse(dr["StudioID"].ToString());
                         }
                     }
 
@@ -725,11 +726,11 @@ namespace DVDLibrary.Data
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@DirectorName", newDVD.Movie.Director.DirectorName);
 
-                        using (SqlDataReader rdr = cmd.ExecuteReader())
+                        using (SqlDataReader dr = cmd.ExecuteReader())
                         {
-                            while (rdr.Read())
+                            while (dr.Read())
                             {
-                                newDVD.Movie.Director.DirectorId = (int) rdr["DirectorID"];
+                                newDVD.Movie.Director.DirectorId = int.Parse(dr["DirectorID"].ToString());
                             }
                         }
                     }
@@ -801,11 +802,11 @@ namespace DVDLibrary.Data
                                                   "where actorname = @ActorName";
                                 cmd.Parameters.Clear();
                                 cmd.Parameters.AddWithValue("@ActorName", newDVD.Movie.MovieActors[i].ActorName);
-                                using (SqlDataReader rdr = cmd.ExecuteReader())
+                                using (SqlDataReader dr = cmd.ExecuteReader())
                                 {
-                                    while (rdr.Read())
+                                    while (dr.Read())
                                     {
-                                        newDVD.Movie.MovieActors[i].ActorId = (int) rdr["ActorID"];
+                                        newDVD.Movie.MovieActors[i].ActorId = int.Parse(dr["ActorID"].ToString());
                                     }
                                 }
                             }
@@ -853,11 +854,11 @@ namespace DVDLibrary.Data
                                                   "where genrename = @GenreName";
                                 cmd.Parameters.Clear();
                                 cmd.Parameters.AddWithValue("@GenreName", newDVD.Movie.Genres[i].GenreName);
-                                using (SqlDataReader rdr = cmd.ExecuteReader())
+                                using (SqlDataReader dr = cmd.ExecuteReader())
                                 {
-                                    while (rdr.Read())
+                                    while (dr.Read())
                                     {
-                                        newDVD.Movie.Genres[i].GenreId = (int) rdr["GenreID"];
+                                        newDVD.Movie.Genres[i].GenreId = int.Parse(dr["GenreID"].ToString());
                                     }
                                 }
                             }
@@ -894,7 +895,7 @@ namespace DVDLibrary.Data
                 else
                 {
                     cmd.CommandText = "select movieid from movies " +
-                        "where movietmdbnum = @MovieTMDBNum";
+                                      "where movietmdbnum = @MovieTMDBNum";
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("MovieTMDBNum", newDVD.Movie.MovieTMDBNum);
                     cmd.Connection = cn;
@@ -1153,8 +1154,8 @@ namespace DVDLibrary.Data
                 }
             }
         }
-        
-        
+
+
         //Collection Statistics for Index Page
         public CollectionStats RetrieveCollectionStats()
         {
@@ -1173,7 +1174,7 @@ namespace DVDLibrary.Data
                 {
                     while (dr.Read())
                     {
-                       stats.Owner = dr["FirstName"].ToString() + " " + dr["LastName"].ToString();
+                        stats.Owner = dr["FirstName"].ToString() + " " + dr["LastName"].ToString();
                     }
                 }
                 cn.Close();
@@ -1347,6 +1348,46 @@ namespace DVDLibrary.Data
             }
 
             return rentalTicket;
+        }
+
+
+        //Return DVD based on StatusId (BorrowerStatusID) (sent to DB)
+        public int ReturnDVDToDb(int statusId)
+        {
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var p = new DynamicParameters();
+                p.Add("BorrowerStatusID", statusId);
+                p.Add("DateReturned", DateTime.Now.Date);
+
+                cn.Execute("ReturnDVDToBorrowerStatuses", p, commandType: CommandType.StoredProcedure);
+            }
+
+            int movieId = 0;
+
+            using (var cn = new SqlConnection(Settings.ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = "select d.MovieID from BorrowerStatuses bs " +
+                                  "LEFT JOIN DVDs d on bs.DVDID = d.DVDID " +
+                                  "where BorrowerStatusID = @BorrowerStatusID";
+                cmd.Connection = cn;
+                cn.Open();
+
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("BorrowerStatusID", statusId);
+                
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        movieId = int.Parse(dr["MovieID"].ToString());
+                    }
+                }
+            }
+
+            return movieId;
         }
     }
 }

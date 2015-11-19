@@ -66,6 +66,14 @@ namespace DVDLibrary.UI.Controllers
             return RedirectToAction("ViewDVDsStatus", "Home", new {id = newRentalTicket.MovieId});
         }
 
+        //Return DVD based on *StatusId (BorrowerStatusID) from DVDs Statuses Page
+        public ActionResult ReturnDVD(int id)
+        {
+            var movieId = _oops.ReturnDVD(id);
+
+            return RedirectToAction("ViewDVDsStatus", "Home", new {id = movieId});
+        }
+
 
         //[HttpPost]
         //public ActionResult DeleteDVD(int id)

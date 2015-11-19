@@ -103,5 +103,11 @@ namespace DVDLibrary.BLL
         {
             return _repo.RentDVDSendToDb(rentalTicket);
         }
+
+        //Return DVD based on StatusId (send to DB)
+        public int ReturnDVD(int statusId)
+        {
+            return _repo.ReturnDVDToDb(statusId);
+        }
     }
 }
