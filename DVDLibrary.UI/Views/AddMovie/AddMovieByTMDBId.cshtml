@@ -1,7 +1,7 @@
 ﻿@model DVDLibrary.UI.Models.AddDVDVM
 
 @{
-    ViewBag.Title = "Add Movie By TMDB ID";
+    ViewBag.Title = "Add Movie By TMDb ID";
 }
 
 <h2>Add Movie By TMDB Id</h2>
@@ -32,7 +32,7 @@
                             <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.MovieTitle, new {@class = "form-control"})</td>
                         </tr>
                         <tr>
-                            <td class="col-xs-3">TMDB Number</td>
+                            <td class="col-xs-3">TMDb Number</td>
                             <td class="col-xs-6">@Html.DisplayFor(m => m.Movie.MovieTMDBNum, new {@class = "form-control"})</td>
                             @Html.HiddenFor(m => m.Movie.MovieTMDBNum)
                         </tr>
@@ -85,7 +85,7 @@
                     </table>
                 </div>
                 <div class="col-xs-3">
-                    <img src="@Model.Movie.PosterUrl">
+                    <img src="@Model.Movie.PosterUrl" class="img-responsive">
                 </div>
                 <div class="col-xs-9">
                     <table class="table table-striped col-xs-9 text-center">
@@ -121,11 +121,13 @@
             }
         </div>
 
-        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Submit</button>
     }
 </div>
 <br/>
-@Html.ActionLink("Return to Add DVD Index", "Index", "AddMovie", null, new { @class = "btn btn-primary" })
+<div>
+    <a href="/AddMovie/Index" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Return to Add DVD Index</a>
+</div>
 
 @section Scripts {
     <script src="~/Scripts/jquery.validate.min.js"></script>

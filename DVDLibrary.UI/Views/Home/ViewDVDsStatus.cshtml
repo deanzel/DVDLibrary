@@ -67,24 +67,27 @@
                         {
                             if (dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault().DateReturned == null)
                             {
-                                @Html.ActionLink("History", "RentalHistory", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-primary col-xs-4" })
-                                @Html.ActionLink("Return", "ReturnDVD", "Home", new { id = dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault().StatusId }, new { @class = "btn btn-warning col-xs-4" })
-                                @Html.ActionLink("DELETE", "DeleteDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-danger col-xs-4" })
+                                @Html.ActionLink("History", "RentalHistory", "Home", new {id = dvd.DVDId}, new {@class = "btn btn-primary col-xs-4"})
+                                @Html.ActionLink("Return", "ReturnDVD", "Home", new {id = dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault().StatusId}, new {@class = "btn btn-warning col-xs-4"})
+                                @Html.ActionLink("DELETE", "DeleteDVD", "Home", new {id = dvd.DVDId}, new {@class = "btn btn-danger col-xs-4"})
                             }
                             else
                             {
-                                @Html.ActionLink("History", "RentalHistory", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-primary col-xs-4" })
-                                @Html.ActionLink("Return", "ReturnDVD", "Home", null, new { @class = "btn btn-warning col-xs-4", @disabled = "disabled" })
-                                @Html.ActionLink("DELETE", "DeleteDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-danger col-xs-4" })
+                                @Html.ActionLink("History", "RentalHistory", "Home", new {id = dvd.DVDId}, new {@class = "btn btn-primary col-xs-4"})
+                                @*<a href="/Home/ReturnDVD/@(dvd.Statuses.OrderByDescending(s => s.DateBorrowed).ThenByDescending(s => s.StatusId).FirstOrDefault().StatusId)"
+                                     class="btn btn-danger col-xs-4" disabled="disabled"><span class="glyphicon glyphicon-check"></span> Return</a>*@
+                                @Html.ActionLink("Return", "ReturnDVD", "Home", null, new {@class = "btn btn-warning col-xs-4", @disabled = "disabled"})
+                                @*<a href="/Home/DeleteDVD/@(dvd.DVDId)" class = "btn btn-danger col-xs-4"><span class="glyphicon glyphicon-remove"></span> DELETE</a>*@
+                                @Html.ActionLink("DELETE", "DeleteDVD", "Home", new {id = dvd.DVDId}, new {@class = "btn btn-danger col-xs-4"})
                             }
                         }
                         else
                         {
-                            @Html.ActionLink("History", "RentalHistory", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-primary col-xs-4" })
-                            @Html.ActionLink("Return", "ReturnDVD", "Home", null, new { @class = "btn btn-warning col-xs-4", @disabled = "disabled" })
-                            @Html.ActionLink("DELETE", "DeleteDVD", "Home", new { id = dvd.DVDId }, new { @class = "btn btn-danger col-xs-4" })
+                            @Html.ActionLink("History", "RentalHistory", "Home", new {id = dvd.DVDId}, new {@class = "btn btn-primary col-xs-4"})
+                            @Html.ActionLink("Return", "ReturnDVD", "Home", null, new {@class = "btn btn-warning col-xs-4", @disabled = "disabled"})
+                            @Html.ActionLink("DELETE", "DeleteDVD", "Home", new {id = dvd.DVDId}, new {@class = "btn btn-danger col-xs-4"})
                         }
-                    </td>
+</td>
                     <td class="col-xs-4">
                         @using (Html.BeginForm("RentDVD", "Home", null, FormMethod.Post, new {@class="form-inline"}))
                         {

@@ -10,9 +10,9 @@
     <p>Please enter the name of the movie that you want to add to your collection.</p>
     @using (Html.BeginForm("SearchTMDBForMovies", "AddMovie", null, FormMethod.Post, new { id = "searchForm" }))
     {
-        <div class="form-group">
-            <p>Movie Search (TMDB): @Html.TextBox("movieSearchString", @Model.SearchParameter)
-            <button type="Submit" class="btn btn-primary">Search</button></p>
+        <div class="form-inline">
+            <p>Movie Search (TMDb): @Html.TextBox("movieSearchString", @Model.SearchParameter, new {@class = "form-control"})
+            <button type="Submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Search</button></p>
         </div>
     }
 
@@ -36,9 +36,9 @@ else
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Poster</th>
-                <th>Info</th>
-                <th>Action</th>
+                <th class="text-center">Poster</th>
+                <th class="text-center">Info</th>
+                <th class="text-center">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -47,21 +47,23 @@ else
                     <tr>
                         <td><img src="@r.PosterUrl"></td>
                         <td>
-                            <h3><b>@r.MovieTitle</b></h3>
+                            <h3><b>@r.MovieTitle</b>
+                            </h3>
                             <p>@r.ReleaseDate.ToString("d")</p>
                             <br/>
                             <p>@r.Synopsis</p>
                         </td>
-                        <td style="vertical-align:middle">@Html.ActionLink("Add Movie", "AddMovieByTMDBId", "AddMovie", new { id = @r.TMDBNum }, new { @class = "btn btn-primary" })</td>
+                        <td style="vertical-align: middle"><a href="/AddMovie/AddMovieByTMDBId/@(r.TMDBNum)" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Movie</a></td>
+                        @*<td style="vertical-align:middle">@Html.ActionLink("Add Movie", "AddMovieByTMDBId", "AddMovie", new { id = @r.TMDBNum }, new { @class = "btn btn-primary" })</td>*@
                     </tr>
                 }
             </tbody>
         </table>
     </div>
 }
-
-@Html.ActionLink("Return to Add DVD Index", "Index", "AddMovie", null, new { @class = "btn btn-primary" })
-
+<div>
+    <a href="/AddMovie/Index" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Return to Add DVD Index</a>
+</div>
 
 @section Scripts
 {

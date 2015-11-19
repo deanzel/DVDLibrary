@@ -10,9 +10,9 @@
     <p>Please enter the name of the movie that you want to add to your collection.</p>
     @using (Html.BeginForm("SearchTMDBForMovies", "AddMovie", null, FormMethod.Post, new {id = "searchForm"}))
     {
-        <div class="form-group">
-            <p>Movie Search (TMDB): @Html.PlaceHolderTextBox("movieSearchString", "Enter your movie here...", "form-control")</p>
-            <button type="Submit" class="btn btn-primary">Search</button>
+        <div class="form-inline">
+            <p>Movie Search (TMDb): @Html.PlaceHolderTextBox("movieSearchString", "Enter your movie here...", "form-control")
+            <button type="Submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Search</button></p>
         </div>
     }
 </div>
