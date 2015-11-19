@@ -6,7 +6,7 @@
 
 <h2>Add a New Borrower</h2>
 
-@using (Html.BeginForm("AddNewBorrower", "Borrower", FormMethod.Post))
+@using (Html.BeginForm("AddNewBorrower", "Borrower", null, FormMethod.Post, new {id = "addborrowerform"}))
 {
     @Html.ValidationSummary(false)
     <div class="container-fluid form-group">
@@ -16,39 +16,39 @@
             <tr><th>New Borrower Information</th></tr>
             </thead>
             <tbody>
-            <tr>
+            <tr class="form-group">
                 <td class="col-xs-4">First Name</td>
                 <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.FirstName, new {@class = "form-control"})</td>
             </tr>
-            <tr>
+            <tr class="form-group">
                 <td class="col-xs-4">Last Name</td>
                 <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.LastName, new {@class = "form-control"})</td>
             </tr>
-            <tr>
+            <tr class="form-group">
                 <td class="col-xs-4">Are You the Owner of Collection?</td>
                 <td class="col-xs-8">@Html.CheckBoxFor(m => m.Borrower.IsOwner, new {@class = "form-control"})</td>
             </tr>
-            <tr>
+            <tr class="form-group">
                 <td class="col-xs-4">Email</td>
                 <td class="col-xs-8">@Html.EditorFor(m => m.Borrower.Email, new { htmlAttributes = new { @class = "form-control"}})</td>
             </tr>
-            <tr>
+            <tr class="form-group">
                 <td class="col-xs-4">Phone Number</td>
                 <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.Phone, new {@class = "form-control"})</td>
             </tr>
-            <tr>
+            <tr class="form-group">
                 <td class="col-xs-4">Address</td>
                 <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.Address, new {@class = "form-control"})</td>
             </tr>
-            <tr>
+            <tr class="form-group">
                 <td class="col-xs-4">City</td>
                 <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.City, new {@class = "form-control"})</td>
             </tr>
-            <tr>
+            <tr class="form-group">
                 <td class="col-xs-4">State</td>
                 <td class="col-xs-8">@Html.DropDownListFor(m => m.Borrower.State, Model.ListOfStates, new {@class = "form-control"})</td>
             </tr>
-            <tr>
+            <tr class="form-group">
                 <td class="col-xs-4">Zipcode</td>
                 <td class="col-xs-8">@Html.TextBoxFor(m => m.Borrower.Zipcode, new {@class = "form-control"})</td>
             </tr>
@@ -62,10 +62,13 @@
 }
 
         <div class="row">
-            @Html.ActionLink("Return to Home Page", "Index", "Home", null, new { @class = "btn btn-primary" })
+            <a href="/Borrower/Index" class="btn btn-default"><span class="glyphicon glyphicon-user"></span> Return to View All Borrowers</a>
+            <a href="/Home/Index" class="btn btn-default"><span class="glyphicon glyphicon-home"></span> Return to Home</a>
         </div>
 
 @section Scripts {
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @*<script src="~/Scripts/jquery.validate.min.js"></script>*@
+    @*<script src="~/Scripts/app/jquery-validate-default.js"></script>
+    <script src="~/Scripts/app/addborrowerValidation.js"></script>*@
+    @*<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
 }
