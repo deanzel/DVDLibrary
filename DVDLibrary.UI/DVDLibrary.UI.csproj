@@ -913,10 +913,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AddBorrowerVM.cs" />
-    <Compile Include="Models\BorrowerToAddVM.cs" />
     <Compile Include="Models\AddDVDVM.cs" />
     <Compile Include="Models\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Models\SearchTMDBResultsVM.cs" />
+    <Compile Include="Models\ViewAllBorrowersVM.cs" />
     <Compile Include="Models\ViewMovieDVDsVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -936,8 +936,8 @@
     <Content Include="Views\Borrower\SuccessfullyAddedNewBorrower.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\version.json" />
-    <Content Include="Views\Borrower\Index.cshtml" />
     <Content Include="Views\Home\ViewDVDsStatus.cshtml" />
+    <Content Include="Views\Borrower\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

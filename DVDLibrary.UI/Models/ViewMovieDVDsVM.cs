@@ -28,7 +28,7 @@ namespace DVDLibrary.UI.Models
         {
             DVDLibaryOperations oops = new DVDLibaryOperations();
 
-            List<Borrower> listOfBorrowers = oops.ReturnBorrowersList();
+            List<Borrower> listOfBorrowers = oops.ReturnSmallBorrowersList();
 
             if (listOfBorrowers.FirstOrDefault(b => b.IsOwner) != null)
             {

@@ -13,10 +13,14 @@ namespace DVDLibrary.UI.Controllers
     {
         private DVDLibaryOperations _oops = new DVDLibaryOperations();
 
-        // GET: Borrower
+        // Index will be ViewAllBorrowers
         public ActionResult Index()
         {
-            return View();
+            var vM = new ViewAllBorrowersVM();
+
+            vM.BorrowersList = _oops.ReturnFullBorrowersList();
+
+            return View(vM);
         }
 
         //Real to DB

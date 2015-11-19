@@ -32,5 +32,13 @@ namespace DVDLibrary.Models
         [DataType(DataType.PhoneNumber)]
         [Required(ErrorMessage = "Please enter your phone number")]
         public string Phone { get; set; }
+
+        public int MoviesCheckedOut { get; set; }
+        public List<Status> ListOfStatuses { get; set; }
+
+        public Borrower()
+        {
+            ListOfStatuses = new List<Status>();
+        } 
     }
 }

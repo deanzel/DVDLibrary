@@ -1069,8 +1069,8 @@ namespace DVDLibrary.Data
             return newBorrower;
         }
 
-        //Return a list of Borrowers Names in the DB and their BorrowerID
-        public List<Borrower> RetrieveListOfBorrowers()
+        //Return a list of Borrowers Names in the DB and their BorrowerID (smaller scale for select list item)
+        public List<Borrower> RetrieveSmallListOfBorrowers()
         {
             List<Borrower> listOfBorrowers = new List<Borrower>();
 
@@ -1126,6 +1126,91 @@ namespace DVDLibrary.Data
 
             return listOfBorrowers;
         }
+
+
+        //Retrieve Full Borrowers List with All DVD Rental Statuses in there
+        public List<Borrower> RetrieveFullBorrowersList()
+        {
+            List<Borrower> listOfBorrowers = new List<Borrower>();
+
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText =
+                    "select FirstName, LastName, BorrowerID, IsOwner, Email, StreetAddress, City," +
+                    " State, Zipcode, Phone from Borrowers";
+                cmd.Connection = cn;
+                cn.Open();
+
+                //Error connection not establised
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var newBorrower = new Borrower();
+                        newBorrower.FirstName = dr["FirstName"].ToString();
+                        newBorrower.LastName = dr["LastName"].ToString();
+                        newBorrower.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                        newBorrower.IsOwner = bool.Parse(dr["IsOwner"].ToString());
+                        newBorrower.Email = dr["Email"].ToString();
+                        newBorrower.Address = dr["StreetAddress"].ToString();
+                        newBorrower.City = dr["City"].ToString();
+                        newBorrower.State = dr["State"].ToString();
+                        newBorrower.Zipcode = dr["Zipcode"].ToString();
+                        newBorrower.Phone = dr["Phone"].ToString();
+
+                        listOfBorrowers.Add(newBorrower);
+                    }
+                }
+                cn.Close();
+
+                //Add all BorrowerStatuses to each User
+                foreach (var b in listOfBorrowers)
+                {
+                    cmd.CommandText = ("select bs.BorrowerStatusID, bs.BorrowerID, bs.DVDID, bs.DateBorrowed, bs.DateReturned," +
+                                       " b.FirstName, b.LastName, m.MovieID, m.MovieTitle" +
+                                       " from BorrowerStatuses bs" +
+                                       " LEFT JOIN Borrowers b on bs.BorrowerID = b.BorrowerID" +
+                                       " LEFT JOIN DVDs d on bs.DVDID=d.DVDID" +
+                                       " LEFT JOIN Movies m on d.MovieID=m.MovieID" +
+                                       " WHERE bs.BorrowerID = @BorrowerID");
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@BorrowerID", b.BorrowerId);
+                    cmd.Connection = cn;
+                    cn.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var newStatus = new Status();
+                            newStatus.StatusId = int.Parse(dr["BorrowerStatusID"].ToString());
+                            newStatus.Borrower.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                            newStatus.Borrower.FirstName = dr["FirstName"].ToString();
+                            newStatus.Borrower.LastName = dr["LastName"].ToString();
+                            newStatus.DVDId = int.Parse(dr["DVDID"].ToString());
+                            newStatus.DateBorrowed = DateTime.Parse(dr["DateBorrowed"].ToString());
+                            if (dr["DateReturned"] != null)
+                            {
+                                newStatus.DateReturned = DateTime.Parse(dr["DateReturned"].ToString());
+                            }
+                            newStatus.MovieId = int.Parse(dr["MovieID"].ToString());
+                            newStatus.MovieTitle = dr["MovieTitle"].ToString();
+
+                            b.ListOfStatuses.Add(newStatus);
+                        }
+                    }
+                    b.MoviesCheckedOut = b.ListOfStatuses.Count(s => s.DateReturned == null);
+                    cn.Close();
+                }
+
+            }
+
+            return listOfBorrowers;
+
+        } 
+
 
         //Check if an Owner is already in the DB
         public Response CheckIfOwnerAlreadyExistsInDb()
@@ -1356,7 +1441,7 @@ namespace DVDLibrary.Data
 
 
         //Borrower Returns DVD based on StatusId (BorrowerStatusID) (sent to DB)
-        public int ReturnDVDToDb(int statusId)
+        public Response ReturnDVDToDb(int statusId)
         {
             using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
             {
@@ -1367,7 +1452,7 @@ namespace DVDLibrary.Data
                 cn.Execute("ReturnDVDToBorrowerStatuses", p, commandType: CommandType.StoredProcedure);
             }
 
-            int movieId = 0;
+            var response = new Response();
 
             using (var cn = new SqlConnection(Settings.ConnectionString))
             {
@@ -1386,12 +1471,12 @@ namespace DVDLibrary.Data
                 {
                     while (dr.Read())
                     {
-                        movieId = int.Parse(dr["MovieID"].ToString());
+                        response.MovieId = int.Parse(dr["MovieID"].ToString());
                     }
                 }
             }
 
-            return movieId;
+            return response;
         }
 
 
@@ -1425,6 +1510,8 @@ namespace DVDLibrary.Data
                     }
                 }
                 cn.Close();
+
+                //Read all BorrowerStatuses and insert on to DeletedBorrowerStatus (extra feature)
 
                 //First Delete All BorrowerStatuses on that DVDID to eliminate FK
                 var p = new DynamicParameters();

@@ -86,10 +86,16 @@ namespace DVDLibrary.BLL
             return _repo.RetrieveCollectionStats();
         }
 
-        //Return list of Borrowers from DB
-        public List<Borrower> ReturnBorrowersList()
+        //Return compact list of Borrowers from DB
+        public List<Borrower> ReturnSmallBorrowersList()
         {
-            return _repo.RetrieveListOfBorrowers();
+            return _repo.RetrieveSmallListOfBorrowers();
+        } 
+
+        //Return full list of Borrowers and their Rental Statuses from DB
+        public List<Borrower> ReturnFullBorrowersList()
+        {
+            return _repo.RetrieveFullBorrowersList();
         } 
 
 
@@ -100,7 +106,7 @@ namespace DVDLibrary.BLL
         }
 
         //Return DVD based on StatusId (send to DB)
-        public int ReturnDVD(int statusId)
+        public Response ReturnDVD(int statusId)
         {
             return _repo.ReturnDVDToDb(statusId);
         }

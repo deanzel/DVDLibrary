@@ -26,19 +26,22 @@
                 </div>
             </div>
             <br/>
-            <div class="row">
-                <span><b>@(Model.Owner)'s Rating:</b></span>
-            </div>
-            <div class="row">
-                @if (@Model.DVDs[0].Movie.UserRatings.Where(r => r.Owner).FirstOrDefault() != null)
-                {
-                    <span>@Model.DVDs[0].Movie.UserRatings.Where(r => r.Owner).FirstOrDefault().Rating / 5</span>
-                }
-                else
-                {
-                    <span>@(Model.Owner) has not rated this.</span>
-                }
-            </div>
+            @if (Model.Owner.Length > 0)
+            {
+                <div class="row">
+                    <span><b>@(Model.Owner)'s Rating:</b></span>
+                </div>
+                <div class="row">
+                    @if (@Model.DVDs[0].Movie.UserRatings.Where(r => r.Owner).FirstOrDefault() != null)
+                    {
+                        <span>@Model.DVDs[0].Movie.UserRatings.Where(r => r.Owner).FirstOrDefault().Rating / 5</span>
+                    }
+                    else
+                    {
+                        <span>@(Model.Owner) has not rated this.</span>
+                    }
+                </div>
+            }
             <br/>
             <div class="row">
                 <span><b>Avg Rating (@Model.DVDs[0].Movie.UserRatings.Count Users):</b></span>

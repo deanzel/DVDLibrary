@@ -69,9 +69,9 @@ namespace DVDLibrary.UI.Controllers
         //Return DVD based on *StatusId (BorrowerStatusID) from DVDs Statuses Page
         public ActionResult ReturnDVD(int id)
         {
-            var movieId = _oops.ReturnDVD(id);
+            var response = _oops.ReturnDVD(id);
 
-            return RedirectToAction("ViewDVDsStatus", "Home", new {id = movieId});
+            return RedirectToAction("ViewDVDsStatus", "Home", new {id = response.MovieId});
         }
 
         //Remove DVD via DVDID (and return MovieId for redirect)

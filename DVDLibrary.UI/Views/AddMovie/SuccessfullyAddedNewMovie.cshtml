@@ -6,8 +6,15 @@
 
 <h2>Successfully Added @Model[0].Movie.MovieTitle to Your Collection</h2>
 
-<div>
-    <p>You have successfully added @Model.Count copies of @Model[0].Movie.MovieTitle to your collection. Here is the info below:</p>
+<div class="row">
+    @if (Model.Count == 1)
+    {
+        <p>You have successfully added 1 copy of @Model[0].Movie.MovieTitle to your collection. Here is the info below:</p>
+    }
+    else
+    {
+        <p>You have successfully added @Model.Count copies of @Model[0].Movie.MovieTitle to your collection. Here is the info below:</p>
+    }
 </div>
 <br/>
 <div class="container-fluid form-group">
