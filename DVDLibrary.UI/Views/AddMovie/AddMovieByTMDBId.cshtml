@@ -4,7 +4,7 @@
     ViewBag.Title = "Add Movie By TMDb ID";
 }
 
-<h2>Add Movie By TMDB Id</h2>
+<h2>Add Movie By TMDb Id</h2>
 
 <div>
     @using (Html.BeginForm("SendNewMovieInfoToDB", "AddMovie", null, FormMethod.Post, new {id = "newdvdinfo", @class="form-horizontal"}))
@@ -26,7 +26,7 @@
                             <td class="col-xs-3">DVD Type</td>
                             <td class="col-xs-6">@Html.DropDownListFor(d => d.DVDType, Model.DVDTypesList, new {@class = "form-control"})</td>
                         </tr>
-                        <tr><th>Movie Information From TMDB</th></tr>
+                        <tr><th>Movie Information From TMDb</th><td><b>**</b> If the metadata below already exists from TMDb, it is HIGHLY recommended to <b>NOT CHANGE</b> it...</td></tr>
                         <tr>
                             <td class="col-xs-3">Movie Title</td>
                             <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.MovieTitle, new {@class = "form-control"})</td>
@@ -42,7 +42,6 @@
                         </tr>
                         <tr>
                             <td class="col-xs-3">Release Date</td>
-                            @*<td class="col-xs-6">@Html.EditorFor(m => m.Movie.ReleaseDate)</td>*@
                             <td class="col-xs-6">@Html.TextBoxFor(m => m.Movie.ReleaseDate, "{0:MM/dd/yyyy}", new {@class = "form-control"})</td>
                         </tr>
                         <tr>
@@ -99,25 +98,40 @@
                                 <td class="col-xs-3">@a.CharacterName</td>
                             </tr>
                         }
+                            @if (Model.Movie.MovieActors.Count == 0)
+                            {
+                                <tr>
+                                    <td>TMDb has no Actors associated with this movie...</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
         <div style="display: none">
-            @for (int i = 0; i < Model.Movie.MovieAliases.Count; i++)
+            @if (Model.Movie.MovieAliases.Count > 0)
             {
-                @Html.HiddenFor(a => Model.Movie.MovieAliases[i].MovieAliasTitle)
+                for (int i = 0; i < Model.Movie.MovieAliases.Count; i++)
+                {
+                    @Html.HiddenFor(a => Model.Movie.MovieAliases[i].MovieAliasTitle)
+                }
             }
-            @for (int i = 0; i < Model.Movie.Genres.Count; i++)
+            @if (Model.Movie.Genres.Count > 0)
             {
-                @Html.HiddenFor(a => Model.Movie.Genres[i].GenreName)
+                for (int i = 0; i < Model.Movie.Genres.Count; i++)
+                {
+                    @Html.HiddenFor(a => Model.Movie.Genres[i].GenreName)
+                }
             }
-            @for (int i = 0; i < Model.Movie.MovieActors.Count; i++)
+            @if (Model.Movie.MovieActors.Count > 0)
             {
-                @Html.HiddenFor(a => Model.Movie.MovieActors[i].ActorName)
-                @Html.HiddenFor(a => Model.Movie.MovieActors[i].CharacterName)
-                @Html.HiddenFor(a => Model.Movie.MovieActors[i].ActorTMDBNum)
+                for (int i = 0; i < Model.Movie.MovieActors.Count; i++)
+                {
+                    @Html.HiddenFor(a => Model.Movie.MovieActors[i].ActorName)
+                    @Html.HiddenFor(a => Model.Movie.MovieActors[i].CharacterName)
+                    @Html.HiddenFor(a => Model.Movie.MovieActors[i].ActorTMDBNum)
+                }
             }
         </div>
 

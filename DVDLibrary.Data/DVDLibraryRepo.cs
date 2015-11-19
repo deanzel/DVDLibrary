@@ -1029,6 +1029,10 @@ namespace DVDLibrary.Data
                     movieInfo.MovieActors.Add(newActor);
                 }
             }
+            else if (movie.Credits.Cast.Count == 0)
+            {
+                return movieInfo;
+            }
             else
             {
                 for (int i = 0; i < 10; i++)
@@ -1040,7 +1044,6 @@ namespace DVDLibrary.Data
                     movieInfo.MovieActors.Add(newActor);
                 }
             }
-
 
             return movieInfo;
         }
@@ -1191,7 +1194,7 @@ namespace DVDLibrary.Data
                             newStatus.Borrower.LastName = dr["LastName"].ToString();
                             newStatus.DVDId = int.Parse(dr["DVDID"].ToString());
                             newStatus.DateBorrowed = DateTime.Parse(dr["DateBorrowed"].ToString());
-                            if (dr["DateReturned"] != null)
+                            if (dr["DateReturned"] != DBNull.Value)
                             {
                                 newStatus.DateReturned = DateTime.Parse(dr["DateReturned"].ToString());
                             }
@@ -1349,6 +1352,7 @@ namespace DVDLibrary.Data
 
             return stats;
         }
+
 
         //Search TMDB for movies to add depending on Search String
         public List<SearchTMDBResult> RetrieveTMDBSearchResults(string movieName)
