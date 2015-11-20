@@ -50,7 +50,7 @@ namespace DVDLibrary.Tests
             throw new NotImplementedException();
         }
 
-        public Response CheckIfOwnerAlreadyExistsInDb()
+        public int CheckIfOwnerAlreadyExistsInDb()
         {
             throw new NotImplementedException();
         }
@@ -70,7 +70,7 @@ namespace DVDLibrary.Tests
             throw new NotImplementedException();
         }
 
-        public Response ReturnDVDToDb(int statusId)
+        public int ReturnDVDToDb(int statusId)
         {
             throw new NotImplementedException();
         }

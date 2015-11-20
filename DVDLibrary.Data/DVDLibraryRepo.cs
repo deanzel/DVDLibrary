@@ -26,13 +26,13 @@ namespace DVDLibrary.Data
         Borrower AddNewBorrowerToDB(Borrower newBorrower);
         List<Borrower> RetrieveSmallListOfBorrowers();
         List<Borrower> RetrieveFullBorrowersList();
-        Response CheckIfOwnerAlreadyExistsInDb();
+        int CheckIfOwnerAlreadyExistsInDb();
         CollectionStats RetrieveCollectionStats();
         List<SearchTMDBResult> RetrieveTMDBSearchResults(string movieName);
         RentalTicket RentDVDSendToDb(RentalTicket rentalTicket);
-        Response ReturnDVDToDb(int statusId);
+        int ReturnDVDToDb(int statusId);
         Response RemoveDVDFromDb(int dvdId);
-        Response AddUserRatingToDb(UserRating newRating);
+        bool AddUserRatingToDb(UserRating newRating);
     }
 
     public class DVDLibraryRepo : IDVDLibraryRepo
@@ -1235,9 +1235,9 @@ namespace DVDLibrary.Data
 
 
         //Check if an Owner is already in the DB
-        public Response CheckIfOwnerAlreadyExistsInDb()
+        public int CheckIfOwnerAlreadyExistsInDb()
         {
-            var response = new Response();
+            //var response = new Response();
             using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
             {
                 SqlCommand cmd = new SqlCommand();
@@ -1247,22 +1247,22 @@ namespace DVDLibrary.Data
 
                 cmd.Connection = cn;
                 cn.Open();
-                int ownerCount = int.Parse(cmd.ExecuteScalar().ToString());
+                return int.Parse(cmd.ExecuteScalar().ToString());
 
-                cn.Close();
+                //cn.Close();
 
-                if (ownerCount == 0)
-                {
-                    response.Success = false;
-                    response.Message = "No previous owner exists";
-                    return response;
-                }
-                else
-                {
-                    response.Success = true;
-                    response.Message = "An owner already exists!!";
-                    return response;
-                }
+                //if (ownerCount == 0)
+                //{
+                //    response.Success = false;
+                //    response.Message = "No previous owner exists";
+                //    return response;
+                //}
+                //else
+                //{
+                //    response.Success = true;
+                //    response.Message = "An owner already exists!!";
+                //    return response;
+                //}
             }
         }
 
@@ -1464,7 +1464,7 @@ namespace DVDLibrary.Data
 
 
         //Borrower Returns DVD based on StatusId (BorrowerStatusID) (sent to DB)
-        public Response ReturnDVDToDb(int statusId)
+        public int ReturnDVDToDb(int statusId)
         {
             using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
             {
@@ -1475,7 +1475,7 @@ namespace DVDLibrary.Data
                 cn.Execute("ReturnDVDToBorrowerStatuses", p, commandType: CommandType.StoredProcedure);
             }
 
-            var response = new Response();
+            int movieId = 0;
 
             using (var cn = new SqlConnection(Settings.ConnectionString))
             {
@@ -1494,12 +1494,12 @@ namespace DVDLibrary.Data
                 {
                     while (dr.Read())
                     {
-                        response.MovieId = int.Parse(dr["MovieID"].ToString());
+                        movieId = int.Parse(dr["MovieID"].ToString());
                     }
                 }
             }
 
-            return response;
+            return movieId;
         }
 
 
@@ -1594,7 +1594,7 @@ namespace DVDLibrary.Data
 
 
         //Add a new User Rating to the DB
-        public Response AddUserRatingToDb(UserRating newRating)
+        public bool AddUserRatingToDb(UserRating newRating)
         {
             using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
             {
@@ -1632,12 +1632,14 @@ namespace DVDLibrary.Data
 
                     newRating.UserRatingId = p2.Get<int>("UserRatingID");
 
-                    var response = new Response();
-                    response.UserRating = newRating;
-                    response.Success = true;
-                    response.Message = "You have added a new rating!!";
+                    return true;
 
-                    return response;
+                    //var response = new Response();
+                    //response.UserRating = newRating;
+                    //response.Success = true;
+                    //response.Message = "You have added a new rating!!";
+
+                    //return response;
                 }
                 else
                 {
@@ -1649,81 +1651,18 @@ namespace DVDLibrary.Data
 
                     cn.Execute("UpdateUserRating", p1, commandType: CommandType.StoredProcedure);
 
-                    var response = new Response();
-                    response.UserRating = newRating;
-                    response.Success = true;
-                    response.Message = "You have updated your previous rating for this movie!!";
+                    return false;
 
-                    return response;
+                    //var response = new Response();
+                    //response.UserRating = newRating;
+                    //response.Success = true;
+                    //response.Message = "You have updated your previous rating for this movie!!";
+
+                    //return response;
                 }
             }
 
         }
-
-
-        //Custom Search by Title SQL script builder (BAIL!!!!!!)
-        //public void SearchByTitle(string query)
-        //{
-        //    List<Models.Movie> moviesListFromDB = new List<Models.Movie>();
-
-        //    List<Models.Movie> returnMoviesList = new List<Models.Movie>();
-
-        //    using (var cn = new SqlConnection(Settings.ConnectionString))
-        //    {
-        //        var cmd = new SqlCommand();
-        //        cmd.CommandText =
-        //            ("SELECT [MovieID], [MovieTitle], [ReleaseDate], [Synopsis], [PosterUrl], [Rating] From Movies Where [InCollection]=1");
-        //        cmd.Connection = cn;
-        //        cn.Open();
-
-        //        using (SqlDataReader dr = cmd.ExecuteReader())
-        //        {
-        //            while (dr.Read())
-        //            {
-        //                Models.Movie movieToAdd = PopulateMovieFromDataReaderShort(dr);
-        //                moviesListFromDB.Add(movieToAdd);
-        //            }
-        //        }
-
-        //        //Populate Aliases list  for each movie
-        //        foreach (var m in moviesListFromDB)
-        //        {
-        //            cmd.CommandText = "select MovieAlias from MovieAliases where MovieID=@MovieID";
-        //            cmd.Connection = cn;
-        //            cn.Open();
-
-        //            cmd.Parameters.Clear();
-        //            cmd.Parameters.AddWithValue("MovieID", m.MovieId);
-
-        //            using (SqlDataReader dr = cmd.ExecuteReader())
-        //            {
-        //                while (dr.Read())
-        //                {
-        //                    var newAlias = new MovieAlias();
-        //                    newAlias.MovieAliasTitle = dr["MovieAlias"].ToString();
-        //                    m.MovieAliases.Add(newAlias);
-        //                }
-        //            }
-        //            cn.Close();
-        //        }
-        //    }
-
-        //    var delimeter = new char[] {',', ' '};
-
-        //    string[] substrings = query.Split(delimeter);
-
-        //    string[] editedQuery = 
-
-        //    foreach (var m in moviesListFromDB)
-        //    {
-        //        if (m.MovieTitle.Contains())
-        //        {
-                    
-        //        }
-        //    }
-
-
-        //}
 
 
     }

@@ -48,7 +48,22 @@ namespace DVDLibrary.BLL
         //Check if Owner is already in the DB
         public Response CheckIfOwnerAlreadyExists()
         {
-            return _repo.CheckIfOwnerAlreadyExistsInDb();
+            var response = new Response();
+
+            var ownerCount = _repo.CheckIfOwnerAlreadyExistsInDb();
+
+            if (ownerCount == 0)
+            {
+                response.Success = false;
+                response.Message = "No previous owner exists";
+                return response;
+            }
+            else
+            {
+                response.Success = true;
+                response.Message = "An owner already exists!!";
+                return response;
+            }
         }
 
         //Need
@@ -99,7 +114,10 @@ namespace DVDLibrary.BLL
         //Return DVD based on StatusId (send to DB)
         public Response ReturnDVD(int statusId)
         {
-            return _repo.ReturnDVDToDb(statusId);
+            var response = new Response();
+            response.MovieId = _repo.ReturnDVDToDb(statusId);
+
+            return response;
         }
 
 
@@ -112,7 +130,26 @@ namespace DVDLibrary.BLL
         //Add or Update UserRating to DB
         public Response AddUserRating(UserRating newRating)
         {
-            return _repo.AddUserRatingToDb(newRating);
+            var response = new Response();
+
+            var addedRating = _repo.AddUserRatingToDb(newRating);
+
+            if (addedRating)
+            {
+                response.UserRating = newRating;
+                response.Success = true;
+                response.Message = "You have added a new rating!!";
+
+                return response;
+            }
+            else
+            {
+                response.UserRating = newRating;
+                response.Success = true;
+                response.Message = "You have updated your previous rating for this movie!!";
+
+                return response;
+            }
         }
 
     }
