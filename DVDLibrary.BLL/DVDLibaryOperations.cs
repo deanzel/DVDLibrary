@@ -118,5 +118,11 @@ namespace DVDLibrary.BLL
             return _repo.RemoveDVDFromDb(dvdId);
         }
 
+        //Add or Update UserRating to DB
+        public Response AddUserRating(UserRating newRating)
+        {
+            return _repo.AddUserRatingToDb(newRating);
+        }
+
     }
 }

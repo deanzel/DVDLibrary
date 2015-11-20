@@ -14,11 +14,12 @@ namespace DVDLibrary.Models
         public bool DVDsLeft { get; set; }
         public int MovieId { get; set; }
 
+        public UserRating UserRating { get; set; }
         //public Borrower Borrower { get; set; }
 
-        //public Response()
-        //{
-        //    Borrower = new Borrower();
-        //}
+        public Response()
+        {
+            UserRating = new UserRating();
+        }
     }
 }

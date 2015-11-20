@@ -100,7 +100,11 @@ namespace DVDLibrary.UI.Controllers
             newUserRating.MovieId = int.Parse(Request["MovieId"]);
             newUserRating.Rating = int.Parse(Request["hiddenRating"]);
 
-            return View();
+            //Send to DB
+            var response = _oops.AddUserRating(newUserRating);
+            MessageBox.Show(response.Message);
+
+            return RedirectToAction("SelectMovie", "Home", new {id = newUserRating.MovieId});
         }
 
     }

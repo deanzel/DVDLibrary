@@ -1574,6 +1574,74 @@ namespace DVDLibrary.Data
         }
 
 
+        //Add a new User Rating to the DB
+        public Response AddUserRatingToDb(UserRating newRating)
+        {
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = "select count(UserRatings.UserRatingID) from UserRatings" + 
+                                    " WHERE BorrowerID = @BorrowerID AND MovieID = @MovieID";
+                cmd.Parameters.AddWithValue("@BorrowerID", newRating.BorrowerId);
+                cmd.Parameters.AddWithValue("@MovieID", newRating.MovieId);
+
+                cmd.Connection = cn;
+                cn.Open();
+                int userRatingCount = int.Parse(cmd.ExecuteScalar().ToString());
+
+                cn.Close();
+
+                if (userRatingCount == 0)
+                {
+                    //Grab rest of Borrower Info to update
+
+                    var p1 = new DynamicParameters();
+                    p1.Add("@BorrowerID", newRating.BorrowerId);
+                    newRating.Owner = cn.Query<bool>("select IsOwner from Borrowers where BorrowerID = @BorrowerID", p1).FirstOrDefault();
+
+                    //Run insert new UserRating
+
+                    var p2 = new DynamicParameters();
+                    p2.Add("BorrowerID", newRating.BorrowerId);
+                    p2.Add("MovieID", newRating.MovieId);
+                    p2.Add("Rating", newRating.Rating);
+                    p2.Add("OwnerRating", newRating.Owner);
+                    p2.Add("UserRatingID", DbType.Int32, direction: ParameterDirection.Output);
+
+                    cn.Execute("AddNewUserRatingToUserRatings", p2, commandType: CommandType.StoredProcedure);
+
+                    newRating.UserRatingId = p2.Get<int>("UserRatingID");
+
+                    var response = new Response();
+                    response.UserRating = newRating;
+                    response.Success = true;
+                    response.Message = "You have added a new rating!!";
+
+                    return response;
+                }
+                else
+                {
+                    //Run update UserRating
+                    var p1 = new DynamicParameters();
+                    p1.Add("@BorrowerID", newRating.BorrowerId);
+                    p1.Add("@MovieID", newRating.MovieId);
+                    p1.Add("Rating", newRating.Rating);
+
+                    cn.Execute("UpdateUserRating", p1, commandType: CommandType.StoredProcedure);
+
+                    var response = new Response();
+                    response.UserRating = newRating;
+                    response.Success = true;
+                    response.Message = "You have updated your previous rating for this movie!!";
+
+                    return response;
+                }
+            }
+
+        }
+
+
         //Custom Search by Title SQL script builder (BAIL!!!!!!)
         //public void SearchByTitle(string query)
         //{
