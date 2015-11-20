@@ -13,22 +13,13 @@ namespace DVDLibrary.BLL
 {
     public class DVDLibaryOperations
     {
-        private DVDLibraryRepo _repo;
+        private IDVDLibraryRepo _repo;
+
 
         public DVDLibaryOperations()
         {
-            _repo = new DVDLibraryRepo();    
+            _repo = new DVDLibraryRepo();
         }
-
-        //public List<DVD> ReturnDVDsList()
-        //{
-        //    return _repo.RetrieveDVDsList();
-        //}
-
-        //public List<Models.Movie> ReturnMoviesList()
-        //{
-        //    return _repo.RetrieveMoviesList();
-        //}
 
         //Real one from SQL DB
         public List<Models.Movie> ReturnMoviesListFromDB()

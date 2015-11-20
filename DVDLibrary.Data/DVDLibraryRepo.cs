@@ -16,7 +16,26 @@ using Movie = TMDbLib.Objects.Movies.Movie;
 
 namespace DVDLibrary.Data
 {
-    public class DVDLibraryRepo
+    public interface IDVDLibraryRepo
+    {
+        List<Models.Movie> RetrieveMoviesListFromDB();
+        List<DVD> RetrieveFullDVDInfoFromDB(int movieId);
+        List<DVD> RetrievePartialDVDsInfo(int movieId);
+        DVD AddNewDVDToDBViaTMDB(DVD newDVD);
+        Models.Movie ReturnMovieInfoFromTMDB(int tmdbNum);
+        Borrower AddNewBorrowerToDB(Borrower newBorrower);
+        List<Borrower> RetrieveSmallListOfBorrowers();
+        List<Borrower> RetrieveFullBorrowersList();
+        Response CheckIfOwnerAlreadyExistsInDb();
+        CollectionStats RetrieveCollectionStats();
+        List<SearchTMDBResult> RetrieveTMDBSearchResults(string movieName);
+        RentalTicket RentDVDSendToDb(RentalTicket rentalTicket);
+        Response ReturnDVDToDb(int statusId);
+        Response RemoveDVDFromDb(int dvdId);
+        Response AddUserRatingToDb(UserRating newRating);
+    }
+
+    public class DVDLibraryRepo : IDVDLibraryRepo
     {
         //private List<DVD> ListOfDVDs;
         //private List<Models.Movie> ListOfMovies;

@@ -63,11 +63,18 @@
                         <tr>
                             <td class="col=xs-3">Genres</td>
                             <td class="col-xs-6">
-                                @for (int i = 0; i < Model.Movie.Genres.Count - 1; i++)
+                                @if (Model.Movie.Genres.Count == 0)
                                 {
-                                    @(Model.Movie.Genres[i].GenreName + ", ")
+                                    for (int i = 0; i < Model.Movie.Genres.Count - 1; i++)
+                                    {
+                                        @(Model.Movie.Genres[i].GenreName + ", ")
+                                    }
+                                    @Model.Movie.Genres[Model.Movie.Genres.Count - 1].GenreName
                                 }
-                                @Model.Movie.Genres[Model.Movie.Genres.Count - 1].GenreName
+                                else
+                                {
+                                    <span>No genres included on TMDb...</span>
+                                }
                             </td>
                         </tr>
                         <tr>
