@@ -98,7 +98,7 @@ namespace DVDLibrary.UI.Controllers
 
             newUserRating.BorrowerId = int.Parse(Request["BorrowerId"]);
             newUserRating.MovieId = int.Parse(Request["MovieId"]);
-            newUserRating.Rating = int.Parse(Request["movieRating"]);
+            newUserRating.Rating = int.Parse(Request["hiddenRating"]);
 
             return View();
         }

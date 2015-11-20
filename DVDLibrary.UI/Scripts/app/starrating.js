@@ -44,6 +44,7 @@ app.directive('ngStarRating', function () {
                 $scope.rating = $scope._rating = starValue;
                 $scope.hoverValue = 0;
                 $scope.click({ starValue: starValue });     // sending info to the parent
+                $('#hiddenRating').val($scope._rating);
             };
 
             $scope.starMouseHover = function (starValue) {

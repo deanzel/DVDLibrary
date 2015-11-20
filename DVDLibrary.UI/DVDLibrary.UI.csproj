@@ -135,8 +135,6 @@
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\app\addborrowerValidation.js" />
-    <Content Include="Scripts\app\app.js" />
-    <Content Include="Scripts\app\controller.js" />
     <Content Include="Scripts\app\starrating.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular.min.js.map" />

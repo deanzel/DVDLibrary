@@ -29,54 +29,86 @@
             @if (Model.Owner != null)
             {
                 <div class="row">
-                    <span><b>@(Model.Owner)'s Rating:</b></span>
+                    <div class="col-xs-9">
+                        <span><b>@(Model.Owner)'s Rating:</b></span>
+                        </div>
                 </div>
                 <div class="row">
                     @if (@Model.DVDs[0].Movie.UserRatings.Where(r => r.Owner).FirstOrDefault() != null)
                     {
-                        <span>@Model.DVDs[0].Movie.UserRatings.Where(r => r.Owner).FirstOrDefault().Rating / 5</span>
+                        <div class="col-xs-9">
+                            <span>@Model.DVDs[0].Movie.UserRatings.Where(r => r.Owner).FirstOrDefault().Rating / 5</span>
+                            </div>
                     }
                     else
                     {
-                        <span>@(Model.Owner) has not rated this.</span>
+                        <div class="col-xs-9">
+                            <span>@(Model.Owner) has not rated this.</span>
+                            </div>
                     }
                 </div>
             }
             <br/>
             <div class="row">
-                <span><b>Avg Rating (@Model.DVDs[0].Movie.UserRatings.Count Users):</b></span>
+                <div class="col-xs-9">
+                    <span><b>Avg Rating (@Model.DVDs[0].Movie.UserRatings.Count Users):</b></span>
+                    </div>
             </div>
             <div class="row">
                 @if (@Model.DVDs[0].Movie.UserRatings.Count != 0)
                 {
-                    <span>@Model.DVDs[0].Movie.UserRatings.Average(r => r.Rating) / 5</span>
+                    <div class="col-xs-9">
+                        <span>@Model.DVDs[0].Movie.UserRatings.Average(r => r.Rating) / 5</span>
+                    </div>
                 }
                 else
                 {
-                    <span>No users have rated this.</span>
+                    <div class="col-xs-9">
+                        <span>No users have rated this.</span>
+                    </div>
                 }
+                    </div>
+            <br/>
+            <div class="row">
+                <div class="col-xs-9">
+                    <p>
+                        <b>MovieID:</b> @(Model.DVDs[0].Movie.MovieId)
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-9">
+                    <p>
+                        <b>TMDB#:</b> @(Model.DVDs[0].Movie.MovieTMDBNum)
+                    </p>
+                </div>
             </div>
             <br/>
+
+            @*Submit a new rating*@
             @using (Html.BeginForm("SubmitRating", "Home", FormMethod.Post))
             {
-                <div ng-app="StarRating" ng-controller="MovieController">
-                    <div ng-star-rating rating="movieRating" click="ratingClick(starValue)" ng-model="movieRating"></div>
+                <div class="row">
+                    <div ng-app="StarRating" class="col-xs-9">
+                        <span><b>Add a New Rating:</b></span>
+                        <p style="line-height:10%"></p>
+                        <div ng-star-rating rating="movieRating" click="ratingClick(starValue)"></div>
+                    </div>
                 </div>
-                @Html.DropDownList("BorrowerId", Model.BorrowersList)
+                <p style="line-height:20%"></p>
                 @Html.Hidden("MovieId", Model.DVDs[0].Movie.MovieId)
+                @Html.Hidden("hiddenRating", "")
+                <div class="row">
+                    <div class="col-xs-9">
+                        @Html.DropDownList("BorrowerId", Model.BorrowersList, new {@class = "form-control"})
+                        <p style="line-height:20%"></p>
+                        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-star-empty"></span> Submit Rating</button>
+                    </div>
+                </div>
                 <br/>
-                <button type="submit" class="btn btn-success">Submit Rating</button>
+                
             }
-            
-            <br />
-
-            <div class="row">
-                <p><b>MovieID:</b> @(Model.DVDs[0].Movie.MovieId)</p>
-            </div>
-
-            <div class="row">
-                <p><b>TMDB#:</b> @(Model.DVDs[0].Movie.MovieTMDBNum)</p>
-            </div>
 
         </div>
 
@@ -154,7 +186,7 @@
 
 @section Scripts
 {
-    <script src="~/Scripts/app/app.js"></script>
+    @*<script src="~/Scripts/app/app.js"></script>*@
     <script src="~/Scripts/app/starrating.js"></script>
-    <script src="~/Scripts/app/controller.js"></script>
+    @*<script src="~/Scripts/app/controller.js"></script>*@
 }
