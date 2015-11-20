@@ -94,6 +94,13 @@ namespace DVDLibrary.UI.Controllers
         [HttpPost]
         public ActionResult SubmitRating()
         {
+            if (Request["hiddenRating"] == "")
+            {
+                MessageBox.Show("You must select a rating between 1-5 stars to submit it!!");
+
+                return RedirectToAction("SelectMovie", "Home", new { id = int.Parse(Request["MovieId"]) });
+            }
+
             var newUserRating = new UserRating();
 
             newUserRating.BorrowerId = int.Parse(Request["BorrowerId"]);
