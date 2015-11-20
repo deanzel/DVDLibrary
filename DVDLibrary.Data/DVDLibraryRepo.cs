@@ -1574,6 +1574,69 @@ namespace DVDLibrary.Data
         }
 
 
+        //Custom Search by Title SQL script builder (BAIL!!!!!!)
+        //public void SearchByTitle(string query)
+        //{
+        //    List<Models.Movie> moviesListFromDB = new List<Models.Movie>();
+
+        //    List<Models.Movie> returnMoviesList = new List<Models.Movie>();
+
+        //    using (var cn = new SqlConnection(Settings.ConnectionString))
+        //    {
+        //        var cmd = new SqlCommand();
+        //        cmd.CommandText =
+        //            ("SELECT [MovieID], [MovieTitle], [ReleaseDate], [Synopsis], [PosterUrl], [Rating] From Movies Where [InCollection]=1");
+        //        cmd.Connection = cn;
+        //        cn.Open();
+
+        //        using (SqlDataReader dr = cmd.ExecuteReader())
+        //        {
+        //            while (dr.Read())
+        //            {
+        //                Models.Movie movieToAdd = PopulateMovieFromDataReaderShort(dr);
+        //                moviesListFromDB.Add(movieToAdd);
+        //            }
+        //        }
+
+        //        //Populate Aliases list  for each movie
+        //        foreach (var m in moviesListFromDB)
+        //        {
+        //            cmd.CommandText = "select MovieAlias from MovieAliases where MovieID=@MovieID";
+        //            cmd.Connection = cn;
+        //            cn.Open();
+
+        //            cmd.Parameters.Clear();
+        //            cmd.Parameters.AddWithValue("MovieID", m.MovieId);
+
+        //            using (SqlDataReader dr = cmd.ExecuteReader())
+        //            {
+        //                while (dr.Read())
+        //                {
+        //                    var newAlias = new MovieAlias();
+        //                    newAlias.MovieAliasTitle = dr["MovieAlias"].ToString();
+        //                    m.MovieAliases.Add(newAlias);
+        //                }
+        //            }
+        //            cn.Close();
+        //        }
+        //    }
+
+        //    var delimeter = new char[] {',', ' '};
+
+        //    string[] substrings = query.Split(delimeter);
+
+        //    string[] editedQuery = 
+
+        //    foreach (var m in moviesListFromDB)
+        //    {
+        //        if (m.MovieTitle.Contains())
+        //        {
+                    
+        //        }
+        //    }
+
+
+        //}
 
 
     }

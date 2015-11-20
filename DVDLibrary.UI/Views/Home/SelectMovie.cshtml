@@ -57,6 +57,18 @@
                 }
             </div>
             <br/>
+            @using (Html.BeginForm("SubmitRating", "Home", FormMethod.Post))
+            {
+                <div ng-app="StarRating" ng-controller="MovieController">
+                    <div ng-star-rating rating="movieRating" click="ratingClick(starValue)" ng-model="movieRating"></div>
+                </div>
+                @Html.DropDownList("BorrowerId", Model.BorrowersList)
+                @Html.Hidden("MovieId", Model.DVDs[0].Movie.MovieId)
+                <br/>
+                <button type="submit" class="btn btn-success">Submit Rating</button>
+            }
+            
+            <br />
 
             <div class="row">
                 <p><b>MovieID:</b> @(Model.DVDs[0].Movie.MovieId)</p>
@@ -139,3 +151,10 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script src="~/Scripts/app/app.js"></script>
+    <script src="~/Scripts/app/starrating.js"></script>
+    <script src="~/Scripts/app/controller.js"></script>
+}

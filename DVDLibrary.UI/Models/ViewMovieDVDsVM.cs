@@ -17,6 +17,8 @@ namespace DVDLibrary.UI.Models
         public string Owner { get; set; }
         public List<SelectListItem> BorrowersList { get; set; }
 
+        public int Rating { get; set; }
+
         public ViewMovieDVDsVM()
         {
             DVDs = new List<DVD>();

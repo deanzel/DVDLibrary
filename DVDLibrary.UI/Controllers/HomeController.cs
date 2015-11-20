@@ -90,7 +90,18 @@ namespace DVDLibrary.UI.Controllers
 
         }
 
-        //Search Movies via SQL Database
+        //Submit Rating
+        [HttpPost]
+        public ActionResult SubmitRating()
+        {
+            var newUserRating = new UserRating();
+
+            newUserRating.BorrowerId = int.Parse(Request["BorrowerId"]);
+            newUserRating.MovieId = int.Parse(Request["MovieId"]);
+            newUserRating.Rating = int.Parse(Request["movieRating"]);
+
+            return View();
+        }
 
     }
 }

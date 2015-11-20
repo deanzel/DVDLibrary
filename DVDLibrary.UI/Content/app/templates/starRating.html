@@ -1,0 +1,8 @@
+﻿<div style="display: inline-block; margin: 0; padding: 0; cursor: pointer;"
+     ng-repeat="idx in maxRatings track by $index">
+    <img src="{{getStarPath($index)}}"
+         ng-click="starClick($index + 1)"
+         ng-mouseenter="starMouseHover($index + 1)"
+         ng-mouseleave="starMouseLeave($index + 1)" />
+</div>
+<span class="label label-primary" style="margin-left: 5px" ng-bind="getRating()"></span>
