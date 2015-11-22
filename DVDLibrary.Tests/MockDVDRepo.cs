@@ -8,7 +8,7 @@ using DVDLibrary.Models;
 
 namespace DVDLibrary.Tests
 {
-    class MockDVDRepo : IDVDLibraryRepo
+    class MockDVDRepo/* : IDVDLibraryRepo*/
     {
         public List<Movie> RetrieveMoviesListFromDB()
         {
