@@ -125,7 +125,12 @@ namespace DVDLibrary.BLL
         //Remove DVD from Database via DVDID (get back MovieID for redirect)
         public Response RemoveDVD(int dvdId)
         {
-            return _repo.RemoveDVDFromDb(dvdId);
+            var response = new Response();
+
+            response.MovieId = _repo.RetrieveMovieIdFromDVDId(dvdId);
+            response.DVDsLeft = _repo.RemoveDVDFromDb(dvdId);
+
+            return response;
         }
 
         //Add or Update UserRating to DB

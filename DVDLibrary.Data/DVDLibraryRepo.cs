@@ -21,6 +21,7 @@ namespace DVDLibrary.Data
         List<Models.Movie> RetrieveMoviesListFromDB();
         List<DVD> RetrieveFullDVDInfoFromDB(int movieId);
         List<DVD> RetrievePartialDVDsInfo(int movieId);
+        int RetrieveMovieIdFromDVDId(int dvdId);
         DVD AddNewDVDToDBViaTMDB(DVD newDVD);
         Models.Movie ReturnMovieInfoFromTMDB(int tmdbNum);
         Borrower AddNewBorrowerToDB(Borrower newBorrower);
@@ -31,7 +32,7 @@ namespace DVDLibrary.Data
         List<SearchTMDBResult> RetrieveTMDBSearchResults(string movieName);
         RentalTicket RentDVDSendToDb(RentalTicket rentalTicket);
         int ReturnDVDToDb(int statusId);
-        Response RemoveDVDFromDb(int dvdId);
+        bool RemoveDVDFromDb(int dvdId);
         bool AddUserRatingToDb(UserRating newRating);
     }
 
@@ -657,6 +658,22 @@ namespace DVDLibrary.Data
             }
 
             return listOfDVDInfo;
+        }
+
+        
+        //From DVDID retrieve the MovieID
+        public int RetrieveMovieIdFromDVDId(int dvdId)
+        {
+            using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var p = new DynamicParameters();
+
+                p.Add("DVDID", dvdId);
+
+                var movieId = cn.Query<int>("SELECT MovieID FROM DVDs WHERE DVDID = @DVDID", p).FirstOrDefault();
+
+                return movieId;
+            }
         }
 
 
@@ -1505,12 +1522,10 @@ namespace DVDLibrary.Data
 
         //Remove DVD from Database via DVDID
 
-        public Response RemoveDVDFromDb(int dvdId)
+        public bool RemoveDVDFromDb(int dvdId)
         {
             var dvdToDelete = new DVD();
             dvdToDelete.DVDId = dvdId;
-
-            var response = new Response();
 
             //Get dvdToDelete info first to save as object
             using (SqlConnection cn = new SqlConnection(Settings.ConnectionString))
@@ -1579,17 +1594,13 @@ namespace DVDLibrary.Data
 
                     cn.Execute("ChangeInCollectionBoolean", pInColl, commandType: CommandType.StoredProcedure);
 
-                    response.DVDsLeft = false;
+                    return false;
                 }
                 else
                 {
-                    response.DVDsLeft = true;
+                    return true;
                 }
             }
-
-            response.MovieId = dvdToDelete.Movie.MovieId;
-
-            return response;
         }
 
 
