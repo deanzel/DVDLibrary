@@ -114,5 +114,15 @@ namespace DVDLibrary.UI.Controllers
             return RedirectToAction("SelectMovie", "Home", new {id = newUserRating.MovieId});
         }
 
+
+        //Large Search Page
+        public ActionResult SearchMovies()
+        {
+            var movies = _oops.ReturnMoviesListFromDB().OrderBy(m => m.MovieTitle).ToList();
+
+            return View(movies);
+        }
+
+
     }
 }

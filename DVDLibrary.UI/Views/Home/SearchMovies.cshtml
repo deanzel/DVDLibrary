@@ -1,0 +1,63 @@
+﻿@model List<DVDLibrary.Models.Movie>
+
+@{
+    ViewBag.Title = "Search Movies";
+}
+
+<h2>Search Movies</h2>
+
+<div class="row" ng-app ng-init="movies = [
+             @foreach (var movie in Model)
+             {
+                 <text>{MovieId: '@movie.MovieId', Title: '@movie.MovieTitle', Year: '@movie.ReleaseDate.Year', Rating: '@movie.MpaaRating'},</text>
+             }
+     ]">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Rating</th>
+            @*<th>Genres</th>*@
+            <th></th>
+        </tr>
+        <tr>
+            <th><input type="text" ng-model="movieFilter.Title"/></th>
+            <th><input type="text" ng-model="movieFilter.Year"/></th>
+            <th><input type="text" ng-model="movieFilter.Rating"/></th>
+            @*<th><input type="text" ng-model="movieFilter.Genres" /></th>*@
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="movie in movies | filter:movieFilter">
+            <td>{{movie.Title}}</td>
+            <td>{{movie.Year}}</td>
+            <td>{{movie.Rating}}</td>
+            @*<td>{{movie.Genres}}</td>*@
+            <td>
+                @{
+                    var url = Url.Action("SelectMovie", "Home", new {id = "{{movie.MovieId}}"});
+                    url = HttpUtility.UrlDecode(url);
+                }
+                <a href="@url" class="btn btn-primary">Details</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/angular.min.js"></script>
+}
+
+@*//string genres = "";
+                 //if (movie.Genres.Count > 0)
+                 //{
+                 //    for (int i = 0; i < movie.Genres.Count - 1; i++)
+                 //    {
+                 //        genres += movie.Genres[i].GenreName + ", ";
+                 //    }
+                 //    genres += movie.Genres[movie.Genres.Count - 1].GenreName;
+                 //}*@

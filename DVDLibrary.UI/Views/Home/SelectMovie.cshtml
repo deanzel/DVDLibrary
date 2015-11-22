@@ -126,14 +126,17 @@
                         <li> | </li>
                         <li>@(Model.DVDs[0].Movie.Duration) mins</li>
                         <li> | </li>
-                        <li>
-                            @for (int i = 0; i < Model.DVDs[0].Movie.Genres.Count - 1; i++)
-                            {
-                                @(Model.DVDs[0].Movie.Genres[i].GenreName + ", ")
-                            }
-                            @Model.DVDs[0].Movie.Genres[Model.DVDs[0].Movie.Genres.Count - 1].GenreName
-                        </li>
-                        <li> | </li>
+                        @if (Model.DVDs[0].Movie.Genres.Count > 0)
+                        {
+                            <li>
+                                @for (int i = 0; i < Model.DVDs[0].Movie.Genres.Count - 1; i++)
+                                {
+                                    @(Model.DVDs[0].Movie.Genres[i].GenreName + ", ")
+                                }
+                                @Model.DVDs[0].Movie.Genres[Model.DVDs[0].Movie.Genres.Count - 1].GenreName
+                            </li>
+                            <li> | </li>
+                        }
                         
                         <li>@(Model.DVDs[0].Movie.ReleaseDate.ToString("d")) (USA)</li>
                     </ul>
