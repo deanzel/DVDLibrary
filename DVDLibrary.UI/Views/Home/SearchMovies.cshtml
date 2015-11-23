@@ -1,31 +1,41 @@
 ﻿@model List<DVDLibrary.Models.Movie>
 
 @{
-    ViewBag.Title = "Search Movies";
+    ViewBag.Title = "Search All Movies";
 }
 
-<h2>Search Movies</h2>
+<h2>Search All Movies</h2>
 
 <div class="row" ng-app ng-init="movies = [
              @foreach (var movie in Model)
-{
-    <text>{MovieId: '@movie.MovieId', Title: '@movie.MovieTitle.Replace("'", "\\'")', Year: '@movie.ReleaseDate.Year', Rating: '@movie.MpaaRating'},</text>
-}
+             {
+                 string genres = "";
+                 if (movie.Genres.Count > 0)
+                 {
+                     for (int i = 0; i < movie.Genres.Count - 1; i++)
+                     {
+                         genres += movie.Genres[i].GenreName + ", ";
+                     }
+                     genres += movie.Genres[movie.Genres.Count - 1].GenreName;
+                 }
+
+                 <text>{MovieId: '@movie.MovieId', Title: '@movie.MovieTitle.Replace("'", "\\'")', Year: '@movie.ReleaseDate.Year', Rating: '@movie.MpaaRating', Genres: '@genres'},</text>
+             }
      ]">
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Title</th>
-            <th>Year</th>
-            <th>Rating</th>
-            @*<th>Genres</th>*@
-            <th></th>
+            <th class="col-xs-4">Title</th>
+            <th class="col-xs-1">Year</th>
+            <th class="col-xs-1">Rating</th>
+            <th class="col-xs-5">Genres</th>
+            <th class="col-xs-1"></th>
         </tr>
         <tr>
-            <th><input type="text" ng-model="movieFilter.Title"/></th>
-            <th><input type="text" ng-model="movieFilter.Year"/></th>
-            <th><input type="text" ng-model="movieFilter.Rating"/></th>
-            @*<th><input type="text" ng-model="movieFilter.Genres" /></th>*@
+            <th><input class="form-control" type="text" ng-model="movieFilter.Title"/></th>
+            <th><input class="form-control" type="text" ng-model="movieFilter.Year"/></th>
+            <th><input class="form-control" type="text" ng-model="movieFilter.Rating"/></th>
+            <th><input class="form-control" type="text" ng-model="movieFilter.Genres" /></th>
             <th></th>
         </tr>
         </thead>
@@ -34,26 +44,19 @@
             <td>{{movie.Title}}</td>
             <td>{{movie.Year}}</td>
             <td>{{movie.Rating}}</td>
-            @*<td>{{movie.Genres}}</td>*@
+            <td>{{movie.Genres}}</td>
             <td>
                 @{
                     var url = Url.Action("SelectMovie", "Home", new {id = "{{movie.MovieId}}"});
                     url = HttpUtility.UrlDecode(url);
                 }
-                <a href="@url" class="btn btn-primary">Details</a>
+                <a href="@url" class="btn btn-info">Details</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
 
-
-@*//string genres = "";
-                 //if (movie.Genres.Count > 0)
-                 //{
-                 //    for (int i = 0; i < movie.Genres.Count - 1; i++)
-                 //    {
-                 //        genres += movie.Genres[i].GenreName + ", ";
-                 //    }
-                 //    genres += movie.Genres[movie.Genres.Count - 1].GenreName;
-                 //}*@
+<div class="row">
+    <a href="/Home/Index" class="btn btn-default"><span class="glyphicon glyphicon-home"></span> Return to Home</a>
+</div>

@@ -150,6 +150,43 @@ namespace DVDLibrary.Data
                     }
                 }
             }
+
+            foreach (var movie in moviesListFromDB)
+            {
+                //Get Genres List for Movie by MovieID
+                using (var cn = new SqlConnection(Settings.ConnectionString))
+                {
+                    var cmd = new SqlCommand();
+
+                    cmd.CommandText = "GetGenresListByMovieID";
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Connection = cn;
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@MovieID", movie.MovieId);
+
+                    cn.Open();
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+
+                            if (dr["GenreID"] != DBNull.Value)
+                            {
+                                Models.Genre newGenre = new Models.Genre();
+                                newGenre.GenreId = int.Parse(dr["GenreID"].ToString());
+
+                                if (dr["GenreName"] != DBNull.Value)
+                                {
+                                    newGenre.GenreName = dr["GenreName"].ToString();
+                                }
+                                movie.Genres.Add(newGenre);
+                            }
+                        }
+                    }
+                    cn.Close();
+                }
+            }
             return moviesListFromDB;
         }
 
