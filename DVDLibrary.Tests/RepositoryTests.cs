@@ -1,15 +1,14 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DVDLibrary.BLL;
-using NUnit.Framework;
 
 namespace DVDLibrary.Tests
 {
     [TestFixture]
-    public class OperationsTests
+    public class RepositoryTests
     {
         [TestFixtureSetUp]
         public void Init()
@@ -20,13 +19,13 @@ namespace DVDLibrary.Tests
         [TestFixtureTearDown]
         public void Dispose()
         {
-            
+
         }
 
         [Test]
         public void Test()
         {
-            
+
         }
     }
 }
