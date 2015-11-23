@@ -58,7 +58,7 @@
                 @if (@Model.DVDs[0].Movie.UserRatings.Count != 0)
                 {
                     <div class="col-xs-9">
-                        <span>@(Model.DVDs[0].Movie.UserRatings.Average(r => r.Rating).ToString("#.000")) / 5</span>
+                        <span>@(Model.DVDs[0].Movie.UserRatings.Average(r => r.Rating).ToString("#.00")) / 5</span>
                     </div>
                 }
                 else

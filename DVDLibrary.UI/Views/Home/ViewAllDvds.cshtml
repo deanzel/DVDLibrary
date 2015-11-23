@@ -1,22 +1,33 @@
 ﻿@using System.Web.Script.Services
 @model List<DVDLibrary.Models.Movie>
 @{
-    ViewBag.Title = "View All DVDs";
+    ViewBag.Title = "View All Movies In Collection";
 }
 
 <h2>View All Movies In Your Collection</h2>
 
 <div class="form-group">
-    <input id="search" name="search" class="form-control" type="text" placeholder="Search Movie Titles Here..." data-list=".list">
+    <input id="search" name="search" class="form-control" type="text" placeholder="Filter Movie Titles Here..." data-list=".list">
 </div>
 <br/>
 <div class="row">
     <div class="list-group list-inline list">
-        @foreach (var movie in Model)
+        @for (int i = 0; i < Model.Count; i++)
         {
-                <a class="list-group-item col-xs-4 text-center" href="/Home/SelectMovie/@movie.MovieId">
-                    <b>@movie.MovieTitle</b> (@movie.ReleaseDate.Year)
-                    </a>
+            if (i % 3 != 2)
+            {
+                <a class="list-group-item col-xs-4 text-center" href="/Home/SelectMovie/@Model[i].MovieId">
+                    <b>@Model[i].MovieTitle</b> (@Model[i].ReleaseDate.Year)
+                </a>
+            }
+            else
+            {
+                <a class="list-group-item col-xs-4 text-center" href="/Home/SelectMovie/@Model[i].MovieId">
+                    <b>@Model[i].MovieTitle</b> (@Model[i].ReleaseDate.Year)
+                </a>
+                <div class="clearfix"></div>
+            }
+
         }
     </div>
 </div>
