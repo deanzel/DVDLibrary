@@ -8,9 +8,9 @@
 
 <div class="row" ng-app ng-init="movies = [
              @foreach (var movie in Model)
-             {
-                 <text>{MovieId: '@movie.MovieId', Title: '@movie.MovieTitle', Year: '@movie.ReleaseDate.Year', Rating: '@movie.MpaaRating'},</text>
-             }
+{
+    <text>{MovieId: '@movie.MovieId', Title: '@movie.MovieTitle.Replace("'", "\\'")', Year: '@movie.ReleaseDate.Year', Rating: '@movie.MpaaRating'},</text>
+}
      ]">
     <table class="table table-striped">
         <thead>
@@ -47,10 +47,6 @@
     </table>
 </div>
 
-@section scripts
-{
-    @*<script src="~/Scripts/angular.min.js"></script>*@
-}
 
 @*//string genres = "";
                  //if (movie.Genres.Count > 0)
