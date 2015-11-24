@@ -11,6 +11,7 @@ namespace DVDLibrary.Models
     {
         public int UserNoteId { get; set; }
         public int MovieId { get; set; }
+        public string MovieTitle { get; set; }
         public int BorrowerId { get; set; }
         public string BorrowerName { get; set; }
         [Required]

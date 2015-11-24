@@ -34,6 +34,7 @@ namespace DVDLibrary.Data
         int ReturnDVDToDb(int statusId);
         bool RemoveDVDFromDb(int dvdId);
         bool AddUserRatingToDb(UserRating newRating);
+        List<UserNote> RetrieveUserNotes(int movieId);
     }
 
     public class DVDLibraryRepo : IDVDLibraryRepo
@@ -416,6 +417,10 @@ namespace DVDLibrary.Data
                             if (dr["MovieID"] != DBNull.Value)
                             {
                                 newUserNote.MovieId = int.Parse(dr["MovieID"].ToString());
+                            }
+                            if (dr["MovieTitle"] != DBNull.Value)
+                            {
+                                newUserNote.MovieTitle = dr["MovieTitle"].ToString();
                             }
                             if (dr["BorrowerID"] != DBNull.Value)
                             {
@@ -1713,5 +1718,66 @@ namespace DVDLibrary.Data
         }
 
 
+        //Retrieve list of UserNotes for a MovieID
+        public List<UserNote> RetrieveUserNotes(int movieId)
+        {
+            List<UserNote> listOfUserNotes = new List<UserNote>();
+
+            using (var cn = new SqlConnection(Settings.ConnectionString))
+            {
+                var cmd = new SqlCommand();
+
+                //Get User Notes for Movie by MovieID
+                cmd.CommandText = "GetUserNotesByMovieID";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Connection = cn;
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@MovieID", movieId);
+
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+
+                        if (dr["UserNoteID"] != DBNull.Value)
+                        {
+                            UserNote newUserNote = new UserNote();
+                            newUserNote.UserNoteId = int.Parse(dr["UserNoteID"].ToString());
+
+                            if (dr["MovieID"] != DBNull.Value)
+                            {
+                                newUserNote.MovieId = int.Parse(dr["MovieID"].ToString());
+                            }
+                            if (dr["MovieTitle"] != DBNull.Value)
+                            {
+                                newUserNote.MovieTitle = dr["MovieTitle"].ToString();
+                            }
+                                if (dr["BorrowerID"] != DBNull.Value)
+                            {
+                                newUserNote.BorrowerId = int.Parse(dr["BorrowerID"].ToString());
+                            }
+                            if (dr["Note"] != DBNull.Value)
+                            {
+                                newUserNote.Note = dr["Note"].ToString();
+                            }
+                            if (dr["OwnerNote"] != DBNull.Value)
+                            {
+                                newUserNote.Owner = bool.Parse(dr["OwnerNote"].ToString());
+                            }
+                            if (dr["FirstName"] != DBNull.Value)
+                            {
+                                newUserNote.BorrowerName = (dr["FirstName"].ToString() + " " + dr["LastName"].ToString());
+                            }
+                            listOfUserNotes.Add(newUserNote);
+                        }
+                    }
+                }
+                cn.Close();
+            }
+
+            return listOfUserNotes;
+        }
     }
 }

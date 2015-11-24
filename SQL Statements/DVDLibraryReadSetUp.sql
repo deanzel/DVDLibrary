@@ -88,9 +88,10 @@ Create Procedure [dbo].[GetUserNotesByMovieID](
 	)
 	as
 begin
-	SELECT un.UserNoteID, un.BorrowerID, un.MovieID, un.Note, un.OwnerNote, b.FirstName, b.LastName
+	SELECT un.UserNoteID, un.BorrowerID, un.MovieID, m.MovieTitle, un.Note, un.OwnerNote, b.FirstName, b.LastName
 	FROM UserNotes un
 		LEFT JOIN Borrowers b on un.BorrowerID = b.BorrowerID
+		LEFT JOIN Movies m on un.MovieID = m.MovieID
 	WHERE un.MovieID = @MovieID
 end
 

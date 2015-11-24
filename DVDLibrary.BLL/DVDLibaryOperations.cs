@@ -158,5 +158,13 @@ namespace DVDLibrary.BLL
             }
         }
 
+
+        //Return list of UserNotes for a MovieID
+        public List<UserNote> ReturnUserNotes(int movieId)
+        {
+            return _repo.RetrieveUserNotes(movieId);
+        } 
+
+
     }
 }
