@@ -29,6 +29,7 @@ namespace DVDLibrary.UI.Controllers
             return new HttpResponseMessage(HttpStatusCode.Created);
         }
 
-        //Create a RenderAction for a partial view
+        //Create a RenderAction that returns a partial view that includes Borrowers List, MovieID, etc.
+
     }
 }
