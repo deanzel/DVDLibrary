@@ -30,6 +30,13 @@ namespace DVDLibrary.UI.Controllers
         }
 
         //Create a RenderAction that returns a partial view that includes Borrowers List, MovieID, etc.
+        public List<UserNote> _RenderUserNotes(int id)
+        {
+            var oops = new DVDLibaryOperations();
+
+            return oops.ReturnUserNotes(id);
+        }
+
 
     }
 }
