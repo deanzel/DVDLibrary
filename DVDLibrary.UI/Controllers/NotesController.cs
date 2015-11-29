@@ -33,7 +33,7 @@ namespace DVDLibrary.UI.Controllers
         public List<UserNote> _RenderUserNotes(int id)
         {
             var oops = new DVDLibaryOperations();
-
+            //Need different method here
             return oops.ReturnUserNotes(id);
         }
 
