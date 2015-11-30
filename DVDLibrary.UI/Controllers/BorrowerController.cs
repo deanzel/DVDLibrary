@@ -53,5 +53,9 @@ namespace DVDLibrary.UI.Controllers
                 return View("AddNewBorrower", newBorrower);
             }
         }
+
+        //Remove Borrower
+        //Edit Borrower
+        //View Borrower's Details
     }
 }

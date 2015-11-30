@@ -115,7 +115,7 @@ namespace DVDLibrary.UI.Controllers
         }
 
 
-        //Large Search Page
+        //Large Search Page that uses Angular filtering
         public ActionResult SearchMovies()
         {
             var movies = _oops.ReturnMoviesListFromDB().OrderBy(m => m.MovieTitle).ToList();

@@ -33,7 +33,7 @@ namespace DVDLibrary.UI.Controllers
         public ActionResult AddMovieByTMDBId(int id)
         {
             //Need to add a little SQL database check for if movie is already in the database and send
-            //to a different view that only adds more copies of it and not edit metadata
+            //to a different view that only adds more copies of it and not edit metadata (also need a metadata editor)
 
             var newDVDVM = new AddDVDVM();
             newDVDVM.Movie = _oops.ReturnMovie(id);
