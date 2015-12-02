@@ -1,6 +1,7 @@
 ﻿USE [master]
 GO
 
+IF  EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = 'TestDVDLibrary')
 DROP DATABASE [TestDVDLibrary]
 GO
 
