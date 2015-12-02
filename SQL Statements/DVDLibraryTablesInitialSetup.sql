@@ -1,6 +1,9 @@
 use master
 go
 
+drop database DVDLibrary
+go
+
 create database DVDLibrary
 go
 
