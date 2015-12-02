@@ -264,7 +264,33 @@ namespace DVDLibrary.Tests
 
 
         //Test AddUserRatingToDb()
+        [Test]
+        public void TestAddUserRatingToDb()
+        {
+            UserRating newRating = new UserRating()
+            {
+                BorrowerId = 9,
+                MovieId = 1,
+                Rating = 5,
+                Owner = false,
+            };
 
+            repo.AddUserRatingToDb(newRating);
+
+            int ratingsCount = 0;
+            using (SqlConnection cn = new SqlConnection(TestConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
+
+                cmd.CommandText = "select count(UserRatings.MovieID) from UserRatings where MovieID=1";
+                cmd.Connection = cn;
+                cn.Open();
+
+                ratingsCount = int.Parse(cmd.ExecuteScalar().ToString());
+
+            }
+            Assert.AreEqual(ratingsCount, 2);
+        }
 
     }
 }
