@@ -15,6 +15,5 @@ namespace DVDLibrary.Models
         [DataType(DataType.Date)]
         public DateTime DateBorrowed { get; set; }
         public int BorrowerStatusId { get; set; }
-        //public bool Success { get; set; }
     }
 }

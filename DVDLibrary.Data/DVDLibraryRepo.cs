@@ -1219,21 +1219,7 @@ namespace DVDLibrary.Data
                 cmd.Connection = cn;
                 cn.Open();
                 return int.Parse(cmd.ExecuteScalar().ToString());
-
-                //cn.Close();
-
-                //if (ownerCount == 0)
-                //{
-                //    response.Success = false;
-                //    response.Message = "No previous owner exists";
-                //    return response;
-                //}
-                //else
-                //{
-                //    response.Success = true;
-                //    response.Message = "An owner already exists!!";
-                //    return response;
-                //}
+               
             }
         }
 
@@ -1599,12 +1585,6 @@ namespace DVDLibrary.Data
 
                     return true;
 
-                    //var response = new Response();
-                    //response.UserRating = newRating;
-                    //response.Success = true;
-                    //response.Message = "You have added a new rating!!";
-
-                    //return response;
                 }
                 else
                 {
@@ -1618,12 +1598,6 @@ namespace DVDLibrary.Data
 
                     return false;
 
-                    //var response = new Response();
-                    //response.UserRating = newRating;
-                    //response.Success = true;
-                    //response.Message = "You have updated your previous rating for this movie!!";
-
-                    //return response;
                 }
             }
 
