@@ -18,10 +18,10 @@ namespace DVDLibrary.Tests
     public class RepositoryTests
     {
         public string TestSetupConnectionString;
-        public string TestConnectionString = @"Server=MS-STDN-010\SQL2014;User=sa;Password=sqlserver;Database=TestDVDLibrary;";
+        public string TestConnectionString = @"Server=Dean-WIN;User=sa;Password=sqlserver;Database=TestDVDLibrary;";
         public DVDLibraryRepo repo = new DVDLibraryRepo();
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Init()
         {
             //TestConnectionString = @"Server=MS-STDN-010\SQL2014;User=sa;Password=sqlserver;Database=TestDVDLibrary;";
@@ -46,7 +46,7 @@ namespace DVDLibrary.Tests
             //cn.open (no using statement so the SQL connection only opens up once)
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void Dispose()
         {
             //cn.close

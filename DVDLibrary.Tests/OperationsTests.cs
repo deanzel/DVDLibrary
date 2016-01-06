@@ -11,13 +11,13 @@ namespace DVDLibrary.Tests
     [TestFixture]
     public class OperationsTests
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void Init()
         {
             //var oops = new DVDLibaryOperations();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void Dispose()
         {
             
